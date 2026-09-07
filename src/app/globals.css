@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #0ea5e9;
+  color: #ffffff;
+}
