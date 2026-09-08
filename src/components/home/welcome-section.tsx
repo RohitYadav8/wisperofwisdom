@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { BookOpen, FilePenLine, Lightbulb } from "lucide-react";
 import { motion } from "motion/react";
 
 import {
@@ -9,13 +11,25 @@ import {
 
 const items = [
   {
-    title: "Finding Book Review",
+    eyebrow: "Trending",
+    title: "Book review",
+    icon: FilePenLine,
+    description:
+      "“Whispers of Wisdom” is an inspiring journey from dreams to triumph. The author beautifully captures the essence of perseverance, resilience, and strategic thinking, making it a compelling read for aspiring achievers.",
   },
   {
-    title: "Healthy Top Picks",
+    eyebrow: "Featured",
+    title: "Top picks",
+    icon: Lightbulb,
+    description:
+      "Discover the most inspiring stories of triumph and resilience, showcasing visionary leaders and their paths to success. Unlock the secrets to turning dreams into victorious realities.",
   },
   {
-    title: "Explore Whispers of Wisdom",
+    eyebrow: "Explore",
+    title: "Whispers of Wisdom",
+    icon: BookOpen,
+    description:
+      "Explore “Whispers of Wisdom,” a compelling journey of triumph, resilience, and transformation. Delve into inspiring stories that illuminate the path from challenges to success.",
   },
 ];
 
@@ -25,19 +39,23 @@ export function WelcomeSection() {
       className="
         relative
         overflow-hidden
-        bg-white
-        py-20
+        bg-[#FAFAF7]
+        py-16
         transition-colors
         duration-500
 
         dark:bg-[#061522]
 
-        sm:py-24
-        lg:py-28
+        sm:py-20
+        lg:py-24
       "
     >
-      {/* subtle background glow */}
+      {/* =====================================================
+          BACKGROUND DECORATION
+      ===================================================== */}
+
       <div
+        aria-hidden="true"
         className="
           pointer-events-none
           absolute
@@ -50,7 +68,24 @@ export function WelcomeSection() {
           bg-[#2196F3]/5
           blur-[110px]
 
-          dark:bg-[#2196F3]/10
+          dark:bg-[#2196F3]/8
+        "
+      />
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -right-20
+          bottom-0
+          h-[300px]
+          w-[300px]
+          rounded-full
+          bg-[#2196F3]/5
+          blur-[120px]
+
+          dark:bg-[#2196F3]/8
         "
       />
 
@@ -59,22 +94,25 @@ export function WelcomeSection() {
           relative
           z-10
           mx-auto
-          max-w-[1280px]
+          max-w-[1380px]
           px-5
 
           sm:px-8
           lg:px-12
+          xl:px-16
         "
       >
-        {/* ===============================
-            HEADING
-        =============================== */}
+        {/* =====================================================
+            TOP CONTENT
+        ===================================================== */}
 
-        <div className="mx-auto max-w-[760px] text-center">
-          <motion.p
+        <div className="mx-auto max-w-[940px] text-center">
+          {/* LOGO */}
+
+          <motion.div
             initial={{
               opacity: 0,
-              y: 18,
+              y: 16,
             }}
             whileInView={{
               opacity: 1,
@@ -89,21 +127,31 @@ export function WelcomeSection() {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="
-              text-[12px]
-              font-semibold
-              uppercase
-              tracking-[0.25em]
-              text-[#2196F3]
+              relative
+              mx-auto
+              h-[92px]
+              w-[180px]
+
+              sm:h-[110px]
+              sm:w-[215px]
             "
           >
-            Unlocking The Path
-          </motion.p>
+            <Image
+              src="/Wispers-of-Wisdom-logo.png"
+              alt="Whispers of Wisdom"
+              fill
+              sizes="215px"
+              className="object-contain"
+            />
+          </motion.div>
+
+          {/* HEADING */}
 
           <motion.h2
             initial={{
               opacity: 0,
-              y: 30,
-              filter: "blur(8px)",
+              y: 26,
+              filter: "blur(7px)",
             }}
             whileInView={{
               opacity: 1,
@@ -115,170 +163,275 @@ export function WelcomeSection() {
               amount: 0.3,
             }}
             transition={{
-              duration: 0.75,
-              delay: 0.08,
+              duration: 0.7,
+              delay: 0.06,
               ease: [0.22, 1, 0.36, 1],
             }}
             className="
-              mt-4
+              mt-8
               font-serif
-              text-4xl
-              font-semibold
-              tracking-[-0.03em]
-              text-[#0F172A]
+              text-[38px]
+              font-normal
+              leading-[1.08]
+              tracking-[-0.035em]
+              text-[#26343C]
 
               dark:text-white
 
-              sm:text-5xl
-              lg:text-[58px]
+              sm:text-[48px]
+              lg:text-[56px]
             "
           >
             Welcome to Whispers of Wisdom
           </motion.h2>
+
+          {/* SUBTITLE */}
+
+          <motion.p
+            initial={{
+              opacity: 0,
+              y: 16,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: 0.14,
+            }}
+            className="
+              mt-7
+              text-[13px]
+              font-medium
+              uppercase
+              tracking-[0.4em]
+              text-[#2196F3]
+
+              sm:text-[15px]
+            "
+          >
+            Unlocking The Path
+          </motion.p>
+
+          {/* DESCRIPTION */}
+
+          <motion.p
+            initial={{
+              opacity: 0,
+              y: 14,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.55,
+              delay: 0.2,
+            }}
+            className="
+              mx-auto
+              mt-6
+              max-w-[760px]
+              text-[14px]
+              leading-7
+              text-slate-500
+
+              dark:text-slate-400
+
+              sm:text-[16px]
+            "
+          >
+            Business Growth Strategies: Building a solid foundation for
+            sustainable growth
+          </motion.p>
         </div>
 
-        {/* ===============================
-            THREE ITEMS
-        =============================== */}
+        {/* =====================================================
+            THREE COLUMN CONTENT
+        ===================================================== */}
 
         <StaggerContainer
           className="
-            mt-14
+            mt-16
             grid
-            gap-5
+            grid-cols-1
 
             md:grid-cols-3
-            lg:mt-16
+
+            lg:mt-20
           "
         >
-          {items.map((item, index) => (
-            <StaggerItem key={item.title}>
-              <motion.div
-                whileHover={{
-                  y: -8,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 250,
-                  damping: 20,
-                }}
-                className="
-                  group
-                  relative
-                  flex
-                  min-h-[220px]
-                  flex-col
-                  justify-end
-                  overflow-hidden
-                  rounded-[26px]
-                  border
-                  border-slate-200/80
-                  bg-[#FAFAF7]
-                  p-7
-                  shadow-[0_15px_40px_rgba(15,23,42,0.05)]
-                  transition-colors
-                  duration-300
+          {items.map((item, index) => {
+            const Icon = item.icon;
 
-                  hover:border-[#2196F3]/30
-
-                  dark:border-white/10
-                  dark:bg-[#0B2031]
-                  dark:shadow-[0_18px_45px_rgba(0,0,0,0.20)]
-                  dark:hover:border-[#2196F3]/30
-                "
-              >
-                {/* card glow */}
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    -right-16
-                    -top-16
-                    h-40
-                    w-40
-                    rounded-full
-                    bg-[#2196F3]/0
-                    blur-[45px]
-                    transition-all
-                    duration-500
-
-                    group-hover:bg-[#2196F3]/10
-
-                    dark:group-hover:bg-[#2196F3]/10
-                  "
-                />
-
-                {/* number */}
-                <span
-                  className="
-                    absolute
-                    left-7
-                    top-6
-                    text-xs
-                    font-semibold
-                    tracking-[0.2em]
-                    text-slate-400
-
-                    dark:text-slate-500
-                  "
-                >
-                  0{index + 1}
-                </span>
-
-                {/* temporary visual area */}
-                <div
-                  className="
-                    absolute
-                    left-7
-                    top-16
-                    h-10
-                    w-10
-                    rounded-full
-                    border
-                    border-[#2196F3]/15
-                    bg-[#2196F3]/8
-
-                    dark:border-[#2196F3]/20
-                    dark:bg-[#2196F3]/10
-                  "
-                />
-
-                <h3
-                  className="
+            return (
+              <StaggerItem key={item.title}>
+                <motion.article
+                  whileHover={{
+                    y: -5,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 22,
+                  }}
+                  className={`
+                    group
                     relative
-                    z-10
-                    max-w-[240px]
-                    font-serif
-                    text-[24px]
-                    font-semibold
-                    leading-tight
-                    text-[#0F172A]
-                    transition-colors
+                    h-full
+                    px-2
+                    py-7
 
-                    group-hover:text-[#2196F3]
+                    sm:px-5
 
-                    dark:text-white
-                    dark:group-hover:text-[#42A5F5]
-                  "
+                    md:px-7
+
+                    lg:px-8
+
+                    ${
+                      index !== items.length - 1
+                        ? "md:border-r md:border-slate-200 dark:md:border-white/10"
+                        : ""
+                    }
+                  `}
                 >
-                  {item.title}
-                </h3>
+                  {/* CARD TOP */}
 
-                <motion.div
-                  initial={{ width: 28 }}
-                  whileHover={{ width: 52 }}
-                  className="
-                    relative
-                    z-10
-                    mt-5
-                    h-[2px]
-                    rounded-full
-                    bg-[#2196F3]
-                  "
-                />
-              </motion.div>
-            </StaggerItem>
-          ))}
+                  <div
+                    className="
+                      flex
+                      items-start
+                      gap-5
+
+                      lg:gap-6
+                    "
+                  >
+                    {/* ICON */}
+
+                    <motion.div
+                      whileHover={{
+                        rotate: index === 1 ? 5 : 0,
+                        scale: 1.06,
+                      }}
+                      transition={{
+                        duration: 0.25,
+                      }}
+                      className="
+                        flex
+                        h-[72px]
+                        w-[72px]
+                        shrink-0
+                        items-center
+                        justify-center
+
+                        text-[#2196F3]
+
+                        sm:h-[76px]
+                        sm:w-[76px]
+                      "
+                    >
+                      <Icon
+                        strokeWidth={1.45}
+                        className="
+                          h-[56px]
+                          w-[56px]
+
+                          sm:h-[62px]
+                          sm:w-[62px]
+                        "
+                      />
+                    </motion.div>
+
+                    {/* TITLE */}
+
+                    <div className="pt-1">
+                      <p
+                        className="
+                          text-[11px]
+                          font-semibold
+                          uppercase
+                          tracking-[0.3em]
+                          text-slate-500
+
+                          dark:text-slate-400
+
+                          sm:text-[12px]
+                        "
+                      >
+                        {item.eyebrow}
+                      </p>
+
+                      <h3
+                        className="
+                          mt-2
+                          max-w-[250px]
+                          font-serif
+                          text-[31px]
+                          font-normal
+                          leading-[1.08]
+                          tracking-[-0.025em]
+                          text-[#26343C]
+
+                          transition-colors
+                          duration-300
+
+                          group-hover:text-[#2196F3]
+
+                          dark:text-white
+                          dark:group-hover:text-[#42A5F5]
+
+                          lg:text-[36px]
+                        "
+                      >
+                        {item.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* DESCRIPTION */}
+
+                  <p
+                    className="
+                      mt-8
+                      text-[14px]
+                      leading-[1.9]
+                      text-slate-600
+
+                      dark:text-slate-300
+
+                      sm:text-[15px]
+                    "
+                  >
+                    {item.description}
+                  </p>
+
+                  {/* HOVER LINE */}
+
+                  <div
+                    className="
+                      mt-7
+                      h-[2px]
+                      w-8
+                      rounded-full
+                      bg-[#2196F3]
+
+                      transition-all
+                      duration-300
+
+                      group-hover:w-14
+                    "
+                  />
+                </motion.article>
+              </StaggerItem>
+            );
+          })}
         </StaggerContainer>
       </div>
     </section>
