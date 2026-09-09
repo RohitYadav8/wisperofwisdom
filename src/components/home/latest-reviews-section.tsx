@@ -1,12 +1,33 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { motion } from "motion/react";
 
 import {
   StaggerContainer,
   StaggerItem,
 } from "../animations/stagger";
+
 import { AnimateIn } from "../animations/animate-in";
+
+const reviews = [
+  {
+    id: 1,
+    title: "The Journey of Whispers of Wisdom",
+    author: "ANTHONY & HANNAH WIGGINS",
+    image: "/books.png",
+    text: `Whispers of Wisdom has arrived at a perfect time for our business Creative Living Property. As we grow and scale our business the lessons and guidance within the book provide a navigation compass whilst inspiring us with the infectious entrepreneurial spirit of the author. We were lucky enough the meet the author earlier this year on a property training mastermind in Dubai. He took time out of a busy schedule to sit down with myself and family and passed on some amazing life lessons from his extensive experience in business. He went onto explain the importance of laying strong business foundations and structuring even small start up business’s with the same mindset and structure as a large successful corporation. We took his advice to heart and have since continued to grow our business based on many principles within Whispers of Wisdom which have held us in good stead. We are excited to dive deeper into the depths of knowledge within this book whilst applying the principle’s to our business and life in general.`,
+  },
+  {
+    id: 2,
+    title: "The Journey of Whispers of Wisdom",
+    author: "SWAPNIL.RAJWADKAR",
+    image: "/books.png",
+    text: `Whispers of Wisdom has arrived at a perfect time for our business Creative Living Property. As we grow and scale our business the lessons and guidance within the book provide a navigation compass whilst inspiring us with the infectious entrepreneurial spirit of the author. We were lucky enough the meet the author earlier this year on a property training mastermind in Dubai. He took time out of a busy schedule to sit down with myself and family and passed on some amazing life lessons from his extensive experience in business. He went onto explain the importance of laying strong business foundations and structuring even small start up business’s with the same mindset and structure as a large successful corporation. We took his advice to heart and have since continued to grow our business based on many principles within Whispers of Wisdom which have held us in good stead. We are excited to dive deeper into the depths of knowledge within this book whilst applying the principle’s to our business and life in general.`,
+  },
+];
 
 export function LatestReviewsSection() {
   return (
@@ -15,28 +36,33 @@ export function LatestReviewsSection() {
         relative
         overflow-hidden
         bg-[#FAFAF7]
-        py-20
+        py-16
         transition-colors
         duration-500
+
         dark:bg-[#041522]
-        sm:py-24
-        lg:py-28
+
+        sm:py-20
+        lg:py-24
       "
     >
-      {/* Background glow */}
+      {/* BACKGROUND GLOW */}
+
       <div
+        aria-hidden="true"
         className="
           pointer-events-none
           absolute
           left-1/2
           top-0
-          h-[360px]
-          w-[360px]
+          h-[340px]
+          w-[340px]
           -translate-x-1/2
           rounded-full
-          bg-[#2196F3]/7
+          bg-[#2196F3]/5
           blur-[120px]
-          dark:bg-[#2196F3]/10
+
+          dark:bg-[#2196F3]/8
         "
       />
 
@@ -45,38 +71,60 @@ export function LatestReviewsSection() {
           relative
           z-10
           mx-auto
-          max-w-[1280px]
+          max-w-[1260px]
           px-5
+
           sm:px-8
           lg:px-12
         "
       >
-        {/* Heading */}
+        {/* =====================================================
+            HEADING
+        ===================================================== */}
+
         <div className="mx-auto max-w-[720px] text-center">
           <AnimateIn>
-            <h2
+            <p
               className="
-                font-serif
-                text-4xl
+                text-[11px]
                 font-semibold
-                tracking-[-0.03em]
-                text-[#0F172A]
-                dark:text-white
-                sm:text-5xl
-                lg:text-[58px]
+                uppercase
+                tracking-[0.3em]
+                text-[#2196F3]
               "
             >
-              Latest Reviews
+              Book Review
+            </p>
+          </AnimateIn>
+
+          <AnimateIn delay={0.08}>
+            <h2
+              className="
+                mt-3
+                font-serif
+                text-[40px]
+                font-normal
+                leading-[1.05]
+                tracking-[-0.035em]
+                text-[#26343C]
+
+                dark:text-white
+
+                sm:text-[48px]
+                lg:text-[56px]
+              "
+            >
+              Latest reviews
             </h2>
           </AnimateIn>
 
-          <AnimateIn delay={0.1}>
+          <AnimateIn delay={0.14}>
             <div
               className="
                 mx-auto
-                mt-6
+                mt-5
                 h-[2px]
-                w-16
+                w-14
                 rounded-full
                 bg-[#2196F3]
               "
@@ -84,163 +132,195 @@ export function LatestReviewsSection() {
           </AnimateIn>
         </div>
 
-        {/* Review cards */}
+        {/* =====================================================
+            REVIEWS GRID
+        ===================================================== */}
+
         <StaggerContainer
           className="
             mt-14
             grid
-            gap-6
+            gap-12
+
             md:grid-cols-2
+
             lg:mt-16
-            lg:grid-cols-3
+            lg:gap-16
           "
         >
-          {[1, 2, 3].map((item) => (
-            <StaggerItem key={item}>
+          {reviews.map((review) => (
+            <StaggerItem key={review.id}>
               <motion.article
                 whileHover={{
-                  y: -8,
+                  y: -4,
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 260,
-                  damping: 20,
+                  stiffness: 240,
+                  damping: 22,
                 }}
                 className="
                   group
                   relative
-                  min-h-[390px]
-                  overflow-hidden
-                  rounded-[28px]
-                  border
-                  border-slate-200/80
-                  bg-white
-                  shadow-[0_16px_45px_rgba(15,23,42,0.05)]
-                  transition-colors
-                  duration-300
-                  hover:border-[#2196F3]/25
-                  dark:border-white/10
-                  dark:bg-[#0B2031]
-                  dark:shadow-[0_20px_50px_rgba(0,0,0,0.22)]
-                  dark:hover:border-[#2196F3]/30
+                  h-full
                 "
               >
-                {/* Image area - actual image later */}
                 <div
                   className="
-                    relative
-                    h-[220px]
-                    overflow-hidden
-                    border-b
-                    border-slate-200/70
-                    bg-[#F4F8FB]
-                    dark:border-white/10
-                    dark:bg-[#081B2A]
+                    grid
+                    gap-7
+
+                    sm:grid-cols-[120px_1fr]
+                    sm:items-start
                   "
                 >
-                  <div
-                    className="
-                      absolute
-                      left-1/2
-                      top-1/2
-                      h-32
-                      w-32
-                      -translate-x-1/2
-                      -translate-y-1/2
-                      rounded-full
-                      bg-[#2196F3]/10
-                      blur-2xl
-                    "
-                  />
+                  {/* =================================================
+                      CLICKABLE BOOK IMAGE
+                  ================================================= */}
 
-                  <motion.div
-                    animate={{
-                      rotate: 360,
-                    }}
-                    transition={{
-                      duration: 30,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+                  <Link
+                    href="/product/whispers-of-wisdom"
+                    aria-label="View The Journey of Whispers of Wisdom"
                     className="
-                      absolute
-                      left-1/2
-                      top-1/2
-                      h-28
-                      w-28
-                      -translate-x-1/2
-                      -translate-y-1/2
-                      rounded-full
-                      border
-                      border-dashed
-                      border-[#2196F3]/15
+                      group/book
+                      relative
+                      mx-auto
+                      block
+                      h-[180px]
+                      w-[115px]
+                      shrink-0
+
+                      sm:mx-0
                     "
-                  />
+                  >
+                    <motion.div
+                      whileHover={{
+                        y: -5,
+                        scale: 1.04,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20,
+                      }}
+                      className="
+                        relative
+                        h-full
+                        w-full
+                      "
+                    >
+                      <Image
+                        src={review.image}
+                        alt={review.title}
+                        fill
+                        sizes="115px"
+                        className="
+                          object-contain
+                          object-center
+
+                          transition-all
+                          duration-300
+
+                          group-hover/book:drop-shadow-[0_15px_18px_rgba(0,0,0,0.14)]
+                        "
+                      />
+                    </motion.div>
+                  </Link>
+
+                  {/* =================================================
+                      REVIEW CONTENT
+                  ================================================= */}
+
+                  <div className="min-w-0">
+                    {/* TITLE */}
+
+                    <h3
+                      className="
+                        font-serif
+                        text-[28px]
+                        font-normal
+                        leading-[1.08]
+                        tracking-[-0.02em]
+                        text-[#2D2D2D]
+
+                        dark:text-white
+
+                        sm:text-[31px]
+                      "
+                    >
+                      {review.title}
+                    </h3>
+
+                    {/* AUTHOR */}
+
+                    <p
+                      className="
+                        mt-3
+                        text-[14px]
+                        uppercase
+                        tracking-[0.02em]
+                        text-slate-500
+
+                        dark:text-slate-400
+                      "
+                    >
+                      By {review.author}
+                    </p>
+
+                    {/* REVIEW TEXT */}
+
+                    <p
+                      className="
+                        mt-7
+                        text-[15px]
+                        leading-[1.75]
+                        text-[#6B6B6B]
+
+                        dark:text-slate-300
+                      "
+                    >
+                      {review.text}
+                    </p>
+
+                    {/* READ REVIEW */}
+
+                    <Link
+                      href="/product/whispers-of-wisdom#reviews"
+                      className="
+                        mt-7
+                        inline-flex
+                        items-center
+                        gap-2
+
+                        text-[13px]
+                        font-semibold
+                        uppercase
+                        tracking-[0.08em]
+                        text-[#2196F3]
+
+                        transition-colors
+                        duration-300
+
+                        hover:text-[#1976D2]
+
+                        dark:hover:text-[#42A5F5]
+                      "
+                    >
+                      Read The Review
+
+                      <ChevronRight
+                        size={18}
+                        strokeWidth={1.8}
+                        className="
+                          transition-transform
+                          duration-300
+
+                          group-hover:translate-x-1
+                        "
+                      />
+                    </Link>
+                  </div>
                 </div>
-
-                {/* Content area */}
-                <div className="p-7">
-                  <div
-                    className="
-                      h-3
-                      w-20
-                      rounded-full
-                      bg-[#2196F3]/15
-                      dark:bg-[#2196F3]/20
-                    "
-                  />
-
-                  <div
-                    className="
-                      mt-5
-                      h-6
-                      w-[85%]
-                      rounded-full
-                      bg-slate-200/80
-                      dark:bg-white/10
-                    "
-                  />
-
-                  <div
-                    className="
-                      mt-3
-                      h-6
-                      w-[62%]
-                      rounded-full
-                      bg-slate-200/60
-                      dark:bg-white/[0.07]
-                    "
-                  />
-
-                  <motion.div
-                    initial={{ width: 30 }}
-                    whileHover={{ width: 52 }}
-                    className="
-                      mt-7
-                      h-[2px]
-                      rounded-full
-                      bg-[#2196F3]
-                    "
-                  />
-                </div>
-
-                {/* Hover glow */}
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    -right-20
-                    -top-20
-                    h-52
-                    w-52
-                    rounded-full
-                    bg-[#2196F3]/0
-                    blur-[60px]
-                    transition-all
-                    duration-500
-                    group-hover:bg-[#2196F3]/8
-                  "
-                />
               </motion.article>
             </StaggerItem>
           ))}
