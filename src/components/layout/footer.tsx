@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUp, Mail } from "lucide-react";
 
@@ -29,10 +30,12 @@ export function Footer() {
   return (
     <footer
       className="
-        border-t border-slate-200
+        border-t
+        border-slate-200
         bg-[#f3efe6]
         text-slate-700
-        transition-colors duration-300
+        transition-colors
+        duration-300
 
         dark:border-white/10
         dark:bg-[#04111c]
@@ -45,7 +48,9 @@ export function Footer() {
           max-w-[1400px]
           px-5
           py-14
+
           sm:px-8
+
           lg:px-12
           lg:py-16
         "
@@ -62,56 +67,49 @@ export function Footer() {
           <div>
             <Link
               href="/"
-              className="inline-flex items-center gap-3"
+              aria-label="Whispers of Wisdom Home"
+              className="
+                relative
+                inline-flex
+                items-center
+              "
             >
-              {/* Temporary Logo */}
-              <div
+              {/* LIGHT THEME LOGO */}
+
+              <Image
+                src="/Wispers-of-Wisdom-logo.png"
+                alt="Whispers of Wisdom"
+                width={200}
+                height={90}
                 className="
-                  flex h-12 w-12
-                  items-center justify-center
-                  rounded-full
-                  border border-sky-200
-                  bg-white
-                  text-xl
-                  shadow-sm
+                  h-auto
+                  w-[155px]
+                  object-contain
 
-                  dark:border-sky-400/20
-                  dark:bg-white/5
+                  sm:w-[170px]
+
+                  dark:hidden
                 "
-              >
-                🪶
-              </div>
+              />
 
-              <div>
-                <p
-                  className="
-                    font-serif
-                    text-lg
-                    font-semibold
-                    leading-none
-                    text-slate-900
+              {/* DARK THEME LOGO */}
 
-                    dark:text-white
-                  "
-                >
-                  Whispers of
-                </p>
+              <Image
+                src="/logo-dark-1.png"
+                alt="Whispers of Wisdom"
+                width={200}
+                height={90}
+                className="
+                  hidden
+                  h-auto
+                  w-[155px]
+                  object-contain
 
-                <p
-                  className="
-                    mt-1.5
-                    text-[10px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.32em]
-                    text-sky-600
+                  sm:w-[170px]
 
-                    dark:text-sky-400
-                  "
-                >
-                  Wisdom
-                </p>
-              </div>
+                  dark:block
+                "
+              />
             </Link>
 
             <p
@@ -130,34 +128,22 @@ export function Footer() {
               purpose.
             </p>
 
-            {/* Social Icons */}
+            {/* SOCIAL ICONS */}
 
             <div className="mt-6 flex items-center gap-3">
-              <SocialIcon
-                href="#"
-                label="Facebook"
-              >
+              <SocialIcon href="#" label="Facebook">
                 <FacebookIcon />
               </SocialIcon>
 
-              <SocialIcon
-                href="#"
-                label="Instagram"
-              >
+              <SocialIcon href="#" label="Instagram">
                 <InstagramIcon />
               </SocialIcon>
 
-              <SocialIcon
-                href="#"
-                label="LinkedIn"
-              >
+              <SocialIcon href="#" label="LinkedIn">
                 <LinkedinIcon />
               </SocialIcon>
 
-              <SocialIcon
-                href="#"
-                label="YouTube"
-              >
+              <SocialIcon href="#" label="YouTube">
                 <YoutubeIcon />
               </SocialIcon>
             </div>
@@ -168,9 +154,7 @@ export function Footer() {
           =================================================== */}
 
           <div>
-            <FooterHeading>
-              Quick Links
-            </FooterHeading>
+            <FooterHeading>Quick Links</FooterHeading>
 
             <div className="mt-5 flex flex-col gap-3">
               {quickLinks.map((item) => (
@@ -201,9 +185,7 @@ export function Footer() {
           =================================================== */}
 
           <div>
-            <FooterHeading>
-              Your Account
-            </FooterHeading>
+            <FooterHeading>Your Account</FooterHeading>
 
             <div className="mt-5 flex flex-col gap-3">
               {accountLinks.map((item) => (
@@ -234,9 +216,7 @@ export function Footer() {
           =================================================== */}
 
           <div>
-            <FooterHeading>
-              Stay Inspired
-            </FooterHeading>
+            <FooterHeading>Stay Inspired</FooterHeading>
 
             <p
               className="
@@ -388,14 +368,17 @@ export function Footer() {
               Terms & Conditions
             </Link>
 
-            {/* Back to Top */}
+            {/* BACK TO TOP */}
 
             <a
               href="#top"
               aria-label="Back to top"
               className="
-                flex h-9 w-9
-                items-center justify-center
+                flex
+                h-9
+                w-9
+                items-center
+                justify-center
                 rounded-full
                 border
                 border-slate-200
@@ -468,8 +451,11 @@ function SocialIcon({
       href={href}
       aria-label={label}
       className="
-        flex h-9 w-9
-        items-center justify-center
+        flex
+        h-9
+        w-9
+        items-center
+        justify-center
         rounded-full
         border
         border-slate-200
