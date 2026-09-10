@@ -29,10 +29,8 @@ export default function AccountPage() {
         relative
         min-h-screen
         overflow-hidden
-
         bg-[#F7FBFE]
         text-[#0F172A]
-
         transition-colors
         duration-300
 
@@ -40,9 +38,7 @@ export default function AccountPage() {
         dark:text-white
       "
     >
-      {/* =========================================
-          PAGE GRID
-      ========================================= */}
+      {/* PAGE GRID */}
 
       <div
         className="
@@ -62,18 +58,16 @@ export default function AccountPage() {
         }}
       />
 
-      {/* =========================================
-          LIGHT THEME GLOWS
-      ========================================= */}
+      {/* BACKGROUND GLOW - LEFT */}
 
       <div
         className="
           pointer-events-none
           absolute
-          -left-[180px]
-          top-[120px]
-          h-[420px]
-          w-[420px]
+          -left-[190px]
+          top-[70px]
+          h-[430px]
+          w-[430px]
           rounded-full
           bg-[#2196F3]/16
           blur-[120px]
@@ -82,14 +76,16 @@ export default function AccountPage() {
         "
       />
 
+      {/* BACKGROUND GLOW - RIGHT */}
+
       <div
         className="
           pointer-events-none
           absolute
-          -right-[170px]
-          top-[300px]
-          h-[460px]
-          w-[460px]
+          -right-[180px]
+          top-[240px]
+          h-[470px]
+          w-[470px]
           rounded-full
           bg-[#90CAF9]/18
           blur-[130px]
@@ -98,14 +94,16 @@ export default function AccountPage() {
         "
       />
 
+      {/* BACKGROUND GLOW - BOTTOM */}
+
       <div
         className="
           pointer-events-none
           absolute
-          bottom-[-160px]
-          left-[-80px]
-          h-[360px]
-          w-[360px]
+          -bottom-[170px]
+          -left-[90px]
+          h-[370px]
+          w-[370px]
           rounded-full
           bg-[#64B5F6]/10
           blur-[110px]
@@ -114,170 +112,38 @@ export default function AccountPage() {
         "
       />
 
-      {/* =========================================
-          CONTENT
-      ========================================= */}
+      {/* =====================================================
+          LOGIN + REGISTER
+          My Account title / breadcrumb REMOVED
+      ===================================================== */}
 
       <section
         className="
           relative
           z-10
           px-5
-          pb-20
-          pt-14
+          py-16
 
           sm:px-8
-          sm:pt-16
+          sm:py-20
 
           lg:px-10
-          lg:pb-24
-          lg:pt-20
+          lg:py-24
         "
       >
         <div className="mx-auto max-w-[1280px]">
-          {/* =====================================
-              TITLE
-          ===================================== */}
-
-          <div
-            className="
-              mb-12
-              flex
-              flex-col
-              gap-6
-
-              md:mb-14
-              md:flex-row
-              md:items-center
-              md:justify-between
-            "
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.65,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              <h1
-                className="
-                  text-[44px]
-                  font-semibold
-                  leading-none
-                  tracking-[-0.05em]
-
-                  sm:text-[52px]
-                  lg:text-[58px]
-
-                  dark:text-white
-                "
-              >
-                My Account
-              </h1>
-
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: 84 }}
-                transition={{
-                  delay: 0.25,
-                  duration: 0.6,
-                }}
-                className="
-                  mt-5
-                  h-[4px]
-                  rounded-full
-                  bg-[#2196F3]
-                  shadow-[0_4px_14px_rgba(33,150,243,0.32)]
-
-                  dark:bg-[#42A5F5]
-                  dark:shadow-[0_4px_18px_rgba(66,165,245,0.35)]
-                "
-              />
-            </motion.div>
-
-            {/* =================================
-                BREADCRUMB
-            ================================= */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.1,
-                duration: 0.55,
-              }}
-              className="
-                flex
-                items-center
-                gap-2.5
-                text-[14px]
-                italic
-                text-slate-500
-
-                dark:text-slate-400
-              "
-            >
-              <Link
-                href="/"
-                className="
-                  transition-colors
-                  duration-200
-
-                  hover:text-[#2196F3]
-
-                  dark:hover:text-[#42A5F5]
-                "
-              >
-                Home
-              </Link>
-
-              <span className="text-slate-300 dark:text-slate-600">/</span>
-
-              <Link
-                href="/shop"
-                className="
-                  transition-colors
-                  duration-200
-
-                  hover:text-[#2196F3]
-
-                  dark:hover:text-[#42A5F5]
-                "
-              >
-                Shop
-              </Link>
-
-              <span className="text-slate-300 dark:text-slate-600">/</span>
-
-              <span
-                className="
-                  font-medium
-                  text-[#2196F3]
-
-                  dark:text-[#42A5F5]
-                "
-              >
-                My Account
-              </span>
-            </motion.div>
-          </div>
-
-          {/* =====================================
-              FORM GRID
-          ===================================== */}
-
           <div
             className="
               grid
+              items-stretch
               gap-8
 
               lg:grid-cols-2
             "
           >
-            {/* =================================
-                LOGIN
-            ================================= */}
+            {/* =================================================
+                LOGIN CARD
+            ================================================= */}
 
             <motion.div
               initial={{ opacity: 0, y: 26 }}
@@ -293,12 +159,9 @@ export default function AccountPage() {
                 relative
                 overflow-hidden
                 rounded-[28px]
-
                 border
                 border-white/90
-
-                bg-white/88
-
+                bg-white/90
                 p-6
                 backdrop-blur-xl
 
@@ -307,16 +170,19 @@ export default function AccountPage() {
                 transition-all
                 duration-500
 
-                hover:shadow-[0_30px_90px_rgba(33,150,243,0.16)]
+                hover:border-[#2196F3]/15
+                hover:shadow-[0_32px_90px_rgba(33,150,243,0.16)]
 
                 sm:p-9
                 lg:p-11
+                xl:p-12
 
                 dark:border-white/[0.09]
                 dark:bg-[#081C2B]/94
                 dark:shadow-[0_25px_75px_rgba(0,0,0,0.38)]
+
                 dark:hover:border-[#42A5F5]/20
-                dark:hover:shadow-[0_30px_90px_rgba(33,150,243,0.14)]
+                dark:hover:shadow-[0_32px_90px_rgba(33,150,243,0.14)]
               "
             >
               {/* CARD GRID */}
@@ -347,25 +213,28 @@ export default function AccountPage() {
                   absolute
                   -right-24
                   -top-24
-                  h-60
-                  w-60
+                  h-64
+                  w-64
                   rounded-full
-                  bg-[#2196F3]/11
-                  blur-[75px]
+                  bg-[#2196F3]/12
+                  blur-[80px]
 
                   dark:bg-[#42A5F5]/10
                 "
               />
 
               <div className="relative">
-                <div className="mb-9">
+                {/* LOGIN TITLE */}
+
+                <div className="mb-10">
                   <h2
                     className="
-                      text-[34px]
+                      text-[36px]
                       font-semibold
-                      tracking-[-0.04em]
+                      tracking-[-0.045em]
+                      text-[#0F172A]
 
-                      sm:text-[40px]
+                      sm:text-[42px]
 
                       dark:text-white
                     "
@@ -377,11 +246,14 @@ export default function AccountPage() {
                     className="
                       mt-4
                       h-[4px]
-                      w-9
+                      w-10
                       rounded-full
                       bg-[#2196F3]
 
+                      shadow-[0_4px_14px_rgba(33,150,243,0.25)]
+
                       dark:bg-[#42A5F5]
+                      dark:shadow-[0_4px_18px_rgba(66,165,245,0.25)]
                     "
                   />
                 </div>
@@ -418,7 +290,6 @@ export default function AccountPage() {
                           top-1/2
                           -translate-y-1/2
                           text-slate-400
-
                           transition-colors
 
                           group-focus-within/input:text-[#2196F3]
@@ -437,18 +308,13 @@ export default function AccountPage() {
                           h-[56px]
                           w-full
                           rounded-[12px]
-
                           border
                           border-slate-300/80
-
                           bg-[#FCFDFE]
-
                           pl-12
                           pr-4
-
                           text-sm
                           text-slate-900
-
                           outline-none
 
                           shadow-[0_5px_18px_rgba(15,23,42,0.05)]
@@ -474,7 +340,6 @@ export default function AccountPage() {
                           dark:focus:border-[#42A5F5]
                           dark:focus:bg-[#0D2437]
                           dark:focus:ring-[#42A5F5]/10
-                          dark:focus:shadow-[0_8px_28px_rgba(66,165,245,0.10)]
                         "
                       />
                     </div>
@@ -510,7 +375,6 @@ export default function AccountPage() {
                           top-1/2
                           -translate-y-1/2
                           text-slate-400
-
                           transition-colors
 
                           group-focus-within/input:text-[#2196F3]
@@ -529,18 +393,13 @@ export default function AccountPage() {
                           h-[56px]
                           w-full
                           rounded-[12px]
-
                           border
                           border-slate-300/80
-
                           bg-[#FCFDFE]
-
                           pl-12
                           pr-12
-
                           text-sm
                           text-slate-900
-
                           outline-none
 
                           shadow-[0_5px_18px_rgba(15,23,42,0.05)]
@@ -566,7 +425,6 @@ export default function AccountPage() {
                           dark:focus:border-[#42A5F5]
                           dark:focus:bg-[#0D2437]
                           dark:focus:ring-[#42A5F5]/10
-                          dark:focus:shadow-[0_8px_28px_rgba(66,165,245,0.10)]
                         "
                       />
 
@@ -584,7 +442,6 @@ export default function AccountPage() {
                           top-1/2
                           -translate-y-1/2
                           text-slate-400
-
                           transition-colors
 
                           hover:text-[#2196F3]
@@ -622,7 +479,6 @@ export default function AccountPage() {
                         cursor-pointer
                         items-center
                         gap-3
-
                         text-[12px]
                         font-semibold
                         uppercase
@@ -655,7 +511,6 @@ export default function AccountPage() {
                         items-center
                         justify-center
                         gap-3
-
                         rounded-[12px]
 
                         bg-gradient-to-r
@@ -681,10 +536,6 @@ export default function AccountPage() {
 
                         dark:from-[#2196F3]
                         dark:to-[#42A5F5]
-                        dark:shadow-[0_12px_30px_rgba(33,150,243,0.22)]
-
-                        dark:hover:from-[#42A5F5]
-                        dark:hover:to-[#2196F3]
                       "
                     >
                       Log In
@@ -708,7 +559,6 @@ export default function AccountPage() {
                       text-sm
                       font-medium
                       text-[#2196F3]
-
                       transition-colors
 
                       hover:text-[#1976D2]
@@ -723,9 +573,9 @@ export default function AccountPage() {
               </div>
             </motion.div>
 
-            {/* =================================
-                REGISTER
-            ================================= */}
+            {/* =================================================
+                REGISTER CARD
+            ================================================= */}
 
             <motion.div
               initial={{ opacity: 0, y: 26 }}
@@ -742,12 +592,9 @@ export default function AccountPage() {
                 relative
                 overflow-hidden
                 rounded-[28px]
-
                 border
                 border-white/90
-
-                bg-white/88
-
+                bg-white/90
                 p-6
                 backdrop-blur-xl
 
@@ -756,18 +603,23 @@ export default function AccountPage() {
                 transition-all
                 duration-500
 
-                hover:shadow-[0_30px_90px_rgba(33,150,243,0.16)]
+                hover:border-[#2196F3]/15
+                hover:shadow-[0_32px_90px_rgba(33,150,243,0.16)]
 
                 sm:p-9
                 lg:p-11
+                xl:p-12
 
                 dark:border-white/[0.09]
                 dark:bg-[#081C2B]/94
                 dark:shadow-[0_25px_75px_rgba(0,0,0,0.38)]
+
                 dark:hover:border-[#42A5F5]/20
-                dark:hover:shadow-[0_30px_90px_rgba(33,150,243,0.14)]
+                dark:hover:shadow-[0_32px_90px_rgba(33,150,243,0.14)]
               "
             >
+              {/* CARD GRID */}
+
               <div
                 className="
                   pointer-events-none
@@ -786,31 +638,36 @@ export default function AccountPage() {
                 }}
               />
 
+              {/* CARD GLOW */}
+
               <div
                 className="
                   pointer-events-none
                   absolute
                   -bottom-24
                   -right-24
-                  h-60
-                  w-60
+                  h-64
+                  w-64
                   rounded-full
-                  bg-[#2196F3]/11
-                  blur-[75px]
+                  bg-[#2196F3]/12
+                  blur-[80px]
 
                   dark:bg-[#42A5F5]/10
                 "
               />
 
               <div className="relative">
-                <div className="mb-9">
+                {/* REGISTER TITLE */}
+
+                <div className="mb-10">
                   <h2
                     className="
-                      text-[34px]
+                      text-[36px]
                       font-semibold
-                      tracking-[-0.04em]
+                      tracking-[-0.045em]
+                      text-[#0F172A]
 
-                      sm:text-[40px]
+                      sm:text-[42px]
 
                       dark:text-white
                     "
@@ -822,11 +679,14 @@ export default function AccountPage() {
                     className="
                       mt-4
                       h-[4px]
-                      w-9
+                      w-10
                       rounded-full
                       bg-[#2196F3]
 
+                      shadow-[0_4px_14px_rgba(33,150,243,0.25)]
+
                       dark:bg-[#42A5F5]
+                      dark:shadow-[0_4px_18px_rgba(66,165,245,0.25)]
                     "
                   />
                 </div>
@@ -863,7 +723,6 @@ export default function AccountPage() {
                           top-1/2
                           -translate-y-1/2
                           text-slate-400
-
                           transition-colors
 
                           group-focus-within/input:text-[#2196F3]
@@ -882,18 +741,13 @@ export default function AccountPage() {
                           h-[56px]
                           w-full
                           rounded-[12px]
-
                           border
                           border-slate-300/80
-
                           bg-[#FCFDFE]
-
                           pl-12
                           pr-4
-
                           text-sm
                           text-slate-900
-
                           outline-none
 
                           shadow-[0_5px_18px_rgba(15,23,42,0.05)]
@@ -919,7 +773,6 @@ export default function AccountPage() {
                           dark:focus:border-[#42A5F5]
                           dark:focus:bg-[#0D2437]
                           dark:focus:ring-[#42A5F5]/10
-                          dark:focus:shadow-[0_8px_28px_rgba(66,165,245,0.10)]
                         "
                       />
                     </div>
@@ -946,7 +799,6 @@ export default function AccountPage() {
                       cursor-pointer
                       items-start
                       gap-3
-
                       text-[12px]
                       font-semibold
                       uppercase
@@ -989,7 +841,6 @@ export default function AccountPage() {
                       className="
                         font-medium
                         text-[#2196F3]
-
                         transition-colors
 
                         hover:text-[#1976D2]
@@ -1003,7 +854,7 @@ export default function AccountPage() {
                     .
                   </p>
 
-                  {/* REGISTER */}
+                  {/* REGISTER BUTTON */}
 
                   <motion.button
                     type="submit"
@@ -1016,7 +867,6 @@ export default function AccountPage() {
                       items-center
                       justify-center
                       gap-3
-
                       rounded-[12px]
 
                       bg-gradient-to-r
@@ -1042,10 +892,6 @@ export default function AccountPage() {
 
                       dark:from-[#2196F3]
                       dark:to-[#42A5F5]
-                      dark:shadow-[0_12px_30px_rgba(33,150,243,0.22)]
-
-                      dark:hover:from-[#42A5F5]
-                      dark:hover:to-[#2196F3]
                     "
                   >
                     Register
