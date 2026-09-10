@@ -25,8 +25,8 @@ export default function RootLayout({
           bg-[#faf9f6]
           text-slate-900
           antialiased
-          transition-colors duration-300
-
+          transition-colors
+          duration-300
           dark:bg-[#061522]
           dark:text-white
         "
@@ -35,6 +35,7 @@ export default function RootLayout({
           <Navbar />
 
           <main>{children}</main>
+
           <Footer />
         </ThemeProvider>
       </body>

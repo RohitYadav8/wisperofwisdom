@@ -4,18 +4,10 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ChevronDown,
-  Menu,
-  Search,
-  ShoppingBag,
-  UserRound,
-  X,
-} from "lucide-react";
+import { Menu, Search, UserRound, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ThemeToggle } from "../ui/theme-toggle";
-import { MagneticButton } from "../animations/magnetic-button";
 
 const navigation = [
   {
@@ -31,8 +23,8 @@ const navigation = [
     href: "/journal",
   },
   {
-    label: "Books",
-    href: "/books",
+    label: "Shop",
+    href: "/shop",
   },
   {
     label: "Challenge",
@@ -48,8 +40,11 @@ export function Navbar() {
   const pathname = usePathname();
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [booksOpen, setBooksOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // =========================================================
+  // SCROLL STATE
+  // =========================================================
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,9 +62,12 @@ export function Navbar() {
     };
   }, []);
 
+  // =========================================================
+  // CLOSE MOBILE MENU ON ROUTE CHANGE
+  // =========================================================
+
   useEffect(() => {
     setMobileOpen(false);
-    setBooksOpen(false);
   }, [pathname]);
 
   return (
@@ -99,21 +97,21 @@ export function Navbar() {
         ${
           scrolled
             ? `
-              border-slate-200/80
-              bg-white/95
-              shadow-[0_10px_40px_rgba(15,23,42,0.07)]
+                border-slate-200/80
+                bg-white/95
+                shadow-[0_10px_40px_rgba(15,23,42,0.07)]
 
-              dark:border-white/10
-              dark:bg-[#071725]/95
-              dark:shadow-[0_10px_40px_rgba(0,0,0,0.22)]
-            `
+                dark:border-white/10
+                dark:bg-[#071725]/95
+                dark:shadow-[0_10px_40px_rgba(0,0,0,0.22)]
+              `
             : `
-              border-slate-200/60
-              bg-white/90
+                border-slate-200/60
+                bg-white/90
 
-              dark:border-white/10
-              dark:bg-[#071725]/90
-            `
+                dark:border-white/10
+                dark:bg-[#071725]/90
+              `
         }
       `}
     >
@@ -187,15 +185,23 @@ export function Navbar() {
             damping: 20,
           }}
           className="
-            ml-2
+            ml-1
             shrink-0
+            sm:ml-2
           "
         >
           <Link
             href="/"
             aria-label="Whispers of Wisdom Home"
-            className="block"
+            className="
+              relative
+              flex
+              items-center
+              justify-center
+            "
           >
+            {/* LIGHT THEME LOGO */}
+
             <Image
               src="/Wispers-of-Wisdom-logo.png"
               alt="Whispers of Wisdom"
@@ -207,11 +213,36 @@ export function Navbar() {
                 object-contain
                 transition-all
                 duration-300
+                dark:hidden
 
                 ${
                   scrolled
-                    ? "w-[105px]"
-                    : "w-[118px]"
+                    ? "w-[100px] sm:w-[105px]"
+                    : "w-[108px] sm:w-[118px]"
+                }
+              `}
+            />
+
+            {/* DARK THEME LOGO */}
+
+            <Image
+              src="/logo-dark-1.png"
+              alt="Whispers of Wisdom"
+              width={190}
+              height={90}
+              priority
+              className={`
+                hidden
+                h-auto
+                object-contain
+                transition-all
+                duration-300
+                dark:block
+
+                ${
+                  scrolled
+                    ? "w-[100px] sm:w-[105px]"
+                    : "w-[108px] sm:w-[118px]"
                 }
               `}
             />
@@ -228,7 +259,6 @@ export function Navbar() {
             hidden
             items-center
             gap-5
-
             lg:flex
             xl:gap-7
           "
@@ -238,142 +268,6 @@ export function Navbar() {
               item.href === "/"
                 ? pathname === "/"
                 : pathname.startsWith(item.href);
-
-            /* =================================================
-               BOOKS DROPDOWN
-            ================================================= */
-
-            if (item.label === "Books") {
-              return (
-                <motion.div
-                  key={item.href}
-                  initial={{
-                    opacity: 0,
-                    y: -10,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    delay: 0.06 + index * 0.04,
-                    duration: 0.45,
-                  }}
-                  className="relative"
-                  onMouseEnter={() => setBooksOpen(true)}
-                  onMouseLeave={() => setBooksOpen(false)}
-                >
-                  <Link
-                    href={item.href}
-                    className={`
-                      relative
-                      flex
-                      items-center
-                      gap-1
-                      py-7
-                      text-[13px]
-                      font-semibold
-                      uppercase
-                      tracking-[0.04em]
-                      transition-colors
-
-                      ${
-                        isActive
-                          ? `
-                            text-[#2196F3]
-                            dark:text-[#42A5F5]
-                          `
-                          : `
-                            text-slate-700
-                            hover:text-[#2196F3]
-
-                            dark:text-slate-300
-                            dark:hover:text-[#42A5F5]
-                          `
-                      }
-                    `}
-                  >
-                    {item.label}
-
-                    <motion.span
-                      animate={{
-                        rotate: booksOpen ? 180 : 0,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
-                    >
-                      <ChevronDown size={13} />
-                    </motion.span>
-
-                    {isActive && (
-                      <ActiveUnderline />
-                    )}
-                  </Link>
-
-                  <AnimatePresence>
-                    {booksOpen && (
-                      <motion.div
-                        initial={{
-                          opacity: 0,
-                          y: -8,
-                          scale: 0.96,
-                          filter: "blur(5px)",
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          filter: "blur(0px)",
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: -8,
-                          scale: 0.97,
-                        }}
-                        transition={{
-                          duration: 0.22,
-                        }}
-                        className="
-                          absolute
-                          left-1/2
-                          top-[58px]
-                          w-[230px]
-                          -translate-x-1/2
-                          pt-3
-                        "
-                      >
-                        <div
-                          className="
-                            overflow-hidden
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white/95
-                            p-2
-                            shadow-[0_20px_60px_rgba(15,23,42,0.14)]
-                            backdrop-blur-xl
-
-                            dark:border-white/10
-                            dark:bg-[#0B2031]/95
-                          "
-                        >
-                          <DropdownLink
-                            href="/books"
-                            label="All Books"
-                          />
-
-                          <DropdownLink
-                            href="/books/whispers-of-wisdom"
-                            label="Whispers of Wisdom"
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            }
 
             return (
               <motion.div
@@ -407,24 +301,22 @@ export function Navbar() {
                     ${
                       isActive
                         ? `
-                          text-[#2196F3]
-                          dark:text-[#42A5F5]
-                        `
+                            text-[#2196F3]
+                            dark:text-[#42A5F5]
+                          `
                         : `
-                          text-slate-700
-                          hover:text-[#2196F3]
+                            text-slate-700
+                            hover:text-[#2196F3]
 
-                          dark:text-slate-300
-                          dark:hover:text-[#42A5F5]
-                        `
+                            dark:text-slate-300
+                            dark:hover:text-[#42A5F5]
+                          `
                     }
                   `}
                 >
                   {item.label}
 
-                  {isActive && (
-                    <ActiveUnderline />
-                  )}
+                  {isActive && <ActiveUnderline />}
                 </Link>
               </motion.div>
             );
@@ -441,7 +333,6 @@ export function Navbar() {
             hidden
             items-center
             gap-1
-
             lg:flex
           "
         >
@@ -517,50 +408,6 @@ export function Navbar() {
           {/* THEME TOGGLE */}
 
           <ThemeToggle />
-
-          {/* SHOP NOW */}
-
-          <div className="ml-2">
-            <MagneticButton>
-              <Link
-                href="/books"
-                className="
-                  group
-                  flex
-                  h-10
-                  items-center
-                  gap-2
-                  rounded-lg
-                  bg-[#2196F3]
-                  px-4
-                  text-[12px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.04em]
-                  text-white
-                  shadow-sm
-                  transition-all
-                  duration-300
-
-                  hover:bg-[#1976D2]
-                  hover:shadow-lg
-                  hover:shadow-sky-500/20
-
-                  dark:hover:bg-[#42A5F5]
-                "
-              >
-                <motion.span
-                  whileHover={{
-                    rotate: -8,
-                  }}
-                >
-                  <ShoppingBag size={15} />
-                </motion.span>
-
-                Shop Now
-              </Link>
-            </MagneticButton>
-          </div>
         </div>
 
         {/* =====================================================
@@ -576,6 +423,8 @@ export function Navbar() {
             lg:hidden
           "
         >
+          {/* SEARCH */}
+
           <motion.button
             type="button"
             aria-label="Search"
@@ -597,7 +446,11 @@ export function Navbar() {
             <Search size={18} />
           </motion.button>
 
+          {/* THEME TOGGLE */}
+
           <ThemeToggle />
+
+          {/* ACCOUNT */}
 
           <motion.div
             whileTap={{
@@ -632,6 +485,8 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <>
+            {/* OVERLAY */}
+
             <motion.button
               type="button"
               aria-label="Close menu overlay"
@@ -653,6 +508,8 @@ export function Navbar() {
                 backdrop-blur-[2px]
               "
             />
+
+            {/* SIDE MENU */}
 
             <motion.aside
               initial={{
@@ -685,26 +542,52 @@ export function Navbar() {
                 dark:bg-[#071725]
               "
             >
-              <div
-                className="
-                  flex
-                  items-center
-                  justify-between
-                "
-              >
+              {/* =================================================
+                  MOBILE MENU TOP
+              ================================================= */}
+
+              <div className="flex items-center justify-between">
                 <Link
                   href="/"
                   onClick={() => setMobileOpen(false)}
+                  aria-label="Whispers of Wisdom Home"
+                  className="
+                    relative
+                    flex
+                    items-center
+                    justify-center
+                  "
                 >
+                  {/* LIGHT THEME MOBILE LOGO */}
+
                   <Image
                     src="/Wispers-of-Wisdom-logo.png"
                     alt="Whispers of Wisdom"
                     width={140}
                     height={80}
+                    priority
                     className="
                       h-auto
                       w-[105px]
                       object-contain
+                      dark:hidden
+                    "
+                  />
+
+                  {/* DARK THEME MOBILE LOGO */}
+
+                  <Image
+                    src="/logo-dark-1.png"
+                    alt="Whispers of Wisdom"
+                    width={140}
+                    height={80}
+                    priority
+                    className="
+                      hidden
+                      h-auto
+                      w-[105px]
+                      object-contain
+                      dark:block
                     "
                   />
                 </Link>
@@ -737,6 +620,10 @@ export function Navbar() {
                   <X size={19} />
                 </motion.button>
               </div>
+
+              {/* =================================================
+                  MOBILE NAVIGATION
+              ================================================= */}
 
               <motion.nav
                 initial="hidden"
@@ -790,14 +677,16 @@ export function Navbar() {
                           ${
                             isActive
                               ? `
-                                text-[#2196F3]
-                              `
+                                  text-[#2196F3]
+                                  dark:text-[#42A5F5]
+                                `
                               : `
-                                text-slate-700
-                                hover:text-[#2196F3]
+                                  text-slate-700
+                                  hover:text-[#2196F3]
 
-                                dark:text-slate-300
-                              `
+                                  dark:text-slate-300
+                                  dark:hover:text-[#42A5F5]
+                                `
                           }
                         `}
                       >
@@ -807,59 +696,6 @@ export function Navbar() {
                   );
                 })}
               </motion.nav>
-
-              <div
-                className="
-                  mt-7
-                  grid
-                  grid-cols-2
-                  gap-3
-                "
-              >
-                <Link
-                  href="/account"
-                  className="
-                    flex
-                    h-11
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-lg
-                    border
-                    border-slate-200
-                    text-sm
-                    font-medium
-                    text-slate-700
-
-                    dark:border-white/10
-                    dark:text-white
-                  "
-                >
-                  <UserRound size={16} />
-
-                  Account
-                </Link>
-
-                <Link
-                  href="/books"
-                  className="
-                    flex
-                    h-11
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-lg
-                    bg-[#2196F3]
-                    text-sm
-                    font-semibold
-                    text-white
-                  "
-                >
-                  <ShoppingBag size={16} />
-
-                  Shop Now
-                </Link>
-              </div>
             </motion.aside>
           </>
         )}
@@ -867,6 +703,10 @@ export function Navbar() {
     </motion.header>
   );
 }
+
+/* =========================================================
+   ACTIVE UNDERLINE
+========================================================= */
 
 function ActiveUnderline() {
   return (
@@ -887,49 +727,5 @@ function ActiveUnderline() {
         bg-[#2196F3]
       "
     />
-  );
-}
-
-function DropdownLink({
-  href,
-  label,
-}: {
-  href: string;
-  label: string;
-}) {
-  return (
-    <motion.div
-      whileHover={{
-        x: 4,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-      }}
-    >
-      <Link
-        href={href}
-        className="
-          block
-          rounded-xl
-          px-4
-          py-3
-          text-sm
-          font-medium
-          text-slate-700
-          transition-colors
-
-          hover:bg-sky-50
-          hover:text-[#2196F3]
-
-          dark:text-slate-300
-          dark:hover:bg-white/5
-          dark:hover:text-[#42A5F5]
-        "
-      >
-        {label}
-      </Link>
-    </motion.div>
   );
 }

@@ -107,43 +107,7 @@ export function WelcomeSection() {
         ===================================================== */}
 
         <div className="mx-auto max-w-[940px] text-center">
-          {/* LOGO */}
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 16,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.4,
-            }}
-            transition={{
-              duration: 0.55,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="
-              relative
-              mx-auto
-              h-[92px]
-              w-[180px]
-
-              sm:h-[110px]
-              sm:w-[215px]
-            "
-          >
-            <Image
-              src="/Wispers-of-Wisdom-logo.png"
-              alt="Whispers of Wisdom"
-              fill
-              sizes="215px"
-              className="object-contain"
-            />
-          </motion.div>
+         
 
           {/* HEADING */}
 
