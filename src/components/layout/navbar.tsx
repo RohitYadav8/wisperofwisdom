@@ -16,7 +16,7 @@ const navigation = [
   },
   {
     label: "About Us",
-    href: "/about-me",
+    href: "/about-us",
   },
   {
     label: "Journal",

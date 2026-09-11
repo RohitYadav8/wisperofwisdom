@@ -6,25 +6,18 @@ import { LatestReviewsSection } from "../components/home/latest-reviews-section"
 import { TestimonialsSection } from "../components/home/testimonials-section";
 import { CommunitySection } from "../components/home/community-section";
 import { StatsSection } from "../components/home/stats-section";
+
 export default function Home() {
   return (
-    <main>
+    <>
       <HeroSection />
-
       <WelcomeSection />
-
       <JourneySection />
-
       <AuthorSection />
-
-      <LatestReviewsSection />
-
-      <TestimonialsSection />
       <LatestReviewsSection />
       <TestimonialsSection />
       <CommunitySection />
       <StatsSection />
-
-    </main>
+    </>
   );
 }

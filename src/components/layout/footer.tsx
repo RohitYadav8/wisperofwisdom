@@ -30,10 +30,12 @@ export function Footer() {
   return (
     <footer
       className="
+        relative
+        overflow-hidden
         border-t
-        border-slate-200
+        border-slate-200/70
         bg-[#f3efe6]
-        text-slate-700
+        text-[#29425A]
         transition-colors
         duration-300
 
@@ -42,24 +44,77 @@ export function Footer() {
         dark:text-slate-300
       "
     >
+      {/* ======================================================
+          BACKGROUND DECORATION
+      ====================================================== */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -left-[220px]
+          top-[-220px]
+          h-[520px]
+          w-[520px]
+          rounded-full
+          bg-[#FFD54F]/10
+          blur-[150px]
+
+          dark:bg-[#2196F3]/[0.04]
+        "
+      />
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -right-[220px]
+          bottom-[-240px]
+          h-[520px]
+          w-[520px]
+          rounded-full
+          bg-[#42A5F5]/10
+          blur-[150px]
+
+          dark:bg-[#2196F3]/[0.05]
+        "
+      />
+
       <div
         className="
+          relative
+          z-10
           mx-auto
-          max-w-[1400px]
-          px-5
+          max-w-[1680px]
+          px-6
           py-14
 
-          sm:px-8
+          sm:px-10
 
-          lg:px-12
+          lg:px-16
           lg:py-16
+
+          xl:px-24
         "
       >
         {/* =====================================================
             MAIN FOOTER GRID
         ===================================================== */}
 
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="
+            grid
+            gap-x-12
+            gap-y-12
+
+            md:grid-cols-2
+
+            lg:grid-cols-[1.15fr_0.8fr_0.8fr_1.15fr]
+            lg:gap-x-16
+          "
+        >
           {/* ===================================================
               BRAND
           =================================================== */}
@@ -74,38 +129,38 @@ export function Footer() {
                 items-center
               "
             >
-              {/* LIGHT THEME LOGO */}
+              {/* LIGHT LOGO */}
 
               <Image
                 src="/Wispers-of-Wisdom-logo.png"
                 alt="Whispers of Wisdom"
-                width={200}
-                height={90}
+                width={220}
+                height={100}
                 className="
                   h-auto
-                  w-[155px]
+                  w-[170px]
                   object-contain
 
-                  sm:w-[170px]
+                  sm:w-[190px]
 
                   dark:hidden
                 "
               />
 
-              {/* DARK THEME LOGO */}
+              {/* DARK LOGO */}
 
               <Image
                 src="/logo-dark-1.png"
                 alt="Whispers of Wisdom"
-                width={200}
-                height={90}
+                width={220}
+                height={100}
                 className="
                   hidden
                   h-auto
-                  w-[155px]
+                  w-[170px]
                   object-contain
 
-                  sm:w-[170px]
+                  sm:w-[190px]
 
                   dark:block
                 "
@@ -114,11 +169,11 @@ export function Footer() {
 
             <p
               className="
-                mt-5
-                max-w-sm
-                text-sm
-                leading-7
-                text-slate-600
+                mt-7
+                max-w-[370px]
+                text-[15px]
+                leading-[2]
+                text-[#35506A]
 
                 dark:text-slate-400
               "
@@ -128,9 +183,9 @@ export function Footer() {
               purpose.
             </p>
 
-            {/* SOCIAL ICONS */}
+            {/* SOCIALS */}
 
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-7 flex items-center gap-3">
               <SocialIcon href="#" label="Facebook">
                 <FacebookIcon />
               </SocialIcon>
@@ -156,22 +211,25 @@ export function Footer() {
           <div>
             <FooterHeading>Quick Links</FooterHeading>
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-6 flex flex-col gap-4">
               {quickLinks.map((item) => (
                 <Link
                   key={`${item.label}-${item.href}`}
                   href={item.href}
                   className="
+                    group
+                    relative
                     w-fit
-                    text-sm
-                    text-slate-600
-                    transition-colors
-                    duration-200
+                    text-[15px]
+                    text-[#35506A]
+                    transition-all
+                    duration-300
 
-                    hover:text-sky-600
+                    hover:translate-x-1
+                    hover:text-[#2196F3]
 
                     dark:text-slate-400
-                    dark:hover:text-sky-400
+                    dark:hover:text-[#64B5F6]
                   "
                 >
                   {item.label}
@@ -181,28 +239,29 @@ export function Footer() {
           </div>
 
           {/* ===================================================
-              ACCOUNT LINKS
+              YOUR ACCOUNT
           =================================================== */}
 
           <div>
             <FooterHeading>Your Account</FooterHeading>
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-6 flex flex-col gap-4">
               {accountLinks.map((item) => (
                 <Link
                   key={`${item.label}-${item.href}`}
                   href={item.href}
                   className="
                     w-fit
-                    text-sm
-                    text-slate-600
-                    transition-colors
-                    duration-200
+                    text-[15px]
+                    text-[#35506A]
+                    transition-all
+                    duration-300
 
-                    hover:text-sky-600
+                    hover:translate-x-1
+                    hover:text-[#2196F3]
 
                     dark:text-slate-400
-                    dark:hover:text-sky-400
+                    dark:hover:text-[#64B5F6]
                   "
                 >
                   {item.label}
@@ -212,7 +271,7 @@ export function Footer() {
           </div>
 
           {/* ===================================================
-              NEWSLETTER
+              STAY INSPIRED
           =================================================== */}
 
           <div>
@@ -220,10 +279,11 @@ export function Footer() {
 
             <p
               className="
-                mt-5
-                text-sm
-                leading-7
-                text-slate-600
+                mt-6
+                max-w-[380px]
+                text-[15px]
+                leading-[2]
+                text-[#35506A]
 
                 dark:text-slate-400
               "
@@ -232,31 +292,44 @@ export function Footer() {
               thoughts.
             </p>
 
-            <form className="mt-5">
+            {/* NEWSLETTER */}
+
+            <form
+              className="
+                mt-6
+                w-full
+                max-w-[390px]
+              "
+            >
               <div
                 className="
                   flex
+                  min-h-[64px]
                   items-center
                   gap-2
-                  rounded-xl
+                  rounded-[16px]
                   border
-                  border-slate-200
-                  bg-white
-                  p-1.5
-                  shadow-sm
-                  transition-colors
+                  border-slate-200/90
+                  bg-white/90
+                  p-[7px]
+                  shadow-[0_8px_25px_rgba(15,23,42,0.08)]
+                  backdrop-blur-xl
+                  transition-all
+                  duration-300
 
-                  focus-within:border-sky-400
+                  focus-within:border-[#2196F3]/50
+                  focus-within:shadow-[0_10px_30px_rgba(33,150,243,0.10)]
 
                   dark:border-white/10
-                  dark:bg-white/5
-                  dark:focus-within:border-sky-400/60
+                  dark:bg-white/[0.05]
+                  dark:shadow-[0_8px_25px_rgba(0,0,0,0.18)]
                 "
               >
                 <Mail
-                  size={17}
+                  size={18}
+                  strokeWidth={1.7}
                   className="
-                    ml-3
+                    ml-4
                     shrink-0
                     text-slate-400
 
@@ -272,9 +345,9 @@ export function Footer() {
                     min-w-0
                     flex-1
                     bg-transparent
-                    px-1
-                    py-2
-                    text-sm
+                    px-2
+                    py-3
+                    text-[14px]
                     text-slate-900
                     outline-none
 
@@ -288,21 +361,23 @@ export function Footer() {
                 <button
                   type="submit"
                   className="
+                    min-h-[46px]
                     shrink-0
-                    rounded-lg
-                    bg-sky-600
-                    px-4
-                    py-2.5
-                    text-xs
+                    rounded-[12px]
+                    bg-[#078DD1]
+                    px-5
+                    text-[12px]
                     font-semibold
                     text-white
+                    shadow-[0_8px_20px_rgba(7,141,209,0.18)]
                     transition-all
-                    duration-200
+                    duration-300
 
-                    hover:bg-sky-700
+                    hover:-translate-y-0.5
+                    hover:bg-[#057FC0]
 
-                    dark:bg-sky-500
-                    dark:hover:bg-sky-400
+                    dark:bg-[#2196F3]
+                    dark:hover:bg-[#42A5F5]
                   "
                 >
                   Subscribe
@@ -318,14 +393,14 @@ export function Footer() {
 
         <div
           className="
-            mt-12
+            mt-14
             flex
             flex-col
             gap-5
             border-t
-            border-slate-200
-            pt-6
-            text-sm
+            border-slate-300/60
+            pt-7
+            text-[13px]
 
             dark:border-white/10
 
@@ -339,16 +414,17 @@ export function Footer() {
             reserved.
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
               href="/privacy-policy"
               className="
                 text-slate-500
                 transition-colors
+                duration-300
 
-                hover:text-sky-600
+                hover:text-[#2196F3]
 
-                dark:hover:text-sky-400
+                dark:hover:text-[#64B5F6]
               "
             >
               Privacy Policy
@@ -359,10 +435,11 @@ export function Footer() {
               className="
                 text-slate-500
                 transition-colors
+                duration-300
 
-                hover:text-sky-600
+                hover:text-[#2196F3]
 
-                dark:hover:text-sky-400
+                dark:hover:text-[#64B5F6]
               "
             >
               Terms & Conditions
@@ -375,27 +452,28 @@ export function Footer() {
               aria-label="Back to top"
               className="
                 flex
-                h-9
-                w-9
+                h-10
+                w-10
                 items-center
                 justify-center
                 rounded-full
                 border
                 border-slate-200
-                bg-white
-                text-slate-600
+                bg-white/80
+                text-slate-500
+                shadow-sm
                 transition-all
-                duration-200
+                duration-300
 
-                hover:-translate-y-0.5
-                hover:border-sky-400
-                hover:text-sky-600
+                hover:-translate-y-1
+                hover:border-[#2196F3]/40
+                hover:text-[#2196F3]
 
                 dark:border-white/10
-                dark:bg-white/5
+                dark:bg-white/[0.05]
                 dark:text-slate-300
-                dark:hover:border-sky-400/50
-                dark:hover:text-sky-400
+                dark:hover:border-[#42A5F5]/40
+                dark:hover:text-[#64B5F6]
               "
             >
               <ArrowUp size={16} />
@@ -419,11 +497,11 @@ function FooterHeading({
   return (
     <h3
       className="
-        text-sm
+        text-[13px]
         font-semibold
         uppercase
-        tracking-[0.18em]
-        text-slate-900
+        tracking-[0.26em]
+        text-[#0F172A]
 
         dark:text-white
       "
@@ -434,7 +512,7 @@ function FooterHeading({
 }
 
 /* ============================================================
-   SOCIAL ICON WRAPPER
+   SOCIAL ICON
 ============================================================ */
 
 function SocialIcon({
@@ -452,29 +530,31 @@ function SocialIcon({
       aria-label={label}
       className="
         flex
-        h-9
-        w-9
+        h-11
+        w-11
         items-center
         justify-center
         rounded-full
         border
         border-slate-200
-        bg-white
-        text-slate-600
+        bg-white/80
+        text-[#52677D]
+        shadow-[0_6px_18px_rgba(15,23,42,0.05)]
         transition-all
-        duration-200
+        duration-300
 
-        hover:-translate-y-0.5
-        hover:border-sky-400
-        hover:text-sky-600
-        hover:shadow-sm
+        hover:-translate-y-1
+        hover:border-[#2196F3]/40
+        hover:bg-[#2196F3]
+        hover:text-white
+        hover:shadow-[0_10px_25px_rgba(33,150,243,0.18)]
 
         dark:border-white/10
-        dark:bg-white/5
+        dark:bg-white/[0.05]
         dark:text-slate-300
-        dark:hover:border-sky-400/50
-        dark:hover:bg-sky-400/10
-        dark:hover:text-sky-400
+        dark:hover:border-[#42A5F5]/40
+        dark:hover:bg-[#2196F3]
+        dark:hover:text-white
       "
     >
       {children}
@@ -545,7 +625,7 @@ function InstagramIcon() {
 /* ============================================================
    LINKEDIN
 ============================================================ */
-
+ojj
 function LinkedinIcon() {
   return (
     <svg
