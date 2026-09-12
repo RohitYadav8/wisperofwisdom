@@ -3,11 +3,16 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import {
   AnimatePresence,
   motion,
   useReducedMotion,
 } from "motion/react";
+
+/* ============================================================
+   SLIDES
+============================================================ */
 
 const slides = [
   {
@@ -44,6 +49,10 @@ const slides = [
 
 const SLIDE_TIME = 9000;
 
+/* ============================================================
+   WORD ANIMATION
+============================================================ */
+
 const wordVariants = {
   hidden: {
     y: "105%",
@@ -53,6 +62,7 @@ const wordVariants = {
   visible: {
     y: "0%",
     opacity: 1,
+
     transition: {
       duration: 0.7,
       ease: [0.16, 1, 0.3, 1] as const,
@@ -62,12 +72,17 @@ const wordVariants = {
   exit: {
     y: "-95%",
     opacity: 0,
+
     transition: {
       duration: 0.34,
       ease: [0.7, 0, 0.84, 0] as const,
     },
   },
 };
+
+/* ============================================================
+   HERO SECTION
+============================================================ */
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -76,6 +91,10 @@ export function HeroSection() {
 
   const slide = slides[currentSlide];
 
+  /* ==========================================================
+     WORD COUNT
+  ========================================================== */
+
   const totalWords = useMemo(() => {
     return slide.title.reduce(
       (total, line) => total + line.split(" ").length,
@@ -83,9 +102,17 @@ export function HeroSection() {
     );
   }, [slide]);
 
+  /* ==========================================================
+     BUTTON DELAY
+  ========================================================== */
+
   const buttonDelay = reduceMotion
     ? 0
     : 0.34 + totalWords * 0.21;
+
+  /* ==========================================================
+     AUTO SLIDER
+  ========================================================== */
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -96,6 +123,10 @@ export function HeroSection() {
 
     return () => window.clearTimeout(timer);
   }, [currentSlide]);
+
+  /* ==========================================================
+     MANUAL SLIDE CHANGE
+  ========================================================== */
 
   function changeSlide(index: number) {
     if (index === currentSlide) return;
@@ -110,77 +141,80 @@ export function HeroSection() {
         isolate
         overflow-hidden
 
+        min-h-[470px]
+
         border-b
         border-black/[0.04]
 
         bg-[#f7f3ea]
 
+        sm:min-h-[490px]
+        md:min-h-[510px]
+        lg:min-h-[500px]
+        xl:min-h-[520px]
+        2xl:min-h-[530px]
+
         dark:border-white/[0.05]
         dark:bg-[#06131d]
       "
     >
-      <AnimatePresence mode="sync">
+      {/* ======================================================
+          SLIDES
+      ====================================================== */}
+
+      <AnimatePresence initial={false} mode="sync">
         <motion.div
           key={slide.id}
+          initial={
+            reduceMotion
+              ? false
+              : {
+                  opacity: 0,
+                }
+          }
+          animate={{
+            opacity: 1,
+          }}
+          exit={
+            reduceMotion
+              ? undefined
+              : {
+                  opacity: 0,
+                }
+          }
+          transition={{
+            duration: reduceMotion ? 0 : 0.8,
+            ease: "easeInOut",
+          }}
           className="
-            relative
-
-            min-h-[470px]
-
-            sm:min-h-[490px]
-
-            md:min-h-[510px]
-
-            lg:min-h-[500px]
-
-            xl:min-h-[520px]
-
-            2xl:min-h-[530px]
+            absolute
+            inset-0
+            h-full
+            w-full
           "
         >
-          {/* =====================================================
-              FULL WIDTH BACKGROUND IMAGE
-          ===================================================== */}
+          {/* ==================================================
+              BACKGROUND IMAGE
+          ================================================== */}
 
-          <motion.div
-            initial={
-              reduceMotion
-                ? false
-                : {
-                    opacity: 0,
-                    scale: 1.035,
-                  }
-            }
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-            exit={
-              reduceMotion
-                ? undefined
-                : {
-                    opacity: 0,
-                    scale: 1.012,
-                  }
-            }
-            transition={{
-              duration: reduceMotion ? 0 : 1.3,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+          <div
             className="
               absolute
               inset-0
               z-0
             "
           >
-            {/* LIGHT THEME IMAGE */}
+            {/* ==================================================
+                LIGHT THEME IMAGE
+            ================================================== */}
 
             <div className="absolute inset-0 dark:hidden">
               <Image
                 src={slide.lightImage}
                 alt={slide.alt}
                 fill
-                priority={slide.id === 1}
+                priority
+                quality={100}
                 sizes="100vw"
                 className="
                   object-cover
@@ -198,14 +232,17 @@ export function HeroSection() {
               />
             </div>
 
-            {/* DARK THEME IMAGE */}
+            {/* ==================================================
+                DARK THEME IMAGE
+            ================================================== */}
 
             <div className="absolute inset-0 hidden dark:block">
               <Image
                 src={slide.darkImage}
                 alt={slide.alt}
                 fill
-                priority={slide.id === 1}
+                priority
+                quality={100}
                 sizes="100vw"
                 className="
                   object-cover
@@ -223,9 +260,9 @@ export function HeroSection() {
               />
             </div>
 
-            {/* =====================================================
+            {/* ==================================================
                 LIGHT THEME LEFT OVERLAY
-            ===================================================== */}
+            ================================================== */}
 
             <div
               aria-hidden="true"
@@ -235,18 +272,18 @@ export function HeroSection() {
 
                 bg-gradient-to-r
 
-                from-[#f7f3ea]/98
-                via-[#f7f3ea]/78
-                via-[34%]
+                from-[#f7f3ea]/96
+                via-[#f7f3ea]/42
+                via-[27%]
                 to-transparent
 
                 dark:hidden
               "
             />
 
-            {/* =====================================================
+            {/* ==================================================
                 DARK THEME LEFT OVERLAY
-            ===================================================== */}
+            ================================================== */}
 
             <div
               aria-hidden="true"
@@ -258,18 +295,18 @@ export function HeroSection() {
 
                 bg-gradient-to-r
 
-                from-[#06131d]/98
-                via-[#06131d]/82
-                via-[34%]
+                from-[#06131d]/95
+                via-[#06131d]/45
+                via-[27%]
                 to-transparent
 
                 dark:block
               "
             />
 
-            {/* =====================================================
+            {/* ==================================================
                 MOBILE EXTRA OVERLAY
-            ===================================================== */}
+            ================================================== */}
 
             <div
               aria-hidden="true"
@@ -281,62 +318,18 @@ export function HeroSection() {
 
                 from-transparent
                 via-transparent
-                to-[#f7f3ea]/10
+                to-[#f7f3ea]/5
 
                 lg:hidden
 
-                dark:to-[#06131d]/12
+                dark:to-[#06131d]/5
               "
             />
+          </div>
 
-            {/* =====================================================
-                TOP SOFTNESS
-            ===================================================== */}
-
-            <div
-              aria-hidden="true"
-              className="
-                absolute
-                inset-x-0
-                top-0
-
-                h-[8%]
-
-                bg-gradient-to-b
-
-                from-black/[0.02]
-                to-transparent
-
-                dark:from-black/10
-              "
-            />
-
-            {/* =====================================================
-                BOTTOM SOFTNESS
-            ===================================================== */}
-
-            <div
-              aria-hidden="true"
-              className="
-                absolute
-                inset-x-0
-                bottom-0
-
-                h-[12%]
-
-                bg-gradient-to-t
-
-                from-black/[0.025]
-                to-transparent
-
-                dark:from-black/14
-              "
-            />
-          </motion.div>
-
-          {/* =====================================================
+          {/* ==================================================
               CONTENT
-          ===================================================== */}
+          ================================================== */}
 
           <div
             className="
@@ -347,6 +340,7 @@ export function HeroSection() {
 
               flex
 
+              h-full
               min-h-[470px]
               w-full
               max-w-[1500px]
@@ -387,9 +381,9 @@ export function HeroSection() {
                 xl:max-w-[560px]
               "
             >
-              {/* =====================================================
+              {/* ==================================================
                   EYEBROW
-              ===================================================== */}
+              ================================================== */}
 
               <div className="overflow-hidden">
                 <motion.p
@@ -440,9 +434,9 @@ export function HeroSection() {
                 </motion.p>
               </div>
 
-              {/* =====================================================
+              {/* ==================================================
                   HEADING
-              ===================================================== */}
+              ================================================== */}
 
               <motion.div
                 initial={reduceMotion ? false : "hidden"}
@@ -524,9 +518,9 @@ export function HeroSection() {
                 ))}
               </motion.div>
 
-              {/* =====================================================
+              {/* ==================================================
                   CTA
-              ===================================================== */}
+              ================================================== */}
 
               <motion.div
                 initial={
@@ -634,9 +628,9 @@ export function HeroSection() {
         </motion.div>
       </AnimatePresence>
 
-      {/* =====================================================
+      {/* ======================================================
           SLIDER PROGRESS
-      ===================================================== */}
+      ====================================================== */}
 
       <div
         className="

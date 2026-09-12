@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { Navbar } from "../components/layout/navbar";
 import { Footer } from "../components/layout/footer";
+import { FloatingConnect } from "../components/layout/floating-connect";
 import { ThemeProvider } from "../providers/theme-provider";
 
 /* =====================================================
@@ -99,9 +100,7 @@ export default function RootLayout({
                 w-[650px]
 
                 rounded-full
-
                 bg-[#FFD54F]/25
-
                 blur-[150px]
 
                 dark:hidden
@@ -120,9 +119,7 @@ export default function RootLayout({
                 w-[680px]
 
                 rounded-full
-
                 bg-[#42A5F5]/22
-
                 blur-[150px]
 
                 dark:hidden
@@ -141,9 +138,7 @@ export default function RootLayout({
                 w-[620px]
 
                 rounded-full
-
                 bg-[#81D4FA]/15
-
                 blur-[170px]
 
                 dark:hidden
@@ -162,9 +157,7 @@ export default function RootLayout({
                 w-[580px]
 
                 rounded-full
-
                 bg-[#FFE082]/10
-
                 blur-[170px]
 
                 dark:hidden
@@ -183,9 +176,7 @@ export default function RootLayout({
                 w-[680px]
 
                 rounded-full
-
                 bg-[#FFD54F]/16
-
                 blur-[170px]
 
                 dark:hidden
@@ -204,9 +195,7 @@ export default function RootLayout({
                 w-[650px]
 
                 rounded-full
-
                 bg-[#42A5F5]/12
-
                 blur-[170px]
 
                 dark:hidden
@@ -245,9 +234,7 @@ export default function RootLayout({
                 w-[700px]
 
                 rounded-full
-
                 bg-[#2196F3]/12
-
                 blur-[160px]
 
                 dark:block
@@ -268,9 +255,7 @@ export default function RootLayout({
                 w-[620px]
 
                 rounded-full
-
                 bg-cyan-400/[0.06]
-
                 blur-[170px]
 
                 dark:block
@@ -291,9 +276,7 @@ export default function RootLayout({
                 w-[650px]
 
                 rounded-full
-
                 bg-[#2196F3]/[0.07]
-
                 blur-[170px]
 
                 dark:block
@@ -314,6 +297,12 @@ export default function RootLayout({
           <main className="relative min-h-screen">
             {children}
           </main>
+
+          {/* =====================================================
+              GLOBAL FLOATING SOCIAL BUTTON
+          ===================================================== */}
+
+          <FloatingConnect />
 
           {/* =====================================================
               GLOBAL FOOTER

@@ -35,7 +35,7 @@ const bookImages = [
   },
   {
     id: 3,
-    src: "/books-3.png",
+    src: "/book-3.png",
     alt: "Whispers of Wisdom back cover",
   },
   {

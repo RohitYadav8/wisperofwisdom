@@ -611,7 +611,7 @@ export default function AboutPage() {
               "
             >
               <Image
-                src="/books-2.png"
+                src="/book-2.png"
                 alt="Whispers of Wisdom"
                 fill
                 sizes="(max-width: 1024px) 45vw, 280px"
@@ -648,7 +648,7 @@ export default function AboutPage() {
               "
             >
               <Image
-                src="/books-3.png"
+                src="/book-3.png"
                 alt="Whispers of Wisdom"
                 fill
                 sizes="(max-width: 1024px) 45vw, 280px"

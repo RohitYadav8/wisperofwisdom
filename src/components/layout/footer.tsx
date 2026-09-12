@@ -1,6 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUp, Mail } from "lucide-react";
+import { ArrowUp, Star } from "lucide-react";
+import {
+  FaCcVisa,
+  FaCcMastercard,
+  FaCcAmex,
+} from "react-icons/fa";
 
 /* ============================================================
    FOOTER DATA
@@ -8,18 +13,13 @@ import { ArrowUp, Mail } from "lucide-react";
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "About Me", href: "/about-me" },
-  { label: "Books", href: "/books" },
-  { label: "Articles", href: "/articles" },
-  { label: "Reviews", href: "/reviews" },
-  { label: "Contact", href: "/contact" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const accountLinks = [
-  { label: "My Account", href: "/account" },
-  { label: "My Orders", href: "/account/orders" },
-  { label: "Wishlist", href: "/wishlist" },
-  { label: "Login / Register", href: "/account" },
+  { label: "Shop", href: "/shop" },
+  { label: "My Orders", href: "/account" },
 ];
 
 /* ============================================================
@@ -34,18 +34,19 @@ export function Footer() {
         overflow-hidden
         border-t
         border-slate-200/70
-        bg-[#f3efe6]
+        bg-white/45
         text-[#29425A]
+        backdrop-blur-2xl
         transition-colors
         duration-300
 
-        dark:border-white/10
-        dark:bg-[#04111c]
+        dark:border-white/[0.08]
+        dark:bg-[#04131F]/95
         dark:text-slate-300
       "
     >
       {/* ======================================================
-          BACKGROUND DECORATION
+          BACKGROUND
       ====================================================== */}
 
       <div
@@ -53,17 +54,34 @@ export function Footer() {
         className="
           pointer-events-none
           absolute
-          -left-[220px]
-          top-[-220px]
-          h-[520px]
-          w-[520px]
-          rounded-full
-          bg-[#FFD54F]/10
-          blur-[150px]
+          inset-0
 
-          dark:bg-[#2196F3]/[0.04]
+          bg-[linear-gradient(135deg,rgba(255,248,216,0.50)_0%,rgba(255,255,255,0.25)_40%,rgba(223,243,255,0.48)_100%)]
+
+          dark:bg-[linear-gradient(135deg,rgba(4,19,31,0.98)_0%,rgba(6,27,42,0.98)_55%,rgba(5,35,52,0.96)_100%)]
         "
       />
+
+      {/* LIGHT YELLOW GLOW */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -left-[220px]
+          -top-[250px]
+          h-[560px]
+          w-[560px]
+          rounded-full
+          bg-[#FFD54F]/10
+          blur-[160px]
+
+          dark:hidden
+        "
+      />
+
+      {/* BLUE GLOW */}
 
       <div
         aria-hidden="true"
@@ -71,77 +89,100 @@ export function Footer() {
           pointer-events-none
           absolute
           -right-[220px]
-          bottom-[-240px]
-          h-[520px]
-          w-[520px]
+          -top-[230px]
+          h-[560px]
+          w-[560px]
           rounded-full
           bg-[#42A5F5]/10
-          blur-[150px]
+          blur-[160px]
 
-          dark:bg-[#2196F3]/[0.05]
+          dark:bg-[#2196F3]/[0.08]
         "
       />
+
+      {/* DARK CENTER GLOW */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          left-[42%]
+          top-[20%]
+          hidden
+          h-[420px]
+          w-[420px]
+          rounded-full
+          bg-cyan-400/[0.035]
+          blur-[150px]
+
+          dark:block
+        "
+      />
+
+      {/* ======================================================
+          FOOTER CONTENT
+      ====================================================== */}
 
       <div
         className="
           relative
           z-10
           mx-auto
-          max-w-[1680px]
+          max-w-[1580px]
           px-6
           py-14
 
           sm:px-10
+          sm:py-16
 
-          lg:px-16
-          lg:py-16
+          lg:px-14
+          lg:py-20
 
-          xl:px-24
+          xl:px-20
         "
       >
-        {/* =====================================================
-            MAIN FOOTER GRID
-        ===================================================== */}
+        {/* ====================================================
+            MAIN GRID
+        ==================================================== */}
 
         <div
           className="
             grid
             gap-x-12
-            gap-y-12
+            gap-y-14
 
-            md:grid-cols-2
+            sm:grid-cols-2
 
-            lg:grid-cols-[1.15fr_0.8fr_0.8fr_1.15fr]
-            lg:gap-x-16
+            lg:grid-cols-[1.15fr_0.7fr_0.7fr_1.25fr]
+            lg:gap-x-14
+
+            xl:gap-x-20
           "
         >
-          {/* ===================================================
+          {/* ==================================================
               BRAND
-          =================================================== */}
+          ================================================== */}
 
           <div>
             <Link
               href="/"
               aria-label="Whispers of Wisdom Home"
-              className="
-                relative
-                inline-flex
-                items-center
-              "
+              className="inline-flex"
             >
               {/* LIGHT LOGO */}
 
               <Image
                 src="/Wispers-of-Wisdom-logo.png"
                 alt="Whispers of Wisdom"
-                width={220}
-                height={100}
+                width={230}
+                height={110}
                 className="
                   h-auto
-                  w-[170px]
+                  w-[180px]
                   object-contain
 
-                  sm:w-[190px]
+                  sm:w-[195px]
 
                   dark:hidden
                 "
@@ -152,15 +193,15 @@ export function Footer() {
               <Image
                 src="/logo-dark-1.png"
                 alt="Whispers of Wisdom"
-                width={220}
-                height={100}
+                width={230}
+                height={110}
                 className="
                   hidden
                   h-auto
-                  w-[170px]
+                  w-[180px]
                   object-contain
 
-                  sm:w-[190px]
+                  sm:w-[195px]
 
                   dark:block
                 "
@@ -170,10 +211,12 @@ export function Footer() {
             <p
               className="
                 mt-7
-                max-w-[370px]
+                max-w-[360px]
+
+                font-sans
                 text-[15px]
-                leading-[2]
-                text-[#35506A]
+                leading-[1.95]
+                text-[#4C6175]
 
                 dark:text-slate-400
               "
@@ -182,268 +225,423 @@ export function Footer() {
               perspectives created to help you grow, reflect and live with
               purpose.
             </p>
-
-            {/* SOCIALS */}
-
-            <div className="mt-7 flex items-center gap-3">
-              <SocialIcon href="#" label="Facebook">
-                <FacebookIcon />
-              </SocialIcon>
-
-              <SocialIcon href="#" label="Instagram">
-                <InstagramIcon />
-              </SocialIcon>
-
-              <SocialIcon href="#" label="LinkedIn">
-                <LinkedinIcon />
-              </SocialIcon>
-
-              <SocialIcon href="#" label="YouTube">
-                <YoutubeIcon />
-              </SocialIcon>
-            </div>
           </div>
 
-          {/* ===================================================
+          {/* ==================================================
               QUICK LINKS
-          =================================================== */}
+          ================================================== */}
 
           <div>
             <FooterHeading>Quick Links</FooterHeading>
 
-            <div className="mt-6 flex flex-col gap-4">
+            <div className="mt-7 flex flex-col gap-[18px]">
               {quickLinks.map((item) => (
-                <Link
+                <FooterLink
                   key={`${item.label}-${item.href}`}
                   href={item.href}
-                  className="
-                    group
-                    relative
-                    w-fit
-                    text-[15px]
-                    text-[#35506A]
-                    transition-all
-                    duration-300
-
-                    hover:translate-x-1
-                    hover:text-[#2196F3]
-
-                    dark:text-slate-400
-                    dark:hover:text-[#64B5F6]
-                  "
                 >
                   {item.label}
-                </Link>
+                </FooterLink>
               ))}
             </div>
           </div>
 
-          {/* ===================================================
+          {/* ==================================================
               YOUR ACCOUNT
-          =================================================== */}
+          ================================================== */}
 
           <div>
             <FooterHeading>Your Account</FooterHeading>
 
-            <div className="mt-6 flex flex-col gap-4">
+            <div className="mt-7 flex flex-col gap-[18px]">
               {accountLinks.map((item) => (
-                <Link
+                <FooterLink
                   key={`${item.label}-${item.href}`}
                   href={item.href}
-                  className="
-                    w-fit
-                    text-[15px]
-                    text-[#35506A]
-                    transition-all
-                    duration-300
-
-                    hover:translate-x-1
-                    hover:text-[#2196F3]
-
-                    dark:text-slate-400
-                    dark:hover:text-[#64B5F6]
-                  "
                 >
                   {item.label}
-                </Link>
+                </FooterLink>
               ))}
             </div>
           </div>
 
-          {/* ===================================================
-              STAY INSPIRED
-          =================================================== */}
+          {/* ==================================================
+              BEST SELLERS
+          ================================================== */}
 
           <div>
-            <FooterHeading>Stay Inspired</FooterHeading>
+            <FooterHeading>Best Sellers</FooterHeading>
 
-            <p
+            <Link
+              href="/product/whispers-of-wisdom"
               className="
-                mt-6
-                max-w-[380px]
-                text-[15px]
-                leading-[2]
-                text-[#35506A]
+                group
+                mt-7
+                grid
+                grid-cols-[92px_1fr]
+                items-center
+                gap-5
 
-                dark:text-slate-400
+                sm:grid-cols-[100px_1fr]
+
+                lg:grid-cols-[105px_1fr]
               "
             >
-              Join our newsletter for new articles, book updates and inspiring
-              thoughts.
-            </p>
+              {/* BOOK */}
 
-            {/* NEWSLETTER */}
-
-            <form
-              className="
-                mt-6
-                w-full
-                max-w-[390px]
-              "
-            >
               <div
                 className="
+                  relative
                   flex
-                  min-h-[64px]
+                  h-[142px]
                   items-center
-                  gap-2
-                  rounded-[16px]
-                  border
-                  border-slate-200/90
-                  bg-white/90
-                  p-[7px]
-                  shadow-[0_8px_25px_rgba(15,23,42,0.08)]
-                  backdrop-blur-xl
-                  transition-all
-                  duration-300
-
-                  focus-within:border-[#2196F3]/50
-                  focus-within:shadow-[0_10px_30px_rgba(33,150,243,0.10)]
-
-                  dark:border-white/10
-                  dark:bg-white/[0.05]
-                  dark:shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+                  justify-center
                 "
               >
-                <Mail
-                  size={18}
-                  strokeWidth={1.7}
-                  className="
-                    ml-4
-                    shrink-0
-                    text-slate-400
+                {/* BOOK HALO */}
 
-                    dark:text-slate-500
+                <div
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    h-[105px]
+                    w-[105px]
+                    rounded-full
+
+                    bg-[radial-gradient(circle,rgba(33,150,243,0.16)_0%,rgba(255,213,79,0.08)_45%,transparent_72%)]
+
+                    blur-[2px]
+
+                    dark:bg-[radial-gradient(circle,rgba(66,165,245,0.18)_0%,rgba(66,165,245,0.04)_45%,transparent_72%)]
                   "
                 />
 
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  aria-label="Email address"
+                {/* FLOOR SHADOW */}
+
+                <div
+                  aria-hidden="true"
                   className="
-                    min-w-0
-                    flex-1
-                    bg-transparent
-                    px-2
-                    py-3
-                    text-[14px]
-                    text-slate-900
-                    outline-none
+                    absolute
+                    bottom-[7px]
+                    h-[12px]
+                    w-[68px]
+                    rounded-full
+                    bg-slate-900/15
+                    blur-[8px]
 
-                    placeholder:text-slate-400
-
-                    dark:text-white
-                    dark:placeholder:text-slate-500
+                    dark:bg-black/45
                   "
                 />
 
-                <button
-                  type="submit"
+                <Image
+                  src="/books.png"
+                  alt="The Journey of Whispers of Wisdom"
+                  width={105}
+                  height={140}
                   className="
-                    min-h-[46px]
-                    shrink-0
-                    rounded-[12px]
-                    bg-[#078DD1]
-                    px-5
-                    text-[12px]
+                    relative
+                    z-10
+                    h-[132px]
+                    w-auto
+                    object-contain
+
+                    drop-shadow-[0_16px_16px_rgba(15,23,42,0.18)]
+
+                    transition-transform
+                    duration-500
+
+                    group-hover:-translate-y-2
+                    group-hover:scale-[1.03]
+
+                    dark:drop-shadow-[0_18px_18px_rgba(0,0,0,0.38)]
+                  "
+                />
+              </div>
+
+              {/* BOOK DETAILS */}
+
+              <div className="min-w-0">
+                <h4
+                  className="
+                    font-sans
+                    text-[15px]
                     font-semibold
-                    text-white
-                    shadow-[0_8px_20px_rgba(7,141,209,0.18)]
-                    transition-all
+                    leading-[1.5]
+                    text-[#0F172A]
+
+                    transition-colors
                     duration-300
 
-                    hover:-translate-y-0.5
-                    hover:bg-[#057FC0]
+                    group-hover:text-[#2196F3]
 
-                    dark:bg-[#2196F3]
-                    dark:hover:bg-[#42A5F5]
+                    dark:text-white
+                    dark:group-hover:text-[#64B5F6]
                   "
                 >
-                  Subscribe
-                </button>
+                  The Journey of Whispers of Wisdom
+                </h4>
+
+                {/* RATING */}
+
+                <div
+                  className="
+                    mt-3
+                    flex
+                    items-center
+                    gap-[3px]
+                    text-[#E4A817]
+                  "
+                  aria-label="5 out of 5 stars"
+                >
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      key={index}
+                      size={14}
+                      strokeWidth={1.8}
+                      fill="currentColor"
+                    />
+                  ))}
+                </div>
+
+                {/* PRICE */}
+
+                <p
+                  className="
+                    mt-3
+                    font-sans
+                    text-[17px]
+                    font-bold
+                    text-[#078DD1]
+
+                    dark:text-[#42A5F5]
+                  "
+                >
+                  £35.00
+                </p>
               </div>
-            </form>
+            </Link>
           </div>
         </div>
 
-        {/* =====================================================
-            BOTTOM FOOTER
-        ===================================================== */}
+        {/* ====================================================
+            DIVIDER
+        ==================================================== */}
 
         <div
           className="
             mt-14
+            h-px
+            w-full
+
+            bg-gradient-to-r
+            from-transparent
+            via-slate-300/70
+            to-transparent
+
+            dark:via-white/10
+
+            lg:mt-16
+          "
+        />
+
+        {/* ====================================================
+            BOTTOM FOOTER
+        ==================================================== */}
+
+        <div
+          className="
+            mt-7
             flex
             flex-col
-            gap-5
-            border-t
-            border-slate-300/60
-            pt-7
-            text-[13px]
-
-            dark:border-white/10
+            gap-6
 
             md:flex-row
             md:items-center
             md:justify-between
           "
         >
-          <p className="text-slate-500 dark:text-slate-500">
-            © {new Date().getFullYear()} Whispers of Wisdom. All rights
-            reserved.
-          </p>
+          {/* ==================================================
+              PAYMENT METHODS
+          ================================================== */}
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Link
-              href="/privacy-policy"
+          <div
+            className="
+              flex
+              flex-wrap
+              items-center
+              gap-3
+            "
+          >
+            {/* VISA */}
+
+            <div
               className="
+                flex
+                h-[38px]
+                w-[58px]
+                items-center
+                justify-center
+                rounded-[6px]
+                border
+                border-slate-200/80
+                bg-white
+                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+              "
+              title="Visa"
+            >
+              <FaCcVisa
+                aria-label="Visa"
+                className="
+                  h-[30px]
+                  w-[44px]
+                  text-[#1A1F71]
+                "
+              />
+            </div>
+
+            {/* MASTERCARD */}
+
+            <div
+              className="
+                flex
+                h-[38px]
+                w-[58px]
+                items-center
+                justify-center
+                rounded-[6px]
+                border
+                border-slate-200/80
+                bg-white
+                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+              "
+              title="Mastercard"
+            >
+              <FaCcMastercard
+                aria-label="Mastercard"
+                className="
+                  h-[30px]
+                  w-[44px]
+                  text-[#EB001B]
+                "
+              />
+            </div>
+
+            {/* MAESTRO */}
+
+            <div
+              className="
+                flex
+                h-[38px]
+                w-[58px]
+                items-center
+                justify-center
+                rounded-[6px]
+                border
+                border-slate-200/80
+                bg-white
+                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+              "
+              title="Maestro"
+              aria-label="Maestro"
+            >
+              <div className="relative h-[23px] w-[38px]">
+                <span
+                  className="
+                    absolute
+                    left-[3px]
+                    top-0
+                    h-[22px]
+                    w-[22px]
+                    rounded-full
+                    bg-[#EB001B]
+                  "
+                />
+
+                <span
+                  className="
+                    absolute
+                    right-[3px]
+                    top-0
+                    h-[22px]
+                    w-[22px]
+                    rounded-full
+                    bg-[#0099DF]/90
+                  "
+                />
+
+                <span
+                  className="
+                    absolute
+                    bottom-[-5px]
+                    left-1/2
+                    -translate-x-1/2
+                    whitespace-nowrap
+                    font-sans
+                    text-[6px]
+                    font-bold
+                    leading-none
+                    text-[#1A1F71]
+                  "
+                >
+                  maestro
+                </span>
+              </div>
+            </div>
+
+            {/* AMERICAN EXPRESS */}
+
+            <div
+              className="
+                flex
+                h-[38px]
+                w-[58px]
+                items-center
+                justify-center
+                rounded-[6px]
+                border
+                border-slate-200/80
+                bg-white
+                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+              "
+              title="American Express"
+            >
+              <FaCcAmex
+                aria-label="American Express"
+                className="
+                  h-[30px]
+                  w-[44px]
+                  text-[#2E77BC]
+                "
+              />
+            </div>
+          </div>
+
+          {/* ==================================================
+              COPYRIGHT + BACK TO TOP
+          ================================================== */}
+
+          <div
+            className="
+              flex
+              flex-wrap
+              items-center
+              gap-5
+
+              md:justify-end
+            "
+          >
+            <p
+              className="
+                font-sans
+                text-[13px]
                 text-slate-500
-                transition-colors
-                duration-300
 
-                hover:text-[#2196F3]
-
-                dark:hover:text-[#64B5F6]
+                dark:text-slate-500
               "
             >
-              Privacy Policy
-            </Link>
-
-            <Link
-              href="/terms"
-              className="
-                text-slate-500
-                transition-colors
-                duration-300
-
-                hover:text-[#2196F3]
-
-                dark:hover:text-[#64B5F6]
-              "
-            >
-              Terms & Conditions
-            </Link>
+              © {new Date().getFullYear()} Whispers of Wisdom. All Rights
+              Reserved.
+            </p>
 
             {/* BACK TO TOP */}
 
@@ -452,31 +650,44 @@ export function Footer() {
               aria-label="Back to top"
               className="
                 flex
-                h-10
-                w-10
+                h-[44px]
+                w-[44px]
+                shrink-0
                 items-center
                 justify-center
-                rounded-full
+
+                rounded-[13px]
+
                 border
-                border-slate-200
-                bg-white/80
-                text-slate-500
-                shadow-sm
+                border-slate-200/80
+
+                bg-white/70
+
+                text-[#52677D]
+
+                shadow-[0_8px_22px_rgba(15,23,42,0.07)]
+
+                backdrop-blur-xl
+
                 transition-all
                 duration-300
 
                 hover:-translate-y-1
                 hover:border-[#2196F3]/40
-                hover:text-[#2196F3]
+                hover:bg-[#2196F3]
+                hover:text-white
+                hover:shadow-[0_12px_28px_rgba(33,150,243,0.18)]
 
                 dark:border-white/10
                 dark:bg-white/[0.05]
                 dark:text-slate-300
+
                 dark:hover:border-[#42A5F5]/40
-                dark:hover:text-[#64B5F6]
+                dark:hover:bg-[#2196F3]
+                dark:hover:text-white
               "
             >
-              <ArrowUp size={16} />
+              <ArrowUp size={17} strokeWidth={2} />
             </a>
           </div>
         </div>
@@ -497,160 +708,100 @@ function FooterHeading({
   return (
     <h3
       className="
+        relative
+        w-fit
+
+        font-sans
         text-[13px]
-        font-semibold
+        font-bold
         uppercase
-        tracking-[0.26em]
+        tracking-[0.24em]
+
         text-[#0F172A]
 
         dark:text-white
       "
     >
       {children}
+
+      <span
+        aria-hidden="true"
+        className="
+          absolute
+          -bottom-3
+          left-0
+
+          h-[2px]
+          w-8
+
+          rounded-full
+
+          bg-gradient-to-r
+          from-[#2196F3]
+          to-[#FFD54F]
+
+          dark:from-[#42A5F5]
+          dark:to-[#2196F3]
+        "
+      />
     </h3>
   );
 }
 
 /* ============================================================
-   SOCIAL ICON
+   FOOTER LINK
 ============================================================ */
 
-function SocialIcon({
+function FooterLink({
   href,
-  label,
   children,
 }: {
   href: string;
-  label: string;
   children: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
-      aria-label={label}
       className="
+        group
         flex
-        h-11
-        w-11
+        w-fit
         items-center
-        justify-center
-        rounded-full
-        border
-        border-slate-200
-        bg-white/80
-        text-[#52677D]
-        shadow-[0_6px_18px_rgba(15,23,42,0.05)]
+        gap-2
+
+        font-sans
+        text-[15px]
+
+        text-[#4C6175]
+
         transition-all
         duration-300
 
-        hover:-translate-y-1
-        hover:border-[#2196F3]/40
-        hover:bg-[#2196F3]
-        hover:text-white
-        hover:shadow-[0_10px_25px_rgba(33,150,243,0.18)]
+        hover:translate-x-1
+        hover:text-[#2196F3]
 
-        dark:border-white/10
-        dark:bg-white/[0.05]
-        dark:text-slate-300
-        dark:hover:border-[#42A5F5]/40
-        dark:hover:bg-[#2196F3]
-        dark:hover:text-white
+        dark:text-slate-400
+        dark:hover:text-[#64B5F6]
       "
     >
+      <span
+        className="
+          h-[5px]
+          w-[5px]
+          scale-0
+          rounded-full
+          bg-[#2196F3]
+          opacity-0
+
+          transition-all
+          duration-300
+
+          group-hover:scale-100
+          group-hover:opacity-100
+        "
+      />
+
       {children}
     </Link>
-  );
-}
-
-/* ============================================================
-   FACEBOOK
-============================================================ */
-
-function FacebookIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M13.5 22v-9h3l.5-3.5h-3.5V7.25c0-1 .28-1.75 1.78-1.75H17V2.14C16.7 2.1 15.65 2 14.4 2 11.8 2 10 3.58 10 6.5v3H7V13h3v9h3.5Z" />
-    </svg>
-  );
-}
-
-/* ============================================================
-   INSTAGRAM
-============================================================ */
-
-function InstagramIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect
-        x="3"
-        y="3"
-        width="18"
-        height="18"
-        rx="5"
-      />
-
-      <circle
-        cx="12"
-        cy="12"
-        r="4"
-      />
-
-      <circle
-        cx="17.5"
-        cy="6.5"
-        r="1"
-        fill="currentColor"
-        stroke="none"
-      />
-    </svg>
-  );
-}
-
-/* ============================================================
-   LINKEDIN
-============================================================ */
-
-function LinkedinIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M6.5 8.5H3V21h3.5V8.5ZM4.75 3A2.05 2.05 0 1 0 4.75 7.1 2.05 2.05 0 0 0 4.75 3ZM21 13.8c0-3.75-2-5.5-4.67-5.5a4.02 4.02 0 0 0-3.63 2V8.5H9.2V21h3.5v-6.2c0-1.64.31-3.23 2.34-3.23 2 0 2.03 1.87 2.03 3.34V21H21v-7.2Z" />
-    </svg>
-  );
-}
-
-
-function YoutubeIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M23 12s0-3.4-.44-5.03a3 3 0 0 0-2.12-2.12C18.8 4.4 12 4.4 12 4.4s-6.8 0-8.44.45a3 3 0 0 0-2.12 2.12C1 8.6 1 12 1 12s0 3.4.44 5.03a3 3 0 0 0 2.12 2.12c1.64.45 8.44.45 8.44.45s6.8 0 8.44-.45a3 3 0 0 0 2.12-2.12C23 15.4 23 12 23 12Zm-13.2 3.2V8.8l5.6 3.2-5.6 3.2Z" />
-    </svg>
   );
 }
