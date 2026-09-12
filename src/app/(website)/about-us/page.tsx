@@ -4,9 +4,9 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Mail, MapPin, Phone } from "lucide-react";
 
-import { TestimonialsSection } from "../../components/home/testimonials-section";
-import { CommunitySection } from "../../components/home/community-section";
-import { StatsSection } from "../../components/home/stats-section";
+import { TestimonialsSection } from "../../../components/home/testimonials-section";
+import { CommunitySection } from "../../../components/home/community-section";
+import { StatsSection } from "../../../components/home/stats-section";
 
 const aboutDescription = `
 The book navigates through foundational elements, strategic blueprints, and

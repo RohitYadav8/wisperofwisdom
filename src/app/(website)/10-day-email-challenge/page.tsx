@@ -15,12 +15,12 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 
-import { AnimateIn } from "../../components/animations/animate-in";
+import { AnimateIn } from "../../../components/animations/animate-in";
 import {
   StaggerContainer,
   StaggerItem,
-} from "../../components/animations/stagger";
-import { MagneticButton } from "../../components/animations/magnetic-button";
+} from "../../../components/animations/stagger";
+import { MagneticButton } from "../../../components/animations/magnetic-button";
 
 const challengeBenefits = [
   {

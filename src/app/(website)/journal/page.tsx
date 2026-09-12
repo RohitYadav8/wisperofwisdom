@@ -12,12 +12,12 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 
-import { AnimateIn } from "../../components/animations/animate-in";
-import { MagneticButton } from "../../components/animations/magnetic-button";
+import { AnimateIn } from "../../../components/animations/animate-in";
+import { MagneticButton } from "../../../components/animations/magnetic-button";
 import {
   StaggerContainer,
   StaggerItem,
-} from "../../components/animations/stagger";
+} from "../../../components/animations/stagger";
 
 const journalBenefits = [
   "Break free from overwhelm and confusion",
