@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
+import { TenDayChallengeSuccessModal } from "../../../components/ten-day-challenge-success-modal";
 import {
   ArrowRight,
   BarChart3,
@@ -12,6 +13,8 @@ import {
   Sprout,
   Target,
   UserRound,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -59,7 +62,8 @@ const steps = [
   },
   {
     title: "Reflection",
-    description: "One thought-provoking insight to inspire your mindset.",
+    description:
+      "One thought-provoking insight to inspire your mindset.",
     icon: Lightbulb,
   },
   {
@@ -76,6 +80,81 @@ const steps = [
 ];
 
 export default function TenDayEmailChallengePage() {
+  const [challengeForm, setChallengeForm] = useState({
+    name: "",
+    email: "",
+  });
+
+  const [challengeLoading, setChallengeLoading] =
+    useState(false);
+
+  const [challengeError, setChallengeError] =
+    useState("");
+
+  const [showSuccessModal, setShowSuccessModal] =
+    useState(false);
+
+  async function handleChallengeSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    setChallengeError("");
+
+    const name = challengeForm.name.trim();
+    const email = challengeForm.email.trim();
+
+    if (!name || !email) {
+      setChallengeError(
+        "Please enter your name and email address."
+      );
+      return;
+    }
+
+    try {
+      setChallengeLoading(true);
+
+      const response = await fetch(
+        "/api/contact-submissions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            source: "TEN_DAY_CHALLENGE",
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Unable to join the challenge. Please try again."
+        );
+      }
+
+      setChallengeForm({
+        name: "",
+        email: "",
+      });
+
+      setShowSuccessModal(true);
+    } catch (error) {
+      setChallengeError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setChallengeLoading(false);
+    }
+  }
+
   return (
     <div
       className="
@@ -88,8 +167,6 @@ export default function TenDayEmailChallengePage() {
         dark:text-white
       "
     >
-    
-
       {/* =========================================================
           INTRO
       ========================================================= */}
@@ -164,8 +241,8 @@ export default function TenDayEmailChallengePage() {
                 sm:text-lg
               "
             >
-              Unlock daily insights to transform your mindset, habits, and
-              life—one email at a time.
+              Unlock daily insights to transform your mindset,
+              habits, and life—one email at a time.
             </p>
           </AnimateIn>
 
@@ -278,9 +355,9 @@ export default function TenDayEmailChallengePage() {
                   sm:text-base
                 "
               >
-                Each day, you&apos;ll receive a powerful “Whisper of Wisdom” to
-                shift your perspective, fuel your growth, and simplify your
-                success journey.
+                Each day, you&apos;ll receive a powerful “Whisper
+                of Wisdom” to shift your perspective, fuel your
+                growth, and simplify your success journey.
               </p>
             </AnimateIn>
           </div>
@@ -304,7 +381,8 @@ export default function TenDayEmailChallengePage() {
                 >
                   <motion.div
                     whileHover={{
-                      backgroundColor: "rgba(33,150,243,0.035)",
+                      backgroundColor:
+                        "rgba(33,150,243,0.035)",
                     }}
                     className={`
                       group
@@ -369,7 +447,10 @@ export default function TenDayEmailChallengePage() {
                         dark:bg-[#2196F3]/12
                       "
                     >
-                      <Icon size={22} strokeWidth={1.7} />
+                      <Icon
+                        size={22}
+                        strokeWidth={1.7}
+                      />
                     </motion.div>
 
                     <div>
@@ -459,8 +540,9 @@ export default function TenDayEmailChallengePage() {
                   sm:text-base
                 "
               >
-                Over 10 days, you&apos;ll receive one powerful email per day to
-                inspire action and personal transformation.
+                Over 10 days, you&apos;ll receive one powerful
+                email per day to inspire action and personal
+                transformation.
               </p>
             </div>
           </AnimateIn>
@@ -537,7 +619,10 @@ export default function TenDayEmailChallengePage() {
                         dark:bg-[#2196F3]/15
                       "
                     >
-                      <Icon size={23} strokeWidth={1.7} />
+                      <Icon
+                        size={23}
+                        strokeWidth={1.7}
+                      />
                     </div>
 
                     <h3
@@ -675,8 +760,9 @@ export default function TenDayEmailChallengePage() {
                     sm:text-base
                   "
                 >
-                  Success is built on small, consistent steps. Let the daily
-                  whispers guide you toward your best self—one day at a time.
+                  Success is built on small, consistent steps.
+                  Let the daily whispers guide you toward your
+                  best self—one day at a time.
                 </p>
               </div>
 
@@ -802,16 +888,16 @@ export default function TenDayEmailChallengePage() {
                   sm:text-base
                 "
               >
-                Sign up now to receive your first “Whisper of Wisdom” within
-                minutes. It&apos;s free, powerful, and could shift your whole
-                perspective.
+                Sign up now to receive your first “Whisper of
+                Wisdom” within minutes. It&apos;s free, powerful,
+                and could shift your whole perspective.
               </p>
             </div>
           </AnimateIn>
 
           <AnimateIn direction="left" delay={0.1}>
             <form
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={handleChallengeSubmit}
               className="
                 flex
                 h-full
@@ -827,6 +913,8 @@ export default function TenDayEmailChallengePage() {
                 lg:py-14
               "
             >
+              {/* NAME */}
+
               <div className="relative">
                 <UserRound
                   size={18}
@@ -843,7 +931,19 @@ export default function TenDayEmailChallengePage() {
                 <input
                   type="text"
                   name="name"
+                  value={challengeForm.name}
+                  onChange={(event) => {
+                    setChallengeForm((current) => ({
+                      ...current,
+                      name: event.target.value,
+                    }));
+
+                    setChallengeError("");
+                  }}
                   placeholder="Your name"
+                  required
+                  disabled={challengeLoading}
+                  autoComplete="name"
                   className="
                     h-14
                     w-full
@@ -863,12 +963,16 @@ export default function TenDayEmailChallengePage() {
                     focus:bg-white
                     focus:ring-4
                     focus:ring-[#2196F3]/8
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
                     dark:border-white/10
                     dark:bg-[#081B2A]
                     dark:text-white
                   "
                 />
               </div>
+
+              {/* EMAIL */}
 
               <div className="relative">
                 <Mail
@@ -886,7 +990,19 @@ export default function TenDayEmailChallengePage() {
                 <input
                   type="email"
                   name="email"
+                  value={challengeForm.email}
+                  onChange={(event) => {
+                    setChallengeForm((current) => ({
+                      ...current,
+                      email: event.target.value,
+                    }));
+
+                    setChallengeError("");
+                  }}
                   placeholder="Your email"
+                  required
+                  disabled={challengeLoading}
+                  autoComplete="email"
                   className="
                     h-14
                     w-full
@@ -906,6 +1022,8 @@ export default function TenDayEmailChallengePage() {
                     focus:bg-white
                     focus:ring-4
                     focus:ring-[#2196F3]/8
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
                     dark:border-white/10
                     dark:bg-[#081B2A]
                     dark:text-white
@@ -913,14 +1031,25 @@ export default function TenDayEmailChallengePage() {
                 />
               </div>
 
+              {/* SUBMIT */}
+
               <motion.button
                 type="submit"
-                whileHover={{
-                  y: -2,
-                }}
-                whileTap={{
-                  scale: 0.985,
-                }}
+                disabled={challengeLoading}
+                whileHover={
+                  challengeLoading
+                    ? undefined
+                    : {
+                        y: -2,
+                      }
+                }
+                whileTap={
+                  challengeLoading
+                    ? undefined
+                    : {
+                        scale: 0.985,
+                      }
+                }
                 className="
                   flex
                   h-14
@@ -941,13 +1070,67 @@ export default function TenDayEmailChallengePage() {
                   duration-300
                   hover:bg-[#1976D2]
                   hover:shadow-[0_18px_40px_rgba(33,150,243,0.28)]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
                   dark:hover:bg-[#42A5F5]
                 "
               >
-                Start The 10-Day Challenge
+                {challengeLoading ? (
+                  <>
+                    <Loader2
+                      size={17}
+                      className="animate-spin"
+                    />
 
-                <ArrowRight size={16} />
+                    Joining...
+                  </>
+                ) : (
+                  <>
+                    Start The 10-Day Challenge
+
+                    <ArrowRight size={16} />
+                  </>
+                )}
               </motion.button>
+
+              {/* ERROR MESSAGE */}
+
+              {challengeError && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 5,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  className="
+                    flex
+                    items-start
+                    gap-2
+                    rounded-xl
+                    border
+                    border-red-200
+                    bg-red-50
+                    px-4
+                    py-3
+                    text-sm
+                    leading-6
+                    text-red-600
+                    dark:border-red-500/20
+                    dark:bg-red-500/10
+                    dark:text-red-400
+                  "
+                >
+                  <AlertCircle
+                    size={18}
+                    className="mt-0.5 shrink-0"
+                  />
+
+                  <span>{challengeError}</span>
+                </motion.div>
+              )}
 
               <p
                 className="
@@ -958,13 +1141,22 @@ export default function TenDayEmailChallengePage() {
                   dark:text-slate-500
                 "
               >
-                *No spam. Just inspiration &amp; practical tools for your
-                growth.
+                *No spam. Just inspiration &amp; practical tools
+                for your growth.
               </p>
             </form>
           </AnimateIn>
         </div>
       </section>
+
+      {/* =========================================================
+          PREMIUM SUCCESS POPUP
+      ========================================================= */}
+
+      <TenDayChallengeSuccessModal
+        open={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+      />
     </div>
   );
 }

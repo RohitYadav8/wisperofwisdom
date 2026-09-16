@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 
 export const ADMIN_SESSION_COOKIE = "admin_session";
@@ -20,6 +21,10 @@ function getJwtSecret() {
   return new TextEncoder().encode(secret);
 }
 
+/* =========================================================
+   CREATE ADMIN TOKEN
+========================================================= */
+
 export async function createAdminToken(
   admin: AdminSessionPayload,
   rememberMe = false
@@ -39,15 +44,23 @@ export async function createAdminToken(
     .sign(secret);
 }
 
+/* =========================================================
+   VERIFY ADMIN TOKEN
+========================================================= */
+
 export async function verifyAdminToken(
   token: string
 ): Promise<AdminSessionPayload | null> {
   try {
     const secret = getJwtSecret();
 
-    const { payload } = await jwtVerify(token, secret, {
-      algorithms: ["HS256"],
-    });
+    const { payload } = await jwtVerify(
+      token,
+      secret,
+      {
+        algorithms: ["HS256"],
+      }
+    );
 
     if (
       typeof payload.adminId !== "number" ||
@@ -65,4 +78,22 @@ export async function verifyAdminToken(
   } catch {
     return null;
   }
+}
+
+/* =========================================================
+   GET CURRENT ADMIN SESSION
+========================================================= */
+
+export async function getAdminSession():
+  Promise<AdminSessionPayload | null> {
+  const cookieStore = await cookies();
+
+  const token =
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  return verifyAdminToken(token);
 }

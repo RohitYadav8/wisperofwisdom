@@ -1,11 +1,79 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
-import { Mail, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
 import { AnimateIn } from "../animations/animate-in";
 
 export function CommunitySection() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    setSuccess("");
+    setError("");
+
+    const cleanEmail = email.trim();
+
+    if (!cleanEmail) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "/api/contact-submissions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            source: "COMMUNITY",
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Something went wrong."
+        );
+      }
+
+      setSuccess(
+        "Welcome to the community! You're successfully subscribed."
+      );
+
+      setEmail("");
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section
       className="
@@ -20,7 +88,6 @@ export function CommunitySection() {
         lg:py-24
       "
     >
-      {/* SOFT BACKGROUND GLOW */}
       <div
         aria-hidden="true"
         className="
@@ -70,7 +137,7 @@ export function CommunitySection() {
             lg:py-16
           "
         >
-          {/* DECORATIVE LINE */}
+          
           <div
             aria-hidden="true"
             className="
@@ -133,14 +200,14 @@ export function CommunitySection() {
                 sm:text-[16px]
               "
             >
-              Stay connected with Whispers of Wisdom and receive the latest
-              updates.
+              Stay connected with Whispers of Wisdom and receive
+              the latest updates.
             </p>
           </AnimateIn>
 
           <AnimateIn delay={0.2}>
             <form
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={handleSubmit}
               className="
                 mx-auto
                 mt-8
@@ -178,7 +245,13 @@ export function CommunitySection() {
 
                 <input
                   type="email"
+                  value={email}
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
                   placeholder="Enter your email"
+                  disabled={loading}
+                  required
                   className="
                     h-14
                     w-full
@@ -187,6 +260,8 @@ export function CommunitySection() {
                     text-slate-800
                     outline-none
                     placeholder:text-slate-400
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
                     dark:text-white
                     dark:placeholder:text-slate-500
                   "
@@ -195,8 +270,13 @@ export function CommunitySection() {
 
               <motion.button
                 type="submit"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                disabled={loading}
+                whileHover={
+                  loading ? undefined : { y: -2 }
+                }
+                whileTap={
+                  loading ? undefined : { scale: 0.98 }
+                }
                 transition={{
                   type: "spring",
                   stiffness: 300,
@@ -218,17 +298,44 @@ export function CommunitySection() {
                   text-white
                   transition-colors
                   hover:bg-[#1976D2]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
                   sm:min-w-[180px]
                 "
               >
-                Join Now
-
-                <ArrowRight
-                  size={16}
-                  strokeWidth={1.8}
-                />
+                {loading ? (
+                  <>
+                    <Loader2
+                      size={16}
+                      className="animate-spin"
+                    />
+                    Joining...
+                  </>
+                ) : (
+                  <>
+                    Join Now
+                    <ArrowRight
+                      size={16}
+                      strokeWidth={1.8}
+                    />
+                  </>
+                )}
               </motion.button>
             </form>
+
+            {success && (
+              <div className="mx-auto mt-4 flex max-w-[620px] items-center justify-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 size={17} />
+                <span>{success}</span>
+              </div>
+            )}
+
+            {error && (
+              <div className="mx-auto mt-4 flex max-w-[620px] items-center justify-center gap-2 text-sm text-red-500">
+                <AlertCircle size={17} />
+                <span>{error}</span>
+              </div>
+            )}
           </AnimateIn>
         </div>
       </div>

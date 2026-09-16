@@ -1,8 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Clock3, Mail, MapPin, Phone, Send } from "lucide-react";
+import {
+  Clock3,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { motion } from "motion/react";
 
 const contactItems = [
@@ -36,6 +44,10 @@ export default function ContactPage() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
   function handleChange(
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -47,30 +59,113 @@ export default function ContactPage() {
       ...current,
       [name]: value,
     }));
+
+    if (error) {
+      setError("");
+    }
+
+    if (success) {
+      setSuccess("");
+    }
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
+
+    setSuccess("");
+    setError("");
+
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const message = form.message.trim();
+
+    if (!name || !email || !message) {
+      setError("Please complete all fields.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "/api/contact-submissions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+            source: "CONTACT",
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Failed to send your message."
+        );
+      }
+
+      setSuccess(
+        "Thank you! Your message has been sent successfully."
+      );
+
+      setForm({
+        name: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="bg-white text-slate-900 transition-colors duration-300 dark:bg-[#061522] dark:text-white">
-    
+      {/* =========================================================
+          CONTACT CONTENT
+      ========================================================= */}
 
-      {/* CONTACT CONTENT */}
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+        {/* Background glow */}
+
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-24 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#2196F3]/5 blur-[120px] dark:bg-[#2196F3]/8"
         />
 
         <div className="relative z-10 mx-auto max-w-[1180px] px-5 sm:px-8 lg:px-12">
-          {/* INTRO */}
+          {/* =====================================================
+              INTRO
+          ===================================================== */}
+
           <div className="mx-auto max-w-[760px] text-center">
             <motion.h2
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
+              initial={{
+                opacity: 0,
+                y: 24,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.4,
+              }}
               transition={{
                 duration: 0.65,
                 ease: [0.22, 1, 0.36, 1],
@@ -81,22 +176,34 @@ export default function ContactPage() {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              initial={{
+                opacity: 0,
+                y: 14,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
               transition={{
                 duration: 0.55,
                 delay: 0.08,
               }}
               className="mx-auto mt-5 max-w-[700px] text-[14px] leading-7 text-slate-500 dark:text-slate-400 sm:text-[15px]"
             >
-              We&apos;d love to hear from you! Whether you have questions,
-              feedback, or just want to share your thoughts about “Whispers of
-              Wisdom,” feel free to reach out.
+              We&apos;d love to hear from you! Whether you have
+              questions, feedback, or just want to share your
+              thoughts about “Whispers of Wisdom,” feel free to
+              reach out.
             </motion.p>
           </div>
 
-          {/* CONTACT INFO */}
+          {/* =====================================================
+              CONTACT INFORMATION
+          ===================================================== */}
+
           <div className="mt-14 grid gap-8 md:grid-cols-3 lg:mt-16 lg:gap-10">
             {contactItems.map((item, index) => {
               const Icon = item.icon;
@@ -104,9 +211,18 @@ export default function ContactPage() {
               return (
                 <motion.article
                   key={item.title}
-                  initial={{ opacity: 0, y: 22 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.35 }}
+                  initial={{
+                    opacity: 0,
+                    y: 22,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                    amount: 0.35,
+                  }}
                   transition={{
                     duration: 0.55,
                     delay: index * 0.08,
@@ -116,7 +232,10 @@ export default function ContactPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2196F3]/8 text-[#2196F3] dark:bg-[#2196F3]/12">
-                      <Icon size={20} strokeWidth={1.6} />
+                      <Icon
+                        size={20}
+                        strokeWidth={1.6}
+                      />
                     </div>
 
                     <div>
@@ -141,12 +260,24 @@ export default function ContactPage() {
             })}
           </div>
 
-          {/* MESSAGE FORM */}
+          {/* =====================================================
+              MESSAGE FORM
+          ===================================================== */}
+
           <div className="mx-auto mt-20 max-w-[820px] lg:mt-24">
             <motion.div
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              initial={{
+                opacity: 0,
+                y: 22,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.35,
+              }}
               transition={{
                 duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
@@ -160,16 +291,29 @@ export default function ContactPage() {
 
             <motion.form
               onSubmit={handleSubmit}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.2,
+              }}
               transition={{
                 duration: 0.6,
                 delay: 0.08,
               }}
               className="mt-10 rounded-[28px] border border-slate-200/80 bg-[#FCFCFA] p-6 shadow-[0_24px_70px_rgba(15,23,42,0.05)] dark:border-white/[0.07] dark:bg-[#0B2031] dark:shadow-[0_26px_70px_rgba(0,0,0,0.2)] sm:p-8 lg:p-10"
             >
+              {/* Name + Email */}
+
               <div className="grid gap-5 sm:grid-cols-2">
+                {/* Name */}
+
                 <div className="relative">
                   <input
                     type="text"
@@ -177,9 +321,14 @@ export default function ContactPage() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Name"
-                    className="h-14 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                    required
+                    disabled={loading}
+                    autoComplete="name"
+                    className="h-14 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
                   />
                 </div>
+
+                {/* Email */}
 
                 <div className="relative">
                   <Mail
@@ -194,10 +343,15 @@ export default function ContactPage() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Email"
-                    className="h-14 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                    required
+                    disabled={loading}
+                    autoComplete="email"
+                    className="h-14 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
                   />
                 </div>
               </div>
+
+              {/* Message */}
 
               <textarea
                 name="message"
@@ -205,25 +359,104 @@ export default function ContactPage() {
                 onChange={handleChange}
                 placeholder="Message"
                 rows={7}
-                className="mt-5 w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-4 text-[14px] leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                required
+                disabled={loading}
+                className="mt-5 w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-4 text-[14px] leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
               />
+
+              {/* Submit button */}
 
               <div className="mt-7 flex justify-center">
                 <motion.button
                   type="submit"
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                  disabled={loading}
+                  whileHover={
+                    loading
+                      ? undefined
+                      : {
+                          y: -2,
+                        }
+                  }
+                  whileTap={
+                    loading
+                      ? undefined
+                      : {
+                          scale: 0.98,
+                        }
+                  }
                   transition={{
                     type: "spring",
                     stiffness: 280,
                     damping: 22,
                   }}
-                  className="inline-flex min-h-[50px] min-w-[150px] items-center justify-center gap-2 rounded-full bg-[#2196F3] px-7 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#1976D2]"
+                  className="inline-flex min-h-[50px] min-w-[160px] items-center justify-center gap-2 rounded-full bg-[#2196F3] px-7 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#1976D2] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Submit
-                  <Send size={15} strokeWidth={1.8} />
+                  {loading ? (
+                    <>
+                      <Loader2
+                        size={15}
+                        className="animate-spin"
+                      />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Submit
+
+                      <Send
+                        size={15}
+                        strokeWidth={1.8}
+                      />
+                    </>
+                  )}
                 </motion.button>
               </div>
+
+              {/* Success */}
+
+              {success && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 6,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  className="mt-5 flex items-center justify-center gap-2 text-center text-sm text-emerald-600 dark:text-emerald-400"
+                >
+                  <CheckCircle2
+                    size={17}
+                    className="shrink-0"
+                  />
+
+                  <span>{success}</span>
+                </motion.div>
+              )}
+
+              {/* Error */}
+
+              {error && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 6,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  className="mt-5 flex items-center justify-center gap-2 text-center text-sm text-red-500"
+                >
+                  <AlertCircle
+                    size={17}
+                    className="shrink-0"
+                  />
+
+                  <span>{error}</span>
+                </motion.div>
+              )}
             </motion.form>
           </div>
         </div>
