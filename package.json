@@ -15,6 +15,7 @@
     "@teispace/next-themes": "^3.0.2",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
+    "jose": "^6.2.12",
     "lucide-react": "^1.41.0",
     "mariadb": "^3.5.4",
     "motion": "^13.2.0",
