@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+
 import {
   Bell,
   ChevronDown,
   Menu,
-  Search,
 } from "lucide-react";
 
 import { ThemeToggle } from "../ui/theme-toggle";
@@ -13,9 +15,58 @@ type AdminTopbarProps = {
   onMenuClick: () => void;
 };
 
+type DashboardResponse = {
+  stats?: {
+    newMessages?: number;
+  };
+};
+
 export function AdminTopbar({
   onMenuClick,
 }: AdminTopbarProps) {
+  const [notificationCount, setNotificationCount] =
+    useState(0);
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "/api/admin/dashboard",
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        return;
+      }
+
+      const data: DashboardResponse =
+        await response.json();
+
+      setNotificationCount(
+        Number(data.stats?.newMessages ?? 0)
+      );
+    } catch (error) {
+      console.error(
+        "NOTIFICATION COUNT ERROR:",
+        error
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+
+    const interval = window.setInterval(() => {
+      fetchNotifications();
+    }, 30000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [fetchNotifications]);
+
   return (
     <header
       className="
@@ -79,69 +130,10 @@ export function AdminTopbar({
           </button>
 
           {/* =================================================
-              SEARCH
+              MOBILE TITLE
           ================================================= */}
 
-          <div
-            className="
-              relative
-              hidden
-              w-full
-              max-w-[470px]
-              md:block
-            "
-          >
-            <Search
-              size={18}
-              className="
-                pointer-events-none
-                absolute
-                left-4
-                top-1/2
-                -translate-y-1/2
-                text-slate-400
-              "
-            />
-
-            <input
-              type="search"
-              placeholder="Search books, orders, users..."
-              className="
-                h-[48px]
-                w-full
-                rounded-[14px]
-                border
-                border-slate-200
-                bg-slate-50/80
-                pl-12
-                pr-4
-                text-[13px]
-                font-medium
-                text-slate-700
-                outline-none
-                transition-all
-                duration-300
-                placeholder:font-normal
-                placeholder:text-slate-400
-                hover:border-slate-300
-                focus:border-[#2196F3]/50
-                focus:bg-white
-                focus:ring-4
-                focus:ring-[#2196F3]/5
-                dark:border-white/[0.09]
-                dark:bg-white/[0.045]
-                dark:text-white
-                dark:placeholder:text-slate-500
-                dark:hover:border-white/[0.14]
-                dark:focus:border-[#2196F3]/40
-                dark:focus:bg-white/[0.06]
-              "
-            />
-          </div>
-
-          {/* MOBILE TITLE */}
-
-          <div className="min-w-0 md:hidden">
+          <div className="min-w-0 lg:hidden">
             <p
               className="
                 text-[9px]
@@ -183,9 +175,14 @@ export function AdminTopbar({
               NOTIFICATIONS
           ================================================= */}
 
-          <button
-            type="button"
-            aria-label="Notifications"
+          <Link
+            href="/admin/contact-messages"
+            aria-label={
+              notificationCount > 0
+                ? `${notificationCount} new notifications`
+                : "Notifications"
+            }
+            title="Contact Messages"
             className="
               group
               relative
@@ -221,33 +218,37 @@ export function AdminTopbar({
               "
             />
 
-            {/* NOTIFICATION COUNT */}
+            {/* REAL NOTIFICATION COUNT */}
 
-            <span
-              className="
-                absolute
-                -right-0.5
-                -top-0.5
-                flex
-                h-[17px]
-                min-w-[17px]
-                items-center
-                justify-center
-                rounded-full
-                bg-[#2196F3]
-                px-1
-                text-[9px]
-                font-bold
-                leading-none
-                text-white
-                ring-[3px]
-                ring-white
-                dark:ring-[#071522]
-              "
-            >
-              3
-            </span>
-          </button>
+            {notificationCount > 0 && (
+              <span
+                className="
+                  absolute
+                  -right-0.5
+                  -top-0.5
+                  flex
+                  h-[17px]
+                  min-w-[17px]
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#2196F3]
+                  px-1
+                  text-[9px]
+                  font-bold
+                  leading-none
+                  text-white
+                  ring-[3px]
+                  ring-white
+                  dark:ring-[#071522]
+                "
+              >
+                {notificationCount > 99
+                  ? "99+"
+                  : notificationCount}
+              </span>
+            )}
+          </Link>
 
           {/* =================================================
               DIVIDER
@@ -384,4 +385,4 @@ export function AdminTopbar({
       </div>
     </header>
   );
-}
+}                                           

@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
+  Loader2,
   MessageSquareText,
   RefreshCw,
   ShoppingBag,
@@ -11,41 +15,15 @@ import {
   Users,
 } from "lucide-react";
 
-/* =====================================================
-   DASHBOARD STATS
-   API integration ke baad values database se aayengi.
-===================================================== */
-
-const stats = [
-  {
-    label: "Total Books",
-    value: "0",
-    description: "Books available",
-    icon: BookOpen,
-  },
-  {
-    label: "Total Orders",
-    value: "0",
-    description: "Customer orders",
-    icon: ShoppingBag,
-  },
-  {
-    label: "Total Reviews",
-    value: "0",
-    description: "Customer reviews",
-    icon: Star,
-  },
-  {
-    label: "Total Users",
-    value: "0",
-    description: "Registered users",
-    icon: Users,
-  },
-];
-
-/* =====================================================
-   QUICK ACTIONS
-===================================================== */
+type DashboardData = {
+  stats: {
+    totalBooks: number;
+    activeBooks: number;
+    totalUsers: number;
+    totalMessages: number;
+    newMessages: number;
+  };
+};
 
 const quickActions = [
   {
@@ -75,6 +53,87 @@ const quickActions = [
 ];
 
 export default function AdminDashboardPage() {
+  const [dashboard, setDashboard] =
+    useState<DashboardData | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchDashboard = useCallback(
+    async (manualRefresh = false) => {
+      try {
+        if (manualRefresh) {
+          setRefreshing(true);
+        } else {
+          setLoading(true);
+        }
+
+        setError("");
+
+        const response = await fetch(
+          "/api/admin/dashboard",
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Failed to load dashboard data."
+          );
+        }
+
+        setDashboard(data);
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load dashboard data."
+        );
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  const stats = [
+    {
+      label: "Total Books",
+      value: dashboard?.stats.totalBooks ?? 0,
+      description: "Books available",
+      icon: BookOpen,
+    },
+    {
+      label: "Total Orders",
+      value: 0,
+      description: "Customer orders",
+      icon: ShoppingBag,
+    },
+    {
+      label: "Total Reviews",
+      value: 0,
+      description: "Customer reviews",
+      icon: Star,
+    },
+    {
+      label: "Total Users",
+      value: dashboard?.stats.totalUsers ?? 0,
+      description: "Registered users",
+      icon: Users,
+    },
+  ];
+
   return (
     <div className="mx-auto w-full max-w-[1600px]">
       {/* =====================================================
@@ -157,7 +216,8 @@ export default function AdminDashboardPage() {
               dark:text-slate-400
             "
           >
-            Here&apos;s an overview of your Whispers of Wisdom store.
+            Here&apos;s an overview of your Whispers of
+            Wisdom store.
           </p>
         </div>
 
@@ -166,6 +226,8 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-3">
           <button
             type="button"
+            disabled={refreshing}
+            onClick={() => fetchDashboard(true)}
             className="
               inline-flex
               h-11
@@ -185,18 +247,50 @@ export default function AdminDashboardPage() {
               duration-300
               hover:border-[#2196F3]/30
               hover:text-[#2196F3]
+              disabled:cursor-not-allowed
+              disabled:opacity-60
               dark:border-white/10
-              dark:bg-white/[0.045]
+              dark:bg-[#0B2031]
               dark:text-slate-300
               dark:hover:border-[#2196F3]/30
               dark:hover:text-[#64B5F6]
             "
           >
-            <RefreshCw size={15} />
-            Refresh
+            <RefreshCw
+              size={15}
+              className={
+                refreshing ? "animate-spin" : ""
+              }
+            />
+
+            {refreshing ? "Refreshing..." : "Refresh"}
           </button>
         </div>
       </section>
+
+      {/* ERROR */}
+
+      {error && (
+        <div
+          className="
+            mb-6
+            rounded-[14px]
+            border
+            border-red-200
+            bg-red-50
+            px-4
+            py-3
+            text-[12px]
+            font-medium
+            text-red-600
+            dark:border-red-500/20
+            dark:bg-red-500/10
+            dark:text-red-400
+          "
+        >
+          {error}
+        </div>
+      )}
 
       {/* =====================================================
           STATS
@@ -223,23 +317,23 @@ export default function AdminDashboardPage() {
                 rounded-[20px]
                 border
                 border-slate-200/80
-                bg-white/85
+                bg-white
                 p-5
                 shadow-[0_8px_30px_rgba(15,23,42,0.04)]
-                backdrop-blur-xl
                 transition-all
                 duration-300
                 hover:-translate-y-1
-                hover:border-[#2196F3]/20
-                hover:shadow-[0_16px_40px_rgba(15,23,42,0.07)]
+                hover:border-[#2196F3]/25
+                hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)]
                 dark:border-white/[0.08]
-                dark:bg-[#0B2031]/75
-                dark:shadow-none
+                dark:bg-[#0B2031]
+                dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
               "
             >
               {/* DECORATION */}
 
               <div
+                aria-hidden="true"
                 className="
                   pointer-events-none
                   absolute
@@ -248,36 +342,42 @@ export default function AdminDashboardPage() {
                   h-32
                   w-32
                   rounded-full
-                  bg-[#2196F3]/[0.05]
+                  bg-[#7C3AED]/[0.08]
                   blur-2xl
+                  dark:bg-[#7C3AED]/[0.12]
                 "
               />
 
-              <div className="relative flex items-start gap-4">
+              <div className="relative flex items-center gap-4">
                 {/* ICON */}
 
                 <div
                   className="
                     flex
-                    h-[52px]
-                    w-[52px]
+                    h-[56px]
+                    w-[56px]
                     shrink-0
                     items-center
                     justify-center
-                    rounded-[16px]
+                    rounded-full
                     border
-                    border-[#2196F3]/10
-                    bg-[#2196F3]/10
-                    text-[#2196F3]
+                    border-[#7C3AED]/20
+                    bg-[#7C3AED]/10
+                    text-[#7C3AED]
+                    shadow-[0_0_25px_rgba(124,58,237,0.08)]
                     transition-transform
                     duration-300
                     group-hover:scale-105
-                    dark:border-[#2196F3]/15
-                    dark:bg-[#2196F3]/15
-                    dark:text-[#64B5F6]
+                    dark:border-[#8B5CF6]/25
+                    dark:bg-[#7C3AED]/20
+                    dark:text-[#A78BFA]
+                    dark:shadow-[0_0_30px_rgba(124,58,237,0.12)]
                   "
                 >
-                  <Icon size={22} strokeWidth={1.9} />
+                  <Icon
+                    size={23}
+                    strokeWidth={1.8}
+                  />
                 </div>
 
                 {/* CONTENT */}
@@ -294,19 +394,32 @@ export default function AdminDashboardPage() {
                     {item.label}
                   </p>
 
-                  <p
-                    className="
-                      mt-1
-                      text-[29px]
-                      font-bold
-                      leading-tight
-                      tracking-[-0.04em]
-                      text-[#0F172A]
-                      dark:text-white
-                    "
-                  >
-                    {item.value}
-                  </p>
+                  <div className="mt-1 min-h-[38px]">
+                    {loading ? (
+                      <Loader2
+                        size={22}
+                        className="
+                          mt-2
+                          animate-spin
+                          text-[#7C3AED]
+                          dark:text-[#A78BFA]
+                        "
+                      />
+                    ) : (
+                      <p
+                        className="
+                          text-[29px]
+                          font-bold
+                          leading-tight
+                          tracking-[-0.04em]
+                          text-[#0F172A]
+                          dark:text-white
+                        "
+                      >
+                        {item.value}
+                      </p>
+                    )}
+                  </div>
 
                   <p
                     className="
@@ -338,7 +451,7 @@ export default function AdminDashboardPage() {
         "
       >
         {/* =================================================
-            ORDERS OVERVIEW
+            RECENT ORDERS
         ================================================= */}
 
         <section
@@ -347,12 +460,11 @@ export default function AdminDashboardPage() {
             rounded-[22px]
             border
             border-slate-200/80
-            bg-white/85
+            bg-white
             shadow-[0_8px_30px_rgba(15,23,42,0.04)]
-            backdrop-blur-xl
             dark:border-white/[0.08]
-            dark:bg-[#0B2031]/75
-            dark:shadow-none
+            dark:bg-[#0B2031]
+            dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
           "
         >
           {/* HEADER */}
@@ -403,7 +515,8 @@ export default function AdminDashboardPage() {
                 gap-1.5
                 text-[12px]
                 font-semibold
-                text-[#2196F3]
+                text-[#7C3AED]
+                dark:text-[#A78BFA]
               "
             >
               View All
@@ -442,15 +555,18 @@ export default function AdminDashboardPage() {
                 justify-center
                 rounded-[20px]
                 border
-                border-[#2196F3]/10
-                bg-[#2196F3]/[0.07]
-                text-[#2196F3]
-                dark:border-[#2196F3]/15
-                dark:bg-[#2196F3]/10
-                dark:text-[#64B5F6]
+                border-[#7C3AED]/15
+                bg-[#7C3AED]/[0.07]
+                text-[#7C3AED]
+                dark:border-[#8B5CF6]/20
+                dark:bg-[#7C3AED]/15
+                dark:text-[#A78BFA]
               "
             >
-              <ShoppingBag size={28} strokeWidth={1.8} />
+              <ShoppingBag
+                size={28}
+                strokeWidth={1.8}
+              />
             </div>
 
             <h3
@@ -475,8 +591,8 @@ export default function AdminDashboardPage() {
                 dark:text-slate-500
               "
             >
-              New customer orders will appear here once orders are
-              placed.
+              New customer orders will appear here once
+              orders are placed.
             </p>
           </div>
         </section>
@@ -490,14 +606,13 @@ export default function AdminDashboardPage() {
             rounded-[22px]
             border
             border-slate-200/80
-            bg-white/85
+            bg-white
             p-5
             shadow-[0_8px_30px_rgba(15,23,42,0.04)]
-            backdrop-blur-xl
             sm:p-6
             dark:border-white/[0.08]
-            dark:bg-[#0B2031]/75
-            dark:shadow-none
+            dark:bg-[#0B2031]
+            dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
           "
         >
           <div className="flex items-start justify-between gap-4">
@@ -558,17 +673,17 @@ export default function AdminDashboardPage() {
                     rounded-[16px]
                     border
                     border-slate-200/70
-                    bg-white/60
+                    bg-slate-50/50
                     px-4
                     transition-all
                     duration-300
                     hover:translate-x-1
-                    hover:border-[#2196F3]/25
-                    hover:bg-[#2196F3]/[0.04]
+                    hover:border-[#7C3AED]/25
+                    hover:bg-[#7C3AED]/[0.04]
                     dark:border-white/[0.07]
                     dark:bg-white/[0.025]
-                    dark:hover:border-[#2196F3]/25
-                    dark:hover:bg-[#2196F3]/[0.07]
+                    dark:hover:border-[#8B5CF6]/25
+                    dark:hover:bg-[#7C3AED]/[0.08]
                   "
                 >
                   <div className="flex min-w-0 items-center gap-3">
@@ -581,10 +696,10 @@ export default function AdminDashboardPage() {
                         items-center
                         justify-center
                         rounded-xl
-                        bg-[#2196F3]/10
-                        text-[#2196F3]
-                        dark:bg-[#2196F3]/15
-                        dark:text-[#64B5F6]
+                        bg-[#7C3AED]/10
+                        text-[#7C3AED]
+                        dark:bg-[#7C3AED]/15
+                        dark:text-[#A78BFA]
                       "
                     >
                       <Icon size={18} />
@@ -625,8 +740,9 @@ export default function AdminDashboardPage() {
                       transition-all
                       duration-300
                       group-hover:translate-x-1
-                      group-hover:text-[#2196F3]
+                      group-hover:text-[#7C3AED]
                       dark:text-slate-600
+                      dark:group-hover:text-[#A78BFA]
                     "
                   />
                 </Link>
