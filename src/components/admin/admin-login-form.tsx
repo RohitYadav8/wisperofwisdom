@@ -136,7 +136,7 @@ export function AdminLoginForm() {
         </div>
       </div>
 
-      {/* PASSWORD */}
+    
 
       <div>
         <label
