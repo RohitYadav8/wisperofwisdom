@@ -10,7 +10,6 @@ import {
   Loader2,
   MessageSquareText,
   RefreshCw,
-  ShoppingBag,
   Star,
   Users,
 } from "lucide-react";
@@ -31,12 +30,6 @@ const quickActions = [
     description: "Add or update books",
     href: "/admin/books",
     icon: BookOpen,
-  },
-  {
-    label: "View Orders",
-    description: "Manage customer orders",
-    href: "/admin/orders",
-    icon: ShoppingBag,
   },
   {
     label: "Manage Reviews",
@@ -113,12 +106,6 @@ export default function AdminDashboardPage() {
       value: dashboard?.stats.totalBooks ?? 0,
       description: "Books available",
       icon: BookOpen,
-    },
-    {
-      label: "Total Orders",
-      value: 0,
-      description: "Customer orders",
-      icon: ShoppingBag,
     },
     {
       label: "Total Reviews",
@@ -301,7 +288,7 @@ export default function AdminDashboardPage() {
           grid
           gap-4
           sm:grid-cols-2
-          xl:grid-cols-4
+          xl:grid-cols-3
         "
       >
         {stats.map((item) => {
@@ -439,318 +426,167 @@ export default function AdminDashboardPage() {
       </section>
 
       {/* =====================================================
-          MAIN CONTENT
+          QUICK ACTIONS
       ===================================================== */}
 
-      <div
+      <section
         className="
           mt-6
-          grid
-          gap-6
-          xl:grid-cols-[minmax(0,1.55fr)_minmax(330px,0.75fr)]
+          rounded-[22px]
+          border
+          border-slate-200/80
+          bg-white
+          p-5
+          shadow-[0_8px_30px_rgba(15,23,42,0.04)]
+          sm:p-6
+          dark:border-white/[0.08]
+          dark:bg-[#0B2031]
+          dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
         "
       >
-        {/* =================================================
-            RECENT ORDERS
-        ================================================= */}
-
-        <section
-          className="
-            overflow-hidden
-            rounded-[22px]
-            border
-            border-slate-200/80
-            bg-white
-            shadow-[0_8px_30px_rgba(15,23,42,0.04)]
-            dark:border-white/[0.08]
-            dark:bg-[#0B2031]
-            dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-          "
-        >
-          {/* HEADER */}
-
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-              gap-4
-              border-b
-              border-slate-200/70
-              px-5
-              py-5
-              sm:px-6
-              dark:border-white/[0.08]
-            "
-          >
-            <div>
-              <h2
-                className="
-                  text-[16px]
-                  font-semibold
-                  text-[#0F172A]
-                  dark:text-white
-                "
-              >
-                Recent Orders
-              </h2>
-
-              <p
-                className="
-                  mt-1
-                  text-[12px]
-                  text-slate-400
-                "
-              >
-                Latest customer orders
-              </p>
-            </div>
-
-            <Link
-              href="/admin/orders"
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2
               className="
-                group
-                inline-flex
-                items-center
-                gap-1.5
-                text-[12px]
-                font-semibold
-                text-[#7C3AED]
-                dark:text-[#A78BFA]
-              "
-            >
-              View All
-
-              <ArrowRight
-                size={14}
-                className="
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-1
-                "
-              />
-            </Link>
-          </div>
-
-          {/* EMPTY STATE */}
-
-          <div
-            className="
-              flex
-              min-h-[365px]
-              flex-col
-              items-center
-              justify-center
-              px-6
-              py-12
-              text-center
-            "
-          >
-            <div
-              className="
-                flex
-                h-[68px]
-                w-[68px]
-                items-center
-                justify-center
-                rounded-[20px]
-                border
-                border-[#7C3AED]/15
-                bg-[#7C3AED]/[0.07]
-                text-[#7C3AED]
-                dark:border-[#8B5CF6]/20
-                dark:bg-[#7C3AED]/15
-                dark:text-[#A78BFA]
-              "
-            >
-              <ShoppingBag
-                size={28}
-                strokeWidth={1.8}
-              />
-            </div>
-
-            <h3
-              className="
-                mt-5
-                text-[15px]
+                text-[16px]
                 font-semibold
                 text-[#0F172A]
                 dark:text-white
               "
             >
-              No orders yet
-            </h3>
+              Quick Actions
+            </h2>
 
             <p
               className="
-                mt-2
-                max-w-[300px]
+                mt-1
                 text-[12px]
-                leading-5
                 text-slate-400
-                dark:text-slate-500
               "
             >
-              New customer orders will appear here once
-              orders are placed.
+              Manage your website
             </p>
           </div>
-        </section>
 
-        {/* =================================================
-            QUICK ACTIONS
-        ================================================= */}
+          <div
+            className="
+              flex
+              h-9
+              w-9
+              items-center
+              justify-center
+              rounded-xl
+              bg-emerald-500/10
+              text-emerald-500
+            "
+          >
+            <CheckCircle2 size={17} />
+          </div>
+        </div>
 
-        <section
+        <div
           className="
-            rounded-[22px]
-            border
-            border-slate-200/80
-            bg-white
-            p-5
-            shadow-[0_8px_30px_rgba(15,23,42,0.04)]
-            sm:p-6
-            dark:border-white/[0.08]
-            dark:bg-[#0B2031]
-            dark:shadow-[0_12px_35px_rgba(0,0,0,0.18)]
+            mt-5
+            grid
+            gap-3
+            md:grid-cols-2
+            xl:grid-cols-3
           "
         >
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2
+          {quickActions.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
                 className="
-                  text-[16px]
-                  font-semibold
-                  text-[#0F172A]
-                  dark:text-white
+                  group
+                  flex
+                  min-h-[76px]
+                  items-center
+                  justify-between
+                  gap-4
+                  rounded-[16px]
+                  border
+                  border-slate-200/70
+                  bg-slate-50/50
+                  px-4
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:border-[#7C3AED]/25
+                  hover:bg-[#7C3AED]/[0.04]
+                  dark:border-white/[0.07]
+                  dark:bg-white/[0.025]
+                  dark:hover:border-[#8B5CF6]/25
+                  dark:hover:bg-[#7C3AED]/[0.08]
                 "
               >
-                Quick Actions
-              </h2>
-
-              <p
-                className="
-                  mt-1
-                  text-[12px]
-                  text-slate-400
-                "
-              >
-                Manage your website
-              </p>
-            </div>
-
-            <div
-              className="
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-xl
-                bg-emerald-500/10
-                text-emerald-500
-              "
-            >
-              <CheckCircle2 size={17} />
-            </div>
-          </div>
-
-          <div className="mt-5 space-y-3">
-            {quickActions.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="
-                    group
-                    flex
-                    min-h-[68px]
-                    items-center
-                    justify-between
-                    gap-4
-                    rounded-[16px]
-                    border
-                    border-slate-200/70
-                    bg-slate-50/50
-                    px-4
-                    transition-all
-                    duration-300
-                    hover:translate-x-1
-                    hover:border-[#7C3AED]/25
-                    hover:bg-[#7C3AED]/[0.04]
-                    dark:border-white/[0.07]
-                    dark:bg-white/[0.025]
-                    dark:hover:border-[#8B5CF6]/25
-                    dark:hover:bg-[#7C3AED]/[0.08]
-                  "
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <div
-                      className="
-                        flex
-                        h-10
-                        w-10
-                        shrink-0
-                        items-center
-                        justify-center
-                        rounded-xl
-                        bg-[#7C3AED]/10
-                        text-[#7C3AED]
-                        dark:bg-[#7C3AED]/15
-                        dark:text-[#A78BFA]
-                      "
-                    >
-                      <Icon size={18} />
-                    </div>
-
-                    <div className="min-w-0">
-                      <p
-                        className="
-                          truncate
-                          text-[13px]
-                          font-semibold
-                          text-slate-700
-                          dark:text-slate-300
-                        "
-                      >
-                        {item.label}
-                      </p>
-
-                      <p
-                        className="
-                          mt-1
-                          truncate
-                          text-[10px]
-                          text-slate-400
-                          dark:text-slate-500
-                        "
-                      >
-                        {item.description}
-                      </p>
-                    </div>
+                <div className="flex min-w-0 items-center gap-3">
+                  <div
+                    className="
+                      flex
+                      h-10
+                      w-10
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#7C3AED]/10
+                      text-[#7C3AED]
+                      dark:bg-[#7C3AED]/15
+                      dark:text-[#A78BFA]
+                    "
+                  >
+                    <Icon size={18} />
                   </div>
 
-                  <ArrowRight
-                    size={16}
-                    className="
-                      shrink-0
-                      text-slate-300
-                      transition-all
-                      duration-300
-                      group-hover:translate-x-1
-                      group-hover:text-[#7C3AED]
-                      dark:text-slate-600
-                      dark:group-hover:text-[#A78BFA]
-                    "
-                  />
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      </div>
+                  <div className="min-w-0">
+                    <p
+                      className="
+                        truncate
+                        text-[13px]
+                        font-semibold
+                        text-slate-700
+                        dark:text-slate-300
+                      "
+                    >
+                      {item.label}
+                    </p>
+
+                    <p
+                      className="
+                        mt-1
+                        truncate
+                        text-[10px]
+                        text-slate-400
+                        dark:text-slate-500
+                      "
+                    >
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+
+                <ArrowRight
+                  size={16}
+                  className="
+                    shrink-0
+                    text-slate-300
+                    transition-all
+                    duration-300
+                    group-hover:translate-x-1
+                    group-hover:text-[#7C3AED]
+                    dark:text-slate-600
+                    dark:group-hover:text-[#A78BFA]
+                  "
+                />
+              </Link>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 }

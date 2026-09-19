@@ -66,60 +66,32 @@ model Book {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  reviews Review[]
+
   @@index([category])
   @@index([author])
   @@index([isActive])
   @@map("books")
 }
 
-model Order {
-  id          Int    @id @default(autoincrement())
-  orderNumber String @unique
+model Review {
+  id Int @id @default(autoincrement())
 
-  customerName String
-  email        String
-  phone        String?
+  bookId Int?
+  book   Book? @relation(fields: [bookId], references: [id], onDelete: SetNull)
 
-  address    String  @db.Text
-  city       String
-  state      String?
-  postalCode String
-  country    String
+  name   String
+  email  String
+  rating Int
+  review String @db.Text
 
-  subtotal Decimal @db.Decimal(10, 2)
-  shipping Decimal @default(0) @db.Decimal(10, 2)
-  total    Decimal @db.Decimal(10, 2)
-
-  status        String  @default("PENDING")
-  paymentStatus String  @default("PENDING")
-  paymentMethod String?
-
-  items OrderItem[]
+  status String @default("PENDING")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([email])
+  @@index([bookId])
   @@index([status])
-  @@index([paymentStatus])
   @@index([createdAt])
-  @@map("orders")
-}
-
-model OrderItem {
-  id Int @id @default(autoincrement())
-
-  orderId Int
-  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  bookId   Int?
-  title    String
-  image    String?
-  price    Decimal @db.Decimal(10, 2)
-  quantity Int
-
-  createdAt DateTime @default(now())
-
-  @@index([orderId])
-  @@map("order_items")
+  @@map("reviews")
 }

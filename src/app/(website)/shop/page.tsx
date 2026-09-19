@@ -13,8 +13,13 @@ import {
   Search,
   SlidersHorizontal,
   X,
+  ExternalLink,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+
+/* =========================================================
+   TYPES
+========================================================= */
 
 type Book = {
   id: number;
@@ -24,7 +29,12 @@ type Book = {
   price: number;
   image: string;
   category: string;
+  amazonUrl: string;
 };
+
+/* =========================================================
+   BOOKS
+========================================================= */
 
 const books: Book[] = [
   {
@@ -35,8 +45,13 @@ const books: Book[] = [
     price: 35,
     image: "/books.png",
     category: "Whispers of Wisdom",
+    amazonUrl: "https://www.amazon.co.uk/dp/B0F5GXGHF8",
   },
 ];
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function getHighestPrice(items: Book[]) {
   if (!items.length) {
@@ -60,53 +75,92 @@ type SortValue =
   | "price-low-high"
   | "price-high-low";
 
+/* =========================================================
+   SHOP PAGE
+========================================================= */
+
 export default function ShopPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [author, setAuthor] = useState("All");
-  const [maxPrice, setMaxPrice] = useState(INITIAL_MAX_PRICE);
-  const [sort, setSort] = useState<SortValue>("default");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [wishlist, setWishlist] = useState<number[]>([]);
+
+  const [maxPrice, setMaxPrice] = useState(
+    INITIAL_MAX_PRICE
+  );
+
+  const [sort, setSort] =
+    useState<SortValue>("default");
+
+  const [viewMode, setViewMode] =
+    useState<ViewMode>("grid");
+
+  const [filterOpen, setFilterOpen] =
+    useState(false);
+
+  const [wishlist, setWishlist] = useState<
+    number[]
+  >([]);
+
+  /* =======================================================
+     CATEGORIES
+  ======================================================= */
 
   const categories = useMemo(() => {
     return [
       "All",
       ...Array.from(
-        new Set(books.map((book) => book.category))
+        new Set(
+          books.map((book) => book.category)
+        )
       ),
     ];
   }, []);
+
+  /* =======================================================
+     AUTHORS
+  ======================================================= */
 
   const authors = useMemo(() => {
     return [
       "All",
       ...Array.from(
-        new Set(books.map((book) => book.author))
+        new Set(
+          books.map((book) => book.author)
+        )
       ),
     ];
   }, []);
 
   const highestPrice = INITIAL_MAX_PRICE;
 
+  /* =======================================================
+     FILTER + SORT
+  ======================================================= */
+
   const filteredBooks = useMemo(() => {
     let result = [...books];
 
     if (search.trim()) {
-      const query = search.trim().toLowerCase();
+      const query = search
+        .trim()
+        .toLowerCase();
 
       result = result.filter((book) => {
         return (
-          book.title.toLowerCase().includes(query) ||
-          book.author.toLowerCase().includes(query)
+          book.title
+            .toLowerCase()
+            .includes(query) ||
+          book.author
+            .toLowerCase()
+            .includes(query)
         );
       });
     }
 
     if (category !== "All") {
       result = result.filter(
-        (book) => book.category === category
+        (book) =>
+          book.category === category
       );
     }
 
@@ -122,15 +176,21 @@ export default function ShopPage() {
 
     switch (sort) {
       case "newest":
-        result.sort((a, b) => b.id - a.id);
+        result.sort(
+          (a, b) => b.id - a.id
+        );
         break;
 
       case "price-low-high":
-        result.sort((a, b) => a.price - b.price);
+        result.sort(
+          (a, b) => a.price - b.price
+        );
         break;
 
       case "price-high-low":
-        result.sort((a, b) => b.price - a.price);
+        result.sort(
+          (a, b) => b.price - a.price
+        );
         break;
 
       default:
@@ -146,6 +206,10 @@ export default function ShopPage() {
     sort,
   ]);
 
+  /* =======================================================
+     WISHLIST
+  ======================================================= */
+
   const toggleWishlist = (id: number) => {
     setWishlist((current) => {
       if (current.includes(id)) {
@@ -157,6 +221,10 @@ export default function ShopPage() {
       return [...current, id];
     });
   };
+
+  /* =======================================================
+     RESET FILTERS
+  ======================================================= */
 
   const resetFilters = () => {
     setSearch("");
@@ -187,6 +255,7 @@ export default function ShopPage() {
       "
     >
       {/* BACKGROUND GRID */}
+
       <div
         className="
           pointer-events-none
@@ -205,6 +274,7 @@ export default function ShopPage() {
       />
 
       {/* LEFT GLOW */}
+
       <div
         className="
           pointer-events-none
@@ -221,6 +291,7 @@ export default function ShopPage() {
       />
 
       {/* RIGHT GLOW */}
+
       <div
         className="
           pointer-events-none
@@ -256,6 +327,7 @@ export default function ShopPage() {
           "
         >
           {/* TITLE */}
+
           <div className="mb-8 sm:mb-10">
             <h1
               className="
@@ -273,6 +345,7 @@ export default function ShopPage() {
           </div>
 
           {/* TOOLBAR */}
+
           <div
             className="
               mb-8
@@ -300,6 +373,7 @@ export default function ShopPage() {
               "
             >
               {/* RESULTS */}
+
               <div className="px-1">
                 <p
                   className="
@@ -316,6 +390,7 @@ export default function ShopPage() {
               </div>
 
               {/* ACTIONS */}
+
               <div
                 className="
                   flex
@@ -327,6 +402,7 @@ export default function ShopPage() {
                 "
               >
                 {/* SEARCH */}
+
                 <div
                   className="
                     relative
@@ -349,7 +425,9 @@ export default function ShopPage() {
                     type="text"
                     value={search}
                     onChange={(e) =>
-                      setSearch(e.target.value)
+                      setSearch(
+                        e.target.value
+                      )
                     }
                     placeholder="Search books..."
                     className="
@@ -377,7 +455,8 @@ export default function ShopPage() {
                   />
                 </div>
 
-                {/* FILTERS */}
+                {/* FILTER BUTTON */}
+
                 <button
                   type="button"
                   onClick={() =>
@@ -433,6 +512,7 @@ export default function ShopPage() {
                 </button>
 
                 {/* SORT */}
+
                 <div className="relative">
                   <select
                     value={sort}
@@ -495,6 +575,7 @@ export default function ShopPage() {
                 </div>
 
                 {/* VIEW SWITCH */}
+
                 <div
                   className="
                     flex
@@ -580,6 +661,7 @@ export default function ShopPage() {
           </div>
 
           {/* PRODUCTS */}
+
           {filteredBooks.length > 0 ? (
             <div
               className={
@@ -602,7 +684,9 @@ export default function ShopPage() {
               {filteredBooks.map(
                 (book, index) => {
                   const isWishlisted =
-                    wishlist.includes(book.id);
+                    wishlist.includes(
+                      book.id
+                    );
 
                   return (
                     <motion.article
@@ -617,7 +701,8 @@ export default function ShopPage() {
                       }}
                       transition={{
                         duration: 0.45,
-                        delay: index * 0.05,
+                        delay:
+                          index * 0.05,
                       }}
                       className={`
                         group
@@ -654,6 +739,7 @@ export default function ShopPage() {
                       `}
                     >
                       {/* IMAGE */}
+
                       <Link
                         href={`/product/${book.slug}`}
                         className={`
@@ -684,6 +770,7 @@ export default function ShopPage() {
                         `}
                       >
                         {/* IMAGE GLOW */}
+
                         <div
                           className="
                             pointer-events-none
@@ -732,14 +819,13 @@ export default function ShopPage() {
                                 ? "220px"
                                 : "(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 320px"
                             }
-                            className="
-                              object-contain
-                            "
+                            className="object-contain"
                           />
                         </div>
                       </Link>
 
                       {/* DETAILS */}
+
                       <div
                         className={`
                           flex
@@ -760,6 +846,7 @@ export default function ShopPage() {
                         `}
                       >
                         {/* PRICE + WISHLIST */}
+
                         <div
                           className="
                             mb-4
@@ -818,7 +905,6 @@ export default function ShopPage() {
                                     border-red-200
                                     bg-red-50
                                     text-red-500
-
                                     dark:border-red-400/20
                                     dark:bg-red-400/10
                                     dark:text-red-400
@@ -827,15 +913,12 @@ export default function ShopPage() {
                                     border-slate-200
                                     bg-slate-50
                                     text-slate-400
-
                                     hover:border-red-200
                                     hover:bg-red-50
                                     hover:text-red-500
-
                                     dark:border-white/10
                                     dark:bg-white/[0.04]
                                     dark:text-slate-400
-
                                     dark:hover:border-red-400/20
                                     dark:hover:bg-red-400/10
                                     dark:hover:text-red-400
@@ -855,6 +938,7 @@ export default function ShopPage() {
                         </div>
 
                         {/* TITLE */}
+
                         <Link
                           href={`/product/${book.slug}`}
                         >
@@ -877,6 +961,7 @@ export default function ShopPage() {
                         </Link>
 
                         {/* AUTHOR */}
+
                         <p
                           className="
                             mt-3
@@ -889,6 +974,45 @@ export default function ShopPage() {
                         >
                           BY {book.author}
                         </p>
+
+                        {/* AMAZON PURCHASE */}
+
+                        <a
+                          href={
+                            book.amazonUrl
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+                            mt-6
+                            inline-flex
+                            h-11
+                            w-full
+                            items-center
+                            justify-center
+                            gap-2
+                            rounded-xl
+                            bg-[#2196F3]
+                            px-5
+                            text-sm
+                            font-semibold
+                            text-white
+                            shadow-[0_10px_30px_rgba(33,150,243,0.20)]
+                            transition-all
+                            duration-300
+                            hover:-translate-y-0.5
+                            hover:bg-[#1976D2]
+                            hover:shadow-[0_14px_34px_rgba(33,150,243,0.28)]
+                            focus:outline-none
+                            focus:ring-4
+                            focus:ring-[#2196F3]/20
+                          "
+                        >
+                          Purchase
+                          <ExternalLink
+                            size={15}
+                          />
+                        </a>
                       </div>
                     </motion.article>
                   );
@@ -897,6 +1021,7 @@ export default function ShopPage() {
             </div>
           ) : (
             /* EMPTY RESULT */
+
             <div
               className="
                 rounded-[26px]
@@ -945,10 +1070,12 @@ export default function ShopPage() {
       </section>
 
       {/* FILTER DRAWER */}
+
       <AnimatePresence>
         {filterOpen && (
           <>
             {/* OVERLAY */}
+
             <motion.button
               type="button"
               aria-label="Close filters"
@@ -974,6 +1101,7 @@ export default function ShopPage() {
             />
 
             {/* DRAWER */}
+
             <motion.aside
               initial={{
                 x: "100%",
@@ -1011,6 +1139,7 @@ export default function ShopPage() {
               "
             >
               {/* FILTER HEADER */}
+
               <div
                 className="
                   flex
@@ -1027,9 +1156,7 @@ export default function ShopPage() {
                 >
                   <SlidersHorizontal
                     size={19}
-                    className="
-                      text-[#2196F3]
-                    "
+                    className="text-[#2196F3]"
                   />
 
                   <h2
@@ -1075,13 +1202,9 @@ export default function ShopPage() {
                 </button>
               </div>
 
-              <div
-                className="
-                  mt-8
-                  space-y-8
-                "
-              >
+              <div className="mt-8 space-y-8">
                 {/* CATEGORY */}
+
                 <div>
                   <p
                     className="
@@ -1100,7 +1223,8 @@ export default function ShopPage() {
                     {categories.map(
                       (item) => {
                         const selected =
-                          category === item;
+                          category ===
+                          item;
 
                         return (
                           <button
@@ -1131,16 +1255,13 @@ export default function ShopPage() {
                                     border-[#2196F3]/30
                                     bg-[#2196F3]/10
                                     text-[#1976D2]
-
                                     dark:text-[#42A5F5]
                                   `
                                   : `
                                     border-slate-200
                                     bg-white
                                     text-slate-600
-
                                     hover:border-[#2196F3]/30
-
                                     dark:border-white/10
                                     dark:bg-[#0B2031]
                                     dark:text-slate-300
@@ -1152,9 +1273,7 @@ export default function ShopPage() {
 
                             {selected && (
                               <Check
-                                size={
-                                  15
-                                }
+                                size={15}
                               />
                             )}
                           </button>
@@ -1165,6 +1284,7 @@ export default function ShopPage() {
                 </div>
 
                 {/* AUTHOR */}
+
                 <div>
                   <p
                     className="
@@ -1214,16 +1334,13 @@ export default function ShopPage() {
                                     border-[#2196F3]/30
                                     bg-[#2196F3]/10
                                     text-[#1976D2]
-
                                     dark:text-[#42A5F5]
                                   `
                                   : `
                                     border-slate-200
                                     bg-white
                                     text-slate-600
-
                                     hover:border-[#2196F3]/30
-
                                     dark:border-white/10
                                     dark:bg-[#0B2031]
                                     dark:text-slate-300
@@ -1235,9 +1352,7 @@ export default function ShopPage() {
 
                             {selected && (
                               <Check
-                                size={
-                                  15
-                                }
+                                size={15}
                               />
                             )}
                           </button>
@@ -1248,6 +1363,7 @@ export default function ShopPage() {
                 </div>
 
                 {/* PRICE */}
+
                 <div>
                   <div
                     className="
@@ -1278,17 +1394,14 @@ export default function ShopPage() {
                         dark:text-[#42A5F5]
                       "
                     >
-                      Up to £
-                      {maxPrice}
+                      Up to £{maxPrice}
                     </span>
                   </div>
 
                   <input
                     type="range"
                     min={0}
-                    max={
-                      highestPrice
-                    }
+                    max={highestPrice}
                     step={5}
                     value={maxPrice}
                     onChange={(e) =>
@@ -1324,6 +1437,7 @@ export default function ShopPage() {
               </div>
 
               {/* FILTER ACTIONS */}
+
               <div
                 className="
                   mt-10
@@ -1338,9 +1452,7 @@ export default function ShopPage() {
               >
                 <button
                   type="button"
-                  onClick={
-                    resetFilters
-                  }
+                  onClick={resetFilters}
                   className="
                     h-12
                     rounded-xl
@@ -1364,9 +1476,7 @@ export default function ShopPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setFilterOpen(
-                      false
-                    )
+                    setFilterOpen(false)
                   }
                   className="
                     h-12
@@ -1389,4 +1499,4 @@ export default function ShopPage() {
       </AnimatePresence>
     </div>
   );
-}
+}                                                                                                                                                                                                                                                               

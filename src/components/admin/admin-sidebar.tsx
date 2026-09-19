@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   BookOpen,
-  ShoppingBag,
   Star,
   Users,
   MessageSquareText,
@@ -31,11 +30,6 @@ const sidebarItems = [
     label: "Books",
     href: "/admin/books",
     icon: BookOpen,
-  },
-  {
-    label: "Orders",
-    href: "/admin/orders",
-    icon: ShoppingBag,
   },
   {
     label: "Reviews",
