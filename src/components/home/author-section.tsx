@@ -184,7 +184,7 @@ export function AuthorSection() {
           <AnimateIn delay={0.32}>
             <div className="mt-8">
               <Link
-                href="/about-me"
+                href="https://santoshkumar.co.uk/"
                 className="
                   group
                   inline-flex

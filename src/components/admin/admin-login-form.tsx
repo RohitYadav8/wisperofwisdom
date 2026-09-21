@@ -128,7 +128,7 @@ export function AdminLoginForm() {
               dark:border-white/10
               dark:bg-white/[0.05]
               dark:text-white
-              dark:placeholder:text-slate-500
+              dark:placeholder:text-slate-500                                  
 
               dark:focus:border-[#42A5F5]/70
             "
@@ -292,6 +292,7 @@ export function AdminLoginForm() {
 
             bg-red-50
 
+            
             px-4
             py-3
 
