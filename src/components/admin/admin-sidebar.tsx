@@ -10,6 +10,7 @@ import {
   Star,
   Users,
   MessageSquareText,
+  MessageCircleQuestion,
   LogOut,
   X,
   NotebookTabs,
@@ -47,6 +48,11 @@ const sidebarItems = [
     icon: NotebookTabs,
   },
   {
+    label: "Enquiries",
+    href: "/admin/enquiries",
+    icon: MessageCircleQuestion,
+  },
+  {
     label: "Contact Messages",
     href: "/admin/contact-messages",
     icon: MessageSquareText,
@@ -70,6 +76,7 @@ export function AdminSidebar({
   return (
     <>
       {/* MOBILE OVERLAY */}
+
       <div
         onClick={onClose}
         className={`
@@ -90,6 +97,7 @@ export function AdminSidebar({
       />
 
       {/* SIDEBAR */}
+
       <aside
         className={`
           fixed
@@ -119,6 +127,7 @@ export function AdminSidebar({
         `}
       >
         {/* LOGO */}
+
         <div
           className="
             flex
@@ -165,6 +174,7 @@ export function AdminSidebar({
           </Link>
 
           {/* MOBILE CLOSE */}
+
           <button
             type="button"
             onClick={onClose}
@@ -192,6 +202,7 @@ export function AdminSidebar({
         </div>
 
         {/* NAVIGATION */}
+
         <nav
           className="
             flex-1
@@ -259,6 +270,7 @@ export function AdminSidebar({
                   `}
                 >
                   {/* ACTIVE LEFT BAR */}
+
                   {active && (
                     <span
                       className="
@@ -295,6 +307,7 @@ export function AdminSidebar({
         </nav>
 
         {/* LOGOUT */}
+
         <div
           className="
             border-t

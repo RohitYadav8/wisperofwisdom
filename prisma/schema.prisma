@@ -95,3 +95,27 @@ model Review {
   @@index([createdAt])
   @@map("reviews")
 }
+model Enquiry {
+  id Int @id @default(autoincrement())
+
+  firstName String
+  lastName  String
+  email     String
+  mobile    String
+
+  organisation String?
+  question     String? @db.Text
+
+  termsAccepted  Boolean @default(false)
+  receiveUpdates Boolean @default(false)
+
+  status String @default("NEW")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("enquiries")
+}
