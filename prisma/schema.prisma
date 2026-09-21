@@ -119,3 +119,27 @@ model Enquiry {
   @@index([createdAt])
   @@map("enquiries")
 }
+model JournalClaim {
+  id Int @id @default(autoincrement())
+
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+
+  challenge String @db.Text
+  goals     String @db.Text
+
+  termsAccepted    Boolean @default(false)
+  marketingConsent Boolean @default(false)
+
+  status String @default("NEW")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("journal_claims")
+}
