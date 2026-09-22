@@ -443,7 +443,7 @@ export function EnquiryPopup() {
                 />
               </div>
 
-              {/* TERMS */}
+            
 
               <div className="mt-5 space-y-3">
                 <label
