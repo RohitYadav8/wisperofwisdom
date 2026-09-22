@@ -91,7 +91,7 @@ export function EnquiryPopup() {
             className="
               relative
               w-full
-              max-w-[720px]
+              max-w-[620px]
               rounded-[12px]
               bg-white
               px-5
@@ -108,7 +108,7 @@ export function EnquiryPopup() {
               dark:bg-[#0B2031]
               dark:shadow-[0_28px_90px_rgba(0,0,0,0.55)]
             "
-          >
+          >                                                                       c              
             {/* CLOSE BUTTON */}
 
             <button
