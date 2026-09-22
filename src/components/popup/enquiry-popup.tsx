@@ -506,7 +506,7 @@ export function EnquiryPopup() {
                 </label>
               </div>
 
-              {/* SUBMIT */}
+            
 
               <div className="mt-7 flex justify-center">
                 <button
