@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Building2,
   CheckCircle2,
@@ -27,41 +27,76 @@ type Enquiry = {
   createdAt: string;
 };
 
-// Temporary data.
-// API connect karne ke baad ye remove kar denge.
-const demoEnquiries: Enquiry[] = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Smith",
-    email: "john@example.com",
-    mobile: "+44 7123 456789",
-    organisation: "ABC Ltd",
-    question: "I would like to know more about Whispers of Wisdom.",
-    status: "NEW",
-    receiveUpdates: true,
-    createdAt: "21 Sep 2026, 10:30 AM",
-  },
-  {
-    id: 2,
-    firstName: "Sarah",
-    lastName: "Williams",
-    email: "sarah@example.com",
-    mobile: "+44 7987 654321",
-    organisation: null,
-    question: "Where can I purchase the book?",
-    status: "READ",
-    receiveUpdates: false,
-    createdAt: "20 Sep 2026, 04:15 PM",
-  },
-];
-
 export default function AdminEnquiriesPage() {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"ALL" | EnquiryStatus>("ALL");
-  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  const filteredEnquiries = demoEnquiries.filter((enquiry) => {
+  const [search, setSearch] = useState("");
+
+  const [statusFilter, setStatusFilter] =
+    useState<"ALL" | EnquiryStatus>("ALL");
+
+  const [selectedEnquiry, setSelectedEnquiry] =
+    useState<Enquiry | null>(null);
+
+  useEffect(() => {
+    async function loadEnquiries() {
+      try {
+        setLoading(true);
+        setLoadError("");
+
+        const response = await fetch("/api/admin/enquiries", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Failed to load enquiries."
+          );
+        }
+
+        setEnquiries(
+          Array.isArray(data.enquiries)
+            ? data.enquiries
+            : []
+        );
+      } catch (error) {
+        console.error("Failed to load enquiries:", error);
+
+        setLoadError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load enquiries."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadEnquiries();
+  }, []);
+
+  function formatDate(date: string) {
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "—";
+    }
+
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(parsedDate);
+  }
+
+  const filteredEnquiries = enquiries.filter((enquiry) => {
     const query = search.trim().toLowerCase();
 
     const matchesSearch =
@@ -71,10 +106,13 @@ export default function AdminEnquiriesPage() {
         .includes(query) ||
       enquiry.email.toLowerCase().includes(query) ||
       enquiry.mobile.toLowerCase().includes(query) ||
-      enquiry.organisation?.toLowerCase().includes(query);
+      enquiry.organisation
+        ?.toLowerCase()
+        .includes(query);
 
     const matchesStatus =
-      statusFilter === "ALL" || enquiry.status === statusFilter;
+      statusFilter === "ALL" ||
+      enquiry.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -132,7 +170,9 @@ export default function AdminEnquiriesPage() {
             <input
               type="text"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) =>
+                setSearch(event.target.value)
+              }
               placeholder="Search enquiries..."
               className="
                 h-11
@@ -165,7 +205,9 @@ export default function AdminEnquiriesPage() {
             value={statusFilter}
             onChange={(event) =>
               setStatusFilter(
-                event.target.value as "ALL" | EnquiryStatus
+                event.target.value as
+                  | "ALL"
+                  | EnquiryStatus
               )
             }
             className="
@@ -191,6 +233,28 @@ export default function AdminEnquiriesPage() {
             <option value="READ">Read</option>
           </select>
         </div>
+
+        {/* ERROR */}
+
+        {loadError && (
+          <div
+            className="
+              rounded-xl
+              border
+              border-red-200
+              bg-red-50
+              px-4
+              py-3
+              text-sm
+              text-red-600
+              dark:border-red-500/20
+              dark:bg-red-500/10
+              dark:text-red-300
+            "
+          >
+            {loadError}
+          </div>
+        )}
 
         {/* TABLE */}
 
@@ -245,138 +309,166 @@ export default function AdminEnquiriesPage() {
               </thead>
 
               <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
-                {filteredEnquiries.map((enquiry) => (
-                  <tr
-                    key={enquiry.id}
-                    className="
-                      transition-colors
-                      hover:bg-slate-50/70
-                      dark:hover:bg-white/[0.025]
-                    "
-                  >
-                    {/* NAME */}
+                {!loading &&
+                  filteredEnquiries.map((enquiry) => (
+                    <tr
+                      key={enquiry.id}
+                      className="
+                        transition-colors
+                        hover:bg-slate-50/70
+                        dark:hover:bg-white/[0.025]
+                      "
+                    >
+                      {/* NAME */}
 
-                    <td className="px-5 py-4">
-                      <div className="font-medium text-slate-900 dark:text-white">
-                        {enquiry.firstName} {enquiry.lastName}
-                      </div>
-                    </td>
-
-                    {/* CONTACT */}
-
-                    <td className="px-5 py-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                          <Mail size={14} className="text-slate-400" />
-                          {enquiry.email}
+                      <td className="px-5 py-4">
+                        <div className="font-medium text-slate-900 dark:text-white">
+                          {enquiry.firstName}{" "}
+                          {enquiry.lastName}
                         </div>
+                      </td>
 
-                        <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                          <Phone size={14} className="text-slate-400" />
-                          {enquiry.mobile}
+                      {/* CONTACT */}
+
+                      <td className="px-5 py-4">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                            <Mail
+                              size={14}
+                              className="text-slate-400"
+                            />
+
+                            {enquiry.email}
+                          </div>
+
+                          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                            <Phone
+                              size={14}
+                              className="text-slate-400"
+                            />
+
+                            {enquiry.mobile}
+                          </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* ORGANISATION */}
+                      {/* ORGANISATION */}
 
-                    <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">
-                      {enquiry.organisation || "—"}
-                    </td>
+                      <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">
+                        {enquiry.organisation || "—"}
+                      </td>
 
-                    {/* DATE */}
+                      {/* DATE */}
 
-                    <td className="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">
-                      {enquiry.createdAt}
-                    </td>
+                      <td className="px-5 py-4 text-sm text-slate-500 dark:text-slate-400">
+                        {formatDate(
+                          enquiry.createdAt
+                        )}
+                      </td>
 
-                    {/* STATUS */}
+                      {/* STATUS */}
 
-                    <td className="px-5 py-4">
-                      {enquiry.status === "NEW" ? (
-                        <span
+                      <td className="px-5 py-4">
+                        {enquiry.status === "NEW" ? (
+                          <span
+                            className="
+                              inline-flex
+                              rounded-full
+                              bg-[#2196F3]/10
+                              px-2.5
+                              py-1
+                              text-xs
+                              font-semibold
+                              text-[#1976D2]
+                              dark:bg-[#2196F3]/15
+                              dark:text-[#64B5F6]
+                            "
+                          >
+                            New
+                          </span>
+                        ) : (
+                          <span
+                            className="
+                              inline-flex
+                              rounded-full
+                              bg-emerald-50
+                              px-2.5
+                              py-1
+                              text-xs
+                              font-semibold
+                              text-emerald-600
+                              dark:bg-emerald-500/10
+                              dark:text-emerald-400
+                            "
+                          >
+                            Read
+                          </span>
+                        )}
+                      </td>
+
+                      {/* ACTION */}
+
+                      <td className="px-5 py-4 text-right">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setSelectedEnquiry(
+                              enquiry
+                            )
+                          }
                           className="
                             inline-flex
-                            rounded-full
-                            bg-[#2196F3]/10
-                            px-2.5
-                            py-1
-                            text-xs
-                            font-semibold
-                            text-[#1976D2]
-                            dark:bg-[#2196F3]/15
-                            dark:text-[#64B5F6]
+                            h-9
+                            w-9
+                            items-center
+                            justify-center
+                            rounded-lg
+                            text-slate-500
+                            transition
+                            hover:bg-[#2196F3]/10
+                            hover:text-[#2196F3]
+                            dark:text-slate-400
+                            dark:hover:bg-[#2196F3]/10
+                            dark:hover:text-[#64B5F6]
                           "
+                          aria-label="View enquiry"
                         >
-                          New
-                        </span>
-                      ) : (
-                        <span
-                          className="
-                            inline-flex
-                            rounded-full
-                            bg-emerald-50
-                            px-2.5
-                            py-1
-                            text-xs
-                            font-semibold
-                            text-emerald-600
-                            dark:bg-emerald-500/10
-                            dark:text-emerald-400
-                          "
-                        >
-                          Read
-                        </span>
-                      )}
-                    </td>
-
-                    {/* ACTION */}
-
-                    <td className="px-5 py-4 text-right">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedEnquiry(enquiry)}
-                        className="
-                          inline-flex
-                          h-9
-                          w-9
-                          items-center
-                          justify-center
-                          rounded-lg
-                          text-slate-500
-                          transition
-                          hover:bg-[#2196F3]/10
-                          hover:text-[#2196F3]
-                          dark:text-slate-400
-                          dark:hover:bg-[#2196F3]/10
-                          dark:hover:text-[#64B5F6]
-                        "
-                        aria-label="View enquiry"
-                      >
-                        <Eye size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                          <Eye size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
 
-          {/* EMPTY */}
+          {/* LOADING */}
 
-          {filteredEnquiries.length === 0 && (
-            <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
-              <MessageCircleQuestion
-                size={38}
-                strokeWidth={1.5}
-                className="text-slate-300 dark:text-slate-600"
-              />
-
-              <p className="mt-4 text-sm font-medium text-slate-600 dark:text-slate-300">
-                No enquiries found.
+          {loading && (
+            <div className="flex min-h-[300px] items-center justify-center px-6">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Loading enquiries...
               </p>
             </div>
           )}
+
+          {/* EMPTY */}
+
+          {!loading &&
+            !loadError &&
+            filteredEnquiries.length === 0 && (
+              <div className="flex min-h-[300px] flex-col items-center justify-center px-6 text-center">
+                <MessageCircleQuestion
+                  size={38}
+                  strokeWidth={1.5}
+                  className="text-slate-300 dark:text-slate-600"
+                />
+
+                <p className="mt-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                  No enquiries found.
+                </p>
+              </div>
+            )}
         </div>
       </div>
 
@@ -418,7 +510,9 @@ export default function AdminEnquiriesPage() {
 
             <button
               type="button"
-              onClick={() => setSelectedEnquiry(null)}
+              onClick={() =>
+                setSelectedEnquiry(null)
+              }
               className="
                 absolute
                 right-4
@@ -494,7 +588,9 @@ export default function AdminEnquiriesPage() {
 
                 <div className="mt-1.5 flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
                   <Building2 size={15} />
-                  {selectedEnquiry.organisation || "—"}
+
+                  {selectedEnquiry.organisation ||
+                    "—"}
                 </div>
               </div>
 
@@ -555,7 +651,9 @@ export default function AdminEnquiriesPage() {
                 </p>
 
                 <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-300">
-                  {selectedEnquiry.createdAt}
+                  {formatDate(
+                    selectedEnquiry.createdAt
+                  )}
                 </p>
               </div>
             </div>

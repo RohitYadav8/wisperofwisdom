@@ -32,11 +32,7 @@ const sidebarItems = [
     href: "/admin/books",
     icon: BookOpen,
   },
-  {
-    label: "Reviews",
-    href: "/admin/reviews",
-    icon: Star,
-  },
+ 
   {
     label: "Users",
     href: "/admin/users",

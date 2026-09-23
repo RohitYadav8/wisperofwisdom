@@ -7,19 +7,108 @@ import { AnimatePresence, motion } from "motion/react";
 export function EnquiryPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
+
   useEffect(() => {
     // Website load hone ke baad popup open hoga
     setIsOpen(true);
   }, []);
 
   function handleClose() {
+    if (isSubmitting) return;
+
     setIsOpen(false);
+    setSubmitError("");
+    setSubmitSuccess("");
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    // API connection next step me karenge
+    setSubmitError("");
+    setSubmitSuccess("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const firstName = String(formData.get("firstName") ?? "").trim();
+    const lastName = String(formData.get("lastName") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const mobile = String(formData.get("mobile") ?? "").trim();
+    const organisation = String(
+      formData.get("organisation") ?? ""
+    ).trim();
+    const question = String(formData.get("question") ?? "").trim();
+
+    const termsAccepted =
+      formData.get("termsAccepted") === "on";
+
+    const receiveUpdates =
+      formData.get("receiveUpdates") === "on";
+
+    if (!firstName || !lastName || !email || !mobile) {
+      setSubmitError("Please fill in all required fields.");
+      return;
+    }
+
+    if (!termsAccepted) {
+      setSubmitError(
+        "Please accept the Terms & Conditions."
+      );
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const response = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          mobile,
+          organisation,
+          question,
+          termsAccepted,
+          receiveUpdates,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setSubmitError(
+          data.message ||
+            data.error ||
+            "Unable to submit your enquiry. Please try again."
+        );
+        return;
+      }
+
+      form.reset();
+
+      setSubmitSuccess("Enquiry submitted successfully.");
+
+      // Success message dikhane ke baad popup close
+      window.setTimeout(() => {
+        setIsOpen(false);
+        setSubmitSuccess("");
+      }, 1200);
+    } catch (error) {
+      console.error("Enquiry submission error:", error);
+
+      setSubmitError(
+        "Something went wrong. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   // ESC press karne par popup close
@@ -39,7 +128,7 @@ export function EnquiryPopup() {
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, isSubmitting]);
 
   return (
     <AnimatePresence>
@@ -108,12 +197,13 @@ export function EnquiryPopup() {
               dark:bg-[#0B2031]
               dark:shadow-[0_28px_90px_rgba(0,0,0,0.55)]
             "
-          >                                                                       c              
+          >
             {/* CLOSE BUTTON */}
 
             <button
               type="button"
               onClick={handleClose}
+              disabled={isSubmitting}
               aria-label="Close enquiry form"
               className="
                 absolute
@@ -130,6 +220,9 @@ export function EnquiryPopup() {
                 duration-200
                 hover:bg-slate-100
                 hover:text-slate-700
+
+                disabled:cursor-not-allowed
+                disabled:opacity-50
 
                 dark:text-slate-400
                 dark:hover:bg-white/[0.07]
@@ -169,6 +262,7 @@ export function EnquiryPopup() {
                     name="firstName"
                     type="text"
                     required
+                    disabled={isSubmitting}
                     className="
                       h-[44px]
                       w-full
@@ -186,6 +280,9 @@ export function EnquiryPopup() {
                       focus:border-[#2196F3]
                       focus:ring-2
                       focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
 
                       dark:border-white/[0.12]
                       dark:bg-[#071A28]
@@ -217,6 +314,7 @@ export function EnquiryPopup() {
                     name="lastName"
                     type="text"
                     required
+                    disabled={isSubmitting}
                     className="
                       h-[44px]
                       w-full
@@ -234,6 +332,9 @@ export function EnquiryPopup() {
                       focus:border-[#2196F3]
                       focus:ring-2
                       focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
 
                       dark:border-white/[0.12]
                       dark:bg-[#071A28]
@@ -269,6 +370,7 @@ export function EnquiryPopup() {
                     name="email"
                     type="email"
                     required
+                    disabled={isSubmitting}
                     className="
                       h-[44px]
                       w-full
@@ -286,6 +388,9 @@ export function EnquiryPopup() {
                       focus:border-[#2196F3]
                       focus:ring-2
                       focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
 
                       dark:border-white/[0.12]
                       dark:bg-[#071A28]
@@ -317,6 +422,7 @@ export function EnquiryPopup() {
                     name="mobile"
                     type="tel"
                     required
+                    disabled={isSubmitting}
                     className="
                       h-[44px]
                       w-full
@@ -334,6 +440,9 @@ export function EnquiryPopup() {
                       focus:border-[#2196F3]
                       focus:ring-2
                       focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
 
                       dark:border-white/[0.12]
                       dark:bg-[#071A28]
@@ -366,6 +475,7 @@ export function EnquiryPopup() {
                   id="enquiry-organisation"
                   name="organisation"
                   type="text"
+                  disabled={isSubmitting}
                   className="
                     h-[44px]
                     w-full
@@ -383,6 +493,9 @@ export function EnquiryPopup() {
                     focus:border-[#2196F3]
                     focus:ring-2
                     focus:ring-[#2196F3]/10
+
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
 
                     dark:border-white/[0.12]
                     dark:bg-[#071A28]
@@ -414,6 +527,7 @@ export function EnquiryPopup() {
                   id="enquiry-question"
                   name="question"
                   rows={4}
+                  disabled={isSubmitting}
                   className="
                     min-h-[95px]
                     w-full
@@ -434,6 +548,9 @@ export function EnquiryPopup() {
                     focus:ring-2
                     focus:ring-[#2196F3]/10
 
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+
                     dark:border-white/[0.12]
                     dark:bg-[#071A28]
                     dark:text-white
@@ -443,7 +560,7 @@ export function EnquiryPopup() {
                 />
               </div>
 
-            
+              {/* CHECKBOXES */}
 
               <div className="mt-5 space-y-3">
                 <label
@@ -462,6 +579,7 @@ export function EnquiryPopup() {
                     type="checkbox"
                     name="termsAccepted"
                     required
+                    disabled={isSubmitting}
                     className="
                       mt-[3px]
                       h-4
@@ -491,6 +609,7 @@ export function EnquiryPopup() {
                   <input
                     type="checkbox"
                     name="receiveUpdates"
+                    disabled={isSubmitting}
                     className="
                       mt-[3px]
                       h-4
@@ -506,11 +625,62 @@ export function EnquiryPopup() {
                 </label>
               </div>
 
-            
+              {/* ERROR */}
+
+              {submitError && (
+                <div
+                  role="alert"
+                  className="
+                    mt-5
+                    rounded-[6px]
+                    border
+                    border-red-200
+                    bg-red-50
+                    px-4
+                    py-3
+                    text-[13px]
+                    text-red-600
+
+                    dark:border-red-500/20
+                    dark:bg-red-500/10
+                    dark:text-red-300
+                  "
+                >
+                  {submitError}
+                </div>
+              )}
+
+              {/* SUCCESS */}
+
+              {submitSuccess && (
+                <div
+                  role="status"
+                  className="
+                    mt-5
+                    rounded-[6px]
+                    border
+                    border-emerald-200
+                    bg-emerald-50
+                    px-4
+                    py-3
+                    text-[13px]
+                    text-emerald-700
+
+                    dark:border-emerald-500/20
+                    dark:bg-emerald-500/10
+                    dark:text-emerald-300
+                  "
+                >
+                  {submitSuccess}
+                </div>
+              )}
+
+              {/* SUBMIT */}
 
               <div className="mt-7 flex justify-center">
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="
                     inline-flex
                     min-h-[42px]
@@ -534,10 +704,15 @@ export function EnquiryPopup() {
                     focus:ring-[#2196F3]/30
                     focus:ring-offset-2
 
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+
                     dark:focus:ring-offset-[#0B2031]
                   "
                 >
-                  Submit Enquiry
+                  {isSubmitting
+                    ? "Submitting..."
+                    : "Submit Enquiry"}
                 </button>
               </div>
             </form>

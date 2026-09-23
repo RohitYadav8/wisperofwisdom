@@ -1,25 +1,12 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { PrismaClient } from "../src/generated/prisma/client";
 
-const adapter = new PrismaMariaDb({
-  host: process.env.DATABASE_HOST!,
-  port: Number(process.env.DATABASE_PORT ?? 3306),
-  user: process.env.DATABASE_USER!,
-  password: process.env.DATABASE_PASSWORD!,
-  database: process.env.DATABASE_NAME!,
-  connectionLimit: 5,
-  allowPublicKeyRetrieval: true,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
+import { prisma } from "../src/lib/prisma";
 
 async function main() {
   const email = "admin@whispersofwisdom.com";
   const password = "Admin@123";
+  const name = "Admin";
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -28,31 +15,26 @@ async function main() {
       email,
     },
     update: {
-      name: "Admin",
+      name,
       password: hashedPassword,
       isActive: true,
     },
     create: {
-      name: "Admin",
+      name,
       email,
       password: hashedPassword,
       isActive: true,
     },
   });
 
-  console.log("✅ Admin created successfully");
-
-  console.log({
-    id: admin.id,
-    name: admin.name,
-    email: admin.email,
-    isActive: admin.isActive,
-  });
+  console.log("Admin user created successfully.");
+  console.log(`Admin ID: ${admin.id}`);
+  console.log(`Admin Email: ${admin.email}`);
 }
 
 main()
   .catch((error) => {
-    console.error("❌ Failed to create admin:");
+    console.error("Failed to create admin user:");
     console.error(error);
     process.exit(1);
   })

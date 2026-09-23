@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -32,27 +32,6 @@ type Book = {
   amazonUrl: string;
 };
 
-/* =========================================================
-   BOOKS
-========================================================= */
-
-const books: Book[] = [
-  {
-    id: 1,
-    title: "The Journey of Whispers of Wisdom",
-    slug: "whispers-of-wisdom",
-    author: "SANTOSH KUMAR",
-    price: 35,
-    image: "/books.png",
-    category: "Whispers of Wisdom",
-    amazonUrl: "https://www.amazon.co.uk/dp/B0F5GXGHF8",
-  },
-];
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
 function getHighestPrice(items: Book[]) {
   if (!items.length) {
     return 100;
@@ -64,8 +43,6 @@ function getHighestPrice(items: Book[]) {
     ) * 10
   );
 }
-
-const INITIAL_MAX_PRICE = getHighestPrice(books);
 
 type ViewMode = "grid" | "list";
 
@@ -80,13 +57,62 @@ type SortValue =
 ========================================================= */
 
 export default function ShopPage() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function loadBooks() {
+      try {
+        setIsLoading(true);
+        setLoadError(null);
+
+        const res = await fetch("/api/books", {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error(
+            `Failed to load books (${res.status})`
+          );
+        }
+
+        const data: Book[] = await res.json();
+
+        if (!isCancelled) {
+          setBooks(data);
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          setLoadError(
+            err instanceof Error
+              ? err.message
+              : "Failed to load books"
+          );
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadBooks();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [author, setAuthor] = useState("All");
 
-  const [maxPrice, setMaxPrice] = useState(
-    INITIAL_MAX_PRICE
-  );
+  const [maxPrice, setMaxPrice] = useState(100);
 
   const [sort, setSort] =
     useState<SortValue>("default");
@@ -97,13 +123,13 @@ export default function ShopPage() {
   const [filterOpen, setFilterOpen] =
     useState(false);
 
-  const [wishlist, setWishlist] = useState<
-    number[]
-  >([]);
+  const [wishlist, setWishlist] = useState<number[]>([]);
 
-  /* =======================================================
-     CATEGORIES
-  ======================================================= */
+  useEffect(() => {
+    if (books.length > 0) {
+      setMaxPrice(getHighestPrice(books));
+    }
+  }, [books]);
 
   const categories = useMemo(() => {
     return [
@@ -114,11 +140,7 @@ export default function ShopPage() {
         )
       ),
     ];
-  }, []);
-
-  /* =======================================================
-     AUTHORS
-  ======================================================= */
+  }, [books]);
 
   const authors = useMemo(() => {
     return [
@@ -129,13 +151,12 @@ export default function ShopPage() {
         )
       ),
     ];
-  }, []);
+  }, [books]);
 
-  const highestPrice = INITIAL_MAX_PRICE;
-
-  /* =======================================================
-     FILTER + SORT
-  ======================================================= */
+  const highestPrice = useMemo(
+    () => getHighestPrice(books),
+    [books]
+  );
 
   const filteredBooks = useMemo(() => {
     let result = [...books];
@@ -176,9 +197,7 @@ export default function ShopPage() {
 
     switch (sort) {
       case "newest":
-        result.sort(
-          (a, b) => b.id - a.id
-        );
+        result.reverse();
         break;
 
       case "price-low-high":
@@ -199,16 +218,13 @@ export default function ShopPage() {
 
     return result;
   }, [
+    books,
     search,
     category,
     author,
     maxPrice,
     sort,
   ]);
-
-  /* =======================================================
-     WISHLIST
-  ======================================================= */
 
   const toggleWishlist = (id: number) => {
     setWishlist((current) => {
@@ -221,10 +237,6 @@ export default function ShopPage() {
       return [...current, id];
     });
   };
-
-  /* =======================================================
-     RESET FILTERS
-  ======================================================= */
 
   const resetFilters = () => {
     setSearch("");
@@ -254,8 +266,6 @@ export default function ShopPage() {
         dark:text-white
       "
     >
-      {/* BACKGROUND GRID */}
-
       <div
         className="
           pointer-events-none
@@ -273,8 +283,6 @@ export default function ShopPage() {
         }}
       />
 
-      {/* LEFT GLOW */}
-
       <div
         className="
           pointer-events-none
@@ -289,8 +297,6 @@ export default function ShopPage() {
           dark:bg-[#2196F3]/10
         "
       />
-
-      {/* RIGHT GLOW */}
 
       <div
         className="
@@ -326,8 +332,6 @@ export default function ShopPage() {
             lg:px-8
           "
         >
-          {/* TITLE */}
-
           <div className="mb-8 sm:mb-10">
             <h1
               className="
@@ -343,8 +347,6 @@ export default function ShopPage() {
               Shop
             </h1>
           </div>
-
-          {/* TOOLBAR */}
 
           <div
             className="
@@ -372,8 +374,6 @@ export default function ShopPage() {
                 xl:justify-between
               "
             >
-              {/* RESULTS */}
-
               <div className="px-1">
                 <p
                   className="
@@ -383,13 +383,13 @@ export default function ShopPage() {
                     dark:text-slate-400
                   "
                 >
-                  {filteredBooks.length === 1
+                  {isLoading
+                    ? "Loading books..."
+                    : filteredBooks.length === 1
                     ? "Showing the single result"
                     : `Showing ${filteredBooks.length} results`}
                 </p>
               </div>
-
-              {/* ACTIONS */}
 
               <div
                 className="
@@ -401,8 +401,6 @@ export default function ShopPage() {
                   sm:items-center
                 "
               >
-                {/* SEARCH */}
-
                 <div
                   className="
                     relative
@@ -454,8 +452,6 @@ export default function ShopPage() {
                     "
                   />
                 </div>
-
-                {/* FILTER BUTTON */}
 
                 <button
                   type="button"
@@ -510,8 +506,6 @@ export default function ShopPage() {
                     </span>
                   )}
                 </button>
-
-                {/* SORT */}
 
                 <div className="relative">
                   <select
@@ -573,8 +567,6 @@ export default function ShopPage() {
                     "
                   />
                 </div>
-
-                {/* VIEW SWITCH */}
 
                 <div
                   className="
@@ -660,9 +652,51 @@ export default function ShopPage() {
             </div>
           </div>
 
-          {/* PRODUCTS */}
-
-          {filteredBooks.length > 0 ? (
+          {isLoading ? (
+            <div
+              className="
+                rounded-[26px]
+                border
+                border-slate-200
+                bg-white/80
+                px-6
+                py-20
+                text-center
+                shadow-[0_16px_50px_rgba(15,23,42,0.04)]
+                dark:border-white/10
+                dark:bg-[#0B2031]/80
+              "
+            >
+              <p
+                className="
+                  text-sm
+                  text-slate-500
+                  dark:text-slate-400
+                "
+              >
+                Loading books...
+              </p>
+            </div>
+          ) : loadError ? (
+            <div
+              className="
+                rounded-[26px]
+                border
+                border-red-200
+                bg-red-50/80
+                px-6
+                py-20
+                text-center
+                shadow-[0_16px_50px_rgba(15,23,42,0.04)]
+                dark:border-red-400/20
+                dark:bg-red-400/5
+              "
+            >
+              <p className="text-sm text-red-600 dark:text-red-400">
+                Couldn&apos;t load books: {loadError}
+              </p>
+            </div>
+          ) : filteredBooks.length > 0 ? (
             <div
               className={
                 viewMode === "grid"
@@ -738,8 +772,6 @@ export default function ShopPage() {
                         }
                       `}
                     >
-                      {/* IMAGE */}
-
                       <Link
                         href={`/product/${book.slug}`}
                         className={`
@@ -769,8 +801,6 @@ export default function ShopPage() {
                           }
                         `}
                       >
-                        {/* IMAGE GLOW */}
-
                         <div
                           className="
                             pointer-events-none
@@ -824,8 +854,6 @@ export default function ShopPage() {
                         </div>
                       </Link>
 
-                      {/* DETAILS */}
-
                       <div
                         className={`
                           flex
@@ -845,8 +873,6 @@ export default function ShopPage() {
                           }
                         `}
                       >
-                        {/* PRICE + WISHLIST */}
-
                         <div
                           className="
                             mb-4
@@ -937,8 +963,6 @@ export default function ShopPage() {
                           </button>
                         </div>
 
-                        {/* TITLE */}
-
                         <Link
                           href={`/product/${book.slug}`}
                         >
@@ -960,8 +984,6 @@ export default function ShopPage() {
                           </h2>
                         </Link>
 
-                        {/* AUTHOR */}
-
                         <p
                           className="
                             mt-3
@@ -974,8 +996,6 @@ export default function ShopPage() {
                         >
                           BY {book.author}
                         </p>
-
-                        {/* AMAZON PURCHASE */}
 
                         <a
                           href={
@@ -1020,8 +1040,6 @@ export default function ShopPage() {
               )}
             </div>
           ) : (
-            /* EMPTY RESULT */
-
             <div
               className="
                 rounded-[26px]
@@ -1069,13 +1087,9 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* FILTER DRAWER */}
-
       <AnimatePresence>
         {filterOpen && (
           <>
-            {/* OVERLAY */}
-
             <motion.button
               type="button"
               aria-label="Close filters"
@@ -1099,8 +1113,6 @@ export default function ShopPage() {
                 backdrop-blur-sm
               "
             />
-
-            {/* DRAWER */}
 
             <motion.aside
               initial={{
@@ -1138,8 +1150,6 @@ export default function ShopPage() {
                 sm:p-7
               "
             >
-              {/* FILTER HEADER */}
-
               <div
                 className="
                   flex
@@ -1203,8 +1213,6 @@ export default function ShopPage() {
               </div>
 
               <div className="mt-8 space-y-8">
-                {/* CATEGORY */}
-
                 <div>
                   <p
                     className="
@@ -1283,8 +1291,6 @@ export default function ShopPage() {
                   </div>
                 </div>
 
-                {/* AUTHOR */}
-
                 <div>
                   <p
                     className="
@@ -1362,8 +1368,6 @@ export default function ShopPage() {
                   </div>
                 </div>
 
-                {/* PRICE */}
-
                 <div>
                   <div
                     className="
@@ -1436,8 +1440,6 @@ export default function ShopPage() {
                 </div>
               </div>
 
-              {/* FILTER ACTIONS */}
-
               <div
                 className="
                   mt-10
@@ -1499,4 +1501,4 @@ export default function ShopPage() {
       </AnimatePresence>
     </div>
   );
-}                                                                                                                                                                                                                                                               
+}
