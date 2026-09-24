@@ -38,11 +38,11 @@ export async function PATCH(
           message: "Invalid status.",
         },
         { status: 400 }
-      );
+      );                
     }
 
     const existingClaim = await prisma.journalClaim.findUnique({
-      where: {
+      where: { 
         id: claimId,
       },
     });
