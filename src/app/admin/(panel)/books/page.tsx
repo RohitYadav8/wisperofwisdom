@@ -1374,7 +1374,7 @@ export default function AdminBooksPage() {
                     </div>
                   </div>
 
-                  {/* FOOTER */}
+                  
 
                   <div
                     className="
