@@ -14,16 +14,16 @@ function createPrismaClient() {
 
   const adapter = new PrismaPg({
     connectionString,
+    max: 3,                      // chhota pool
+    idleTimeoutMillis: 10000,    // idle connections jaldi chhodo
+    connectionTimeoutMillis: 10000,
   });
 
-  return new PrismaClient({
-    adapter,
-  });
+  return new PrismaClient({ adapter });
 }
 
 export const prisma =
   globalForPrisma.prisma ?? createPrismaClient();
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Dev aur production dono mein cache karo
+globalForPrisma.prisma = prisma;

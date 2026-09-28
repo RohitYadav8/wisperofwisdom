@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, UserRound, X } from "lucide-react";
+import {
+  Menu,
+  Search,
+  UserRound,
+  X,
+  ArrowUpRight,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { ThemeToggle } from "../ui/theme-toggle";
@@ -43,7 +49,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // =========================================================
-  // SCROLL STATE
+  // SCROLL
   // =========================================================
 
   useEffect(() => {
@@ -71,7 +77,7 @@ export function Navbar() {
   }, [pathname]);
 
   // =========================================================
-  // PREVENT BODY SCROLL WHEN MOBILE MENU IS OPEN
+  // LOCK BODY SCROLL
   // =========================================================
 
   useEffect(() => {
@@ -87,24 +93,36 @@ export function Navbar() {
   }, [mobileOpen]);
 
   // =========================================================
-  // ESCAPE KEY CLOSE
+  // ESCAPE KEY
   // =========================================================
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileOpen(false);
       }
     };
 
     if (mobileOpen) {
-      document.addEventListener("keydown", handleEscape);
+      document.addEventListener("keydown", handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [mobileOpen]);
+
+  // =========================================================
+  // ACTIVE LINK
+  // =========================================================
+
+  const isActiveLink = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -114,7 +132,7 @@ export function Navbar() {
 
       <motion.header
         initial={{
-          y: -90,
+          y: -80,
           opacity: 0,
         }}
         animate={{
@@ -122,36 +140,33 @@ export function Navbar() {
           opacity: 1,
         }}
         transition={{
-          duration: 0.8,
+          duration: 0.7,
           ease: [0.22, 1, 0.36, 1],
         }}
         className={`
           sticky
           top-0
-          z-50
+          z-[100]
           w-full
           border-b
-          backdrop-blur-xl
-          transition-[background-color,border-color,box-shadow]
+          transition-all
           duration-300
 
           ${
             scrolled
               ? `
-                border-slate-200/80
-                bg-white/95
-                shadow-[0_10px_40px_rgba(15,23,42,0.07)]
-                dark:border-white/10
-                dark:bg-[#071725]/95
-                dark:shadow-[0_10px_40px_rgba(0,0,0,0.22)]
+                border-white/[0.08]
+                bg-[#071725]/95
+                shadow-[0_12px_45px_rgba(0,0,0,0.25)]
+                backdrop-blur-2xl
               `
               : `
-                border-slate-200/60
-                bg-white/90
-                dark:border-white/10
-                dark:bg-[#071725]/90
+                border-white/[0.06]
+                bg-[#071725]
               `
           }
+
+          dark:bg-[#071725]
         `}
       >
         {/* =====================================================
@@ -160,7 +175,7 @@ export function Navbar() {
 
         <motion.div
           animate={{
-            height: scrolled ? 76 : 88,
+            height: scrolled ? 72 : 88,
           }}
           transition={{
             duration: 0.3,
@@ -169,13 +184,13 @@ export function Navbar() {
           className="
             mx-auto
             flex
+            w-full
             max-w-[1500px]
             items-center
-            gap-4
             px-5
             sm:px-8
             lg:px-10
-            xl:px-12
+            xl:px-14
           "
         >
           {/* =================================================
@@ -185,15 +200,13 @@ export function Navbar() {
           <motion.button
             type="button"
             onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
+            aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
-            whileHover={{
-              scale: 1.06,
-            }}
             whileTap={{
-              scale: 0.92,
+              scale: 0.9,
             }}
             className="
+              mr-3
               flex
               h-10
               w-10
@@ -201,18 +214,19 @@ export function Navbar() {
               items-center
               justify-center
               rounded-full
-              text-slate-700
-              transition-colors
-              hover:bg-slate-100
-              hover:text-[#2196F3]
-              dark:text-white
-              dark:hover:bg-white/5
-              dark:hover:text-[#42A5F5]
+              border
+              border-white/10
+              text-white
+              transition-all
+              duration-300
+              hover:border-[#2196F3]/50
+              hover:bg-[#2196F3]/10
+              hover:text-[#42A5F5]
 
               lg:hidden
             "
           >
-            <Menu size={22} strokeWidth={1.8} />
+            <Menu size={21} strokeWidth={1.7} />
           </motion.button>
 
           {/* =================================================
@@ -221,33 +235,28 @@ export function Navbar() {
 
           <motion.div
             whileHover={{
-              scale: 1.03,
+              scale: 1.025,
             }}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 20,
             }}
-            className="
-              ml-1
-              shrink-0
-              sm:ml-2
-            "
+            className="shrink-0"
           >
             <Link
               href="/"
               aria-label="Whispers of Wisdom Home"
               className="
-                relative
                 flex
                 items-center
                 justify-center
               "
             >
-              {/* LIGHT THEME LOGO */}
+              {/* LIGHT LOGO */}
 
               <Image
-                src="/Wispers-of-Wisdom-logo.png"
+                src="/logo-dark.png"
                 alt="Whispers of Wisdom"
                 width={190}
                 height={90}
@@ -257,36 +266,11 @@ export function Navbar() {
                   object-contain
                   transition-all
                   duration-300
-                  dark:hidden
 
                   ${
                     scrolled
-                      ? "w-[100px] sm:w-[105px]"
-                      : "w-[108px] sm:w-[118px]"
-                  }
-                `}
-              />
-
-              {/* DARK THEME LOGO */}
-
-              <Image
-                src="/logo-dark-1.png"
-                alt="Whispers of Wisdom"
-                width={190}
-                height={90}
-                priority
-                className={`
-                  hidden
-                  h-auto
-                  object-contain
-                  transition-all
-                  duration-300
-                  dark:block
-
-                  ${
-                    scrolled
-                      ? "w-[100px] sm:w-[105px]"
-                      : "w-[108px] sm:w-[118px]"
+                      ? "w-[92px] sm:w-[100px]"
+                      : "w-[100px] sm:w-[110px]"
                   }
                 `}
               />
@@ -300,66 +284,107 @@ export function Navbar() {
           <nav
             className="
               ml-auto
-              hidden
+              flex
               items-center
-              gap-5
-              lg:flex
-              xl:gap-7
+              gap-1
+              lg:gap-2
+              xl:gap-4
             "
           >
             {navigation.map((item, index) => {
-              const isActive =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
+              const active = isActiveLink(item.href);
 
               return (
                 <motion.div
                   key={item.href}
                   initial={{
                     opacity: 0,
-                    y: -10,
+                    y: -8,
                   }}
                   animate={{
                     opacity: 1,
                     y: 0,
                   }}
                   transition={{
-                    delay: 0.06 + index * 0.04,
-                    duration: 0.45,
+                    delay: 0.05 + index * 0.04,
+                    duration: 0.4,
                   }}
+                  className="hidden lg:block"
                 >
                   <Link
                     href={item.href}
                     className={`
+                      group
                       relative
                       flex
                       items-center
-                      py-7
-                      text-[13px]
+                      px-3
+                      py-4
+                      text-[12px]
                       font-semibold
                       uppercase
-                      tracking-[0.04em]
+                      tracking-[0.055em]
                       transition-colors
+                      duration-300
+                      xl:px-4
+                      xl:text-[13px]
 
                       ${
-                        isActive
-                          ? `
-                            text-[#2196F3]
-                            dark:text-[#42A5F5]
-                          `
-                          : `
-                            text-slate-700
-                            hover:text-[#2196F3]
-                            dark:text-slate-300
-                            dark:hover:text-[#42A5F5]
-                          `
+                        active
+                          ? "text-white"
+                          : "text-slate-300 hover:text-white"
                       }
                     `}
                   >
+                    {/* TOP DOT */}
+
+                    <span
+                      className={`
+                        absolute
+                        -top-0.5
+                        left-1/2
+                        h-1
+                        w-1
+                        -translate-x-1/2
+                        rounded-full
+                        bg-[#2196F3]
+                        transition-all
+                        duration-300
+
+                        ${
+                          active
+                            ? "scale-100 opacity-100"
+                            : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
+                        }
+                      `}
+                    />
+
                     {item.label}
 
-                    {isActive && <ActiveUnderline />}
+                    {/* UNDERLINE */}
+
+                    <span
+                      className={`
+                        absolute
+                        bottom-1.5
+                        left-3
+                        right-3
+                        h-[1.5px]
+                        origin-left
+                        rounded-full
+                        bg-[#2196F3]
+                        transition-transform
+                        duration-300
+                        xl:left-4
+                        xl:right-4
+
+                        ${
+                          active
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }
+                      `}
+                    />
                   </Link>
                 </motion.div>
               );
@@ -372,11 +397,16 @@ export function Navbar() {
 
           <div
             className="
-              ml-3
+              ml-4
               hidden
               items-center
               gap-1
+              border-l
+              border-white/10
+              pl-4
               lg:flex
+              xl:ml-5
+              xl:pl-5
             "
           >
             {/* SEARCH */}
@@ -385,11 +415,10 @@ export function Navbar() {
               type="button"
               aria-label="Search"
               whileHover={{
-                y: -2,
-                scale: 1.06,
+                scale: 1.08,
               }}
               whileTap={{
-                scale: 0.92,
+                scale: 0.9,
               }}
               className="
                 flex
@@ -398,27 +427,27 @@ export function Navbar() {
                 items-center
                 justify-center
                 rounded-full
-                text-slate-600
-                transition-colors
-                hover:bg-slate-100
-                hover:text-[#2196F3]
-                dark:text-slate-300
-                dark:hover:bg-white/5
-                dark:hover:text-[#42A5F5]
+                text-slate-300
+                transition-all
+                duration-300
+                hover:bg-white/[0.06]
+                hover:text-white
               "
             >
-              <Search size={18} />
+              <Search
+                size={19}
+                strokeWidth={1.7}
+              />
             </motion.button>
 
             {/* ACCOUNT */}
 
             <motion.div
               whileHover={{
-                y: -2,
-                scale: 1.06,
+                scale: 1.08,
               }}
               whileTap={{
-                scale: 0.92,
+                scale: 0.9,
               }}
             >
               <Link
@@ -431,26 +460,36 @@ export function Navbar() {
                   items-center
                   justify-center
                   rounded-full
-                  text-slate-600
-                  transition-colors
-                  hover:bg-slate-100
-                  hover:text-[#2196F3]
-                  dark:text-slate-300
-                  dark:hover:bg-white/5
-                  dark:hover:text-[#42A5F5]
+                  text-slate-300
+                  transition-all
+                  duration-300
+                  hover:bg-white/[0.06]
+                  hover:text-white
                 "
               >
-                <UserRound size={18} />
+                <UserRound
+                  size={19}
+                  strokeWidth={1.7}
+                />
               </Link>
             </motion.div>
 
-            {/* THEME TOGGLE */}
+            {/* THEME */}
 
-            <ThemeToggle />
+            <div
+              className="
+                ml-1
+                border-l
+                border-white/10
+                pl-2
+              "
+            >
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* =================================================
-              MOBILE RIGHT ACTIONS
+              MOBILE ACTIONS
           ================================================== */}
 
           <div
@@ -458,7 +497,7 @@ export function Navbar() {
               ml-auto
               flex
               items-center
-              gap-1
+              gap-0.5
               lg:hidden
             "
           >
@@ -477,380 +516,319 @@ export function Navbar() {
                 items-center
                 justify-center
                 rounded-full
-                text-slate-700
+                text-slate-300
                 transition-colors
-                hover:bg-slate-100
-                hover:text-[#2196F3]
-                dark:text-white
-                dark:hover:bg-white/5
+                hover:bg-white/[0.06]
+                hover:text-white
               "
             >
-              <Search size={18} />
+              <Search
+                size={18}
+                strokeWidth={1.7}
+              />
             </motion.button>
+
+            {/* ACCOUNT */}
+
+            <Link
+              href="/account"
+              aria-label="My Account"
+              className="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-full
+                text-slate-300
+                transition-colors
+                hover:bg-white/[0.06]
+                hover:text-white
+              "
+            >
+              <UserRound
+                size={18}
+                strokeWidth={1.7}
+              />
+            </Link>
 
             {/* THEME */}
 
             <ThemeToggle />
-
-            {/* ACCOUNT */}
-
-            <motion.div
-              whileTap={{
-                scale: 0.9,
-              }}
-            >
-              <Link
-                href="/account"
-                aria-label="My Account"
-                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  text-slate-700
-                  transition-colors
-                  hover:bg-slate-100
-                  hover:text-[#2196F3]
-                  dark:text-white
-                  dark:hover:bg-white/5
-                "
-              >
-                <UserRound size={18} />
-              </Link>
-            </motion.div>
           </div>
         </motion.div>
+      </motion.header>
 
-        {/* =====================================================
-            MOBILE SIDE MENU
-        ====================================================== */}
+      {/* =====================================================
+          MOBILE MENU
+      ====================================================== */}
 
-        <AnimatePresence>
-          {mobileOpen && (
-            <>
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* =================================================
+                OVERLAY
+            ================================================== */}
+
+            <motion.button
+              type="button"
+              aria-label="Close navigation"
+              onClick={() => setMobileOpen(false)}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.25,
+              }}
+              className="
+                fixed
+                inset-0
+                z-[200]
+                bg-black/60
+                backdrop-blur-sm
+              "
+            />
+
+            {/* =================================================
+                MOBILE DRAWER
+            ================================================== */}
+
+            <motion.aside
+              initial={{
+                x: "-100%",
+              }}
+              animate={{
+                x: 0,
+              }}
+              exit={{
+                x: "-100%",
+              }}
+              transition={{
+                duration: 0.4,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="
+                fixed
+                left-0
+                top-0
+                z-[210]
+                flex
+                h-[100dvh]
+                w-[88%]
+                max-w-[390px]
+                flex-col
+                overflow-y-auto
+                border-r
+                border-white/10
+                bg-[#071725]
+                shadow-[15px_0_50px_rgba(0,0,0,0.4)]
+              "
+            >
               {/* =================================================
-                  OVERLAY
+                  DRAWER HEADER
               ================================================== */}
 
-              <motion.button
-                type="button"
-                aria-label="Close menu overlay"
-                onClick={() => setMobileOpen(false)}
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: 1,
-                }}
-                exit={{
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.25,
-                }}
+              <div
                 className="
-                  fixed
-                  inset-0
-                  z-[80]
-                  cursor-default
-                  bg-black/50
-                  backdrop-blur-[2px]
-                "
-              />
-
-              {/* =================================================
-                  MOBILE DRAWER
-              ================================================== */}
-
-              <motion.aside
-                initial={{
-                  x: "-100%",
-                }}
-                animate={{
-                  x: 0,
-                }}
-                exit={{
-                  x: "-100%",
-                }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="
-                  fixed
-                  left-0
-                  top-0
-                  z-[90]
                   flex
-                  h-[100dvh]
-                  w-[88%]
-                  max-w-[390px]
-                  flex-col
-                  overflow-y-auto
-                  border-r
-                  border-slate-200
-                  bg-white
-                  shadow-[10px_0_40px_rgba(0,0,0,0.12)]
-
-                  dark:border-white/10
-                  dark:bg-[#071725]
-                  dark:shadow-[10px_0_40px_rgba(0,0,0,0.35)]
+                  h-[90px]
+                  shrink-0
+                  items-center
+                  justify-between
+                  border-b
+                  border-white/10
+                  px-6
                 "
               >
-                {/* =================================================
-                    DRAWER HEADER
-                ================================================== */}
+                {/* LOGO */}
 
-                <div
+                <Link
+                  href="/"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Whispers of Wisdom Home"
+                  className="flex items-center"
+                >
+                  <Image
+                    src="/logo-dark-1.png"
+                    alt="Whispers of Wisdom"
+                    width={150}
+                    height={80}
+                    priority
+                    className="
+                      h-auto
+                      w-[105px]
+                      object-contain
+                    "
+                  />
+                </Link>
+
+                {/* CLOSE */}
+
+                <motion.button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  whileHover={{
+                    rotate: 90,
+                  }}
+                  whileTap={{
+                    scale: 0.9,
+                  }}
+                  aria-label="Close menu"
                   className="
                     flex
-                    min-h-[88px]
-                    shrink-0
+                    h-10
+                    w-10
                     items-center
-                    justify-between
-                    border-b
-                    border-slate-200/80
-                    px-6
-
-                    dark:border-white/10
+                    justify-center
+                    rounded-full
+                    border
+                    border-white/10
+                    text-slate-300
+                    transition-all
+                    duration-300
+                    hover:border-[#2196F3]/50
+                    hover:bg-[#2196F3]/10
+                    hover:text-white
                   "
                 >
-                  {/* LOGO */}
+                  <X
+                    size={19}
+                    strokeWidth={1.7}
+                  />
+                </motion.button>
+              </div>
 
-                  <Link
-                    href="/"
-                    onClick={() => setMobileOpen(false)}
-                    aria-label="Whispers of Wisdom Home"
-                    className="
-                      relative
-                      flex
-                      items-center
-                      justify-center
-                    "
-                  >
-                    {/* LIGHT LOGO */}
+              {/* =================================================
+                  MOBILE LINKS
+              ================================================== */}
 
-                    <Image
-                      src="/Wispers-of-Wisdom-logo.png"
-                      alt="Whispers of Wisdom"
-                      width={140}
-                      height={80}
-                      priority
-                      className="
-                        h-auto
-                        w-[105px]
-                        object-contain
-                        dark:hidden
-                      "
-                    />
-
-                    {/* DARK LOGO */}
-
-                    <Image
-                      src="/logo-dark-1.png"
-                      alt="Whispers of Wisdom"
-                      width={140}
-                      height={80}
-                      priority
-                      className="
-                        hidden
-                        h-auto
-                        w-[105px]
-                        object-contain
-                        dark:block
-                      "
-                    />
-                  </Link>
-
-                  {/* CLOSE */}
-
-                  <motion.button
-                    type="button"
-                    onClick={() => setMobileOpen(false)}
-                    whileHover={{
-                      rotate: 90,
-                    }}
-                    whileTap={{
-                      scale: 0.9,
-                    }}
-                    aria-label="Close menu"
-                    className="
-                      flex
-                      h-10
-                      w-10
-                      items-center
-                      justify-center
-                      rounded-full
-                      border
-                      border-slate-200
-                      text-slate-700
-                      transition-colors
-                      hover:bg-slate-100
-                      hover:text-[#2196F3]
-
-                      dark:border-white/10
-                      dark:text-white
-                      dark:hover:bg-white/5
-                      dark:hover:text-[#42A5F5]
-                    "
-                  >
-                    <X size={19} />
-                  </motion.button>
-                </div>
-
-                {/* =================================================
-                    MOBILE NAVIGATION
-                ================================================== */}
-
-                <motion.nav
-                  initial="hidden"
-                  animate="show"
-                  variants={{
-                    hidden: {},
-                    show: {
-                      transition: {
-                        staggerChildren: 0.06,
-                      },
+              <motion.nav
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      staggerChildren: 0.07,
                     },
-                  }}
-                  className="
-                    px-6
-                    pb-8
-                    pt-4
-                  "
-                >
-                  {navigation.map((item) => {
-                    const isActive =
-                      item.href === "/"
-                        ? pathname === "/"
-                        : pathname.startsWith(item.href);
+                  },
+                }}
+                className="
+                  px-6
+                  pt-5
+                "
+              >
+                {navigation.map((item) => {
+                  const active = isActiveLink(item.href);
 
-                    return (
-                      <motion.div
-                        key={item.href}
-                        variants={{
-                          hidden: {
-                            opacity: 0,
-                            x: -20,
-                          },
-                          show: {
-                            opacity: 1,
-                            x: 0,
-                          },
-                        }}
+                  return (
+                    <motion.div
+                      key={item.href}
+                      variants={{
+                        hidden: {
+                          opacity: 0,
+                          x: -20,
+                        },
+                        show: {
+                          opacity: 1,
+                          x: 0,
+                        },
+                      }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`
+                          group
+                          flex
+                          items-center
+                          justify-between
+                          border-b
+                          border-white/[0.08]
+                          py-5
+                          text-[14px]
+                          font-semibold
+                          uppercase
+                          tracking-[0.07em]
+                          transition-all
+                          duration-300
+
+                          ${
+                            active
+                              ? "text-[#42A5F5]"
+                              : "text-slate-300 hover:pl-2 hover:text-white"
+                          }
+                        `}
                       >
-                        <Link
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className={`
-                            flex
-                            items-center
-                            border-b
-                            border-slate-200/80
-                            py-5
-                            text-[14px]
-                            font-semibold
-                            uppercase
-                            tracking-[0.06em]
-                            transition-all
-                            duration-200
+                        <span>{item.label}</span>
 
-                            dark:border-white/10
+                        <ArrowUpRight
+                          size={16}
+                          strokeWidth={1.6}
+                          className={`
+                            transition-all
+                            duration-300
 
                             ${
-                              isActive
-                                ? `
-                                  text-[#2196F3]
-                                  dark:text-[#42A5F5]
-                                `
-                                : `
-                                  text-slate-700
-                                  hover:pl-2
-                                  hover:text-[#2196F3]
-                                  dark:text-slate-300
-                                  dark:hover:text-[#42A5F5]
-                                `
+                              active
+                                ? "translate-x-0 opacity-100"
+                                : "translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
                             }
                           `}
-                        >
-                          {item.label}
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </motion.nav>
+                        />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </motion.nav>
 
-                {/* =================================================
-                    MOBILE DRAWER FOOTER
-                ================================================== */}
+              {/* =================================================
+                  DRAWER FOOTER
+              ================================================== */}
 
-                <div
+              <div
+                className="
+                  mt-auto
+                  border-t
+                  border-white/[0.08]
+                  px-6
+                  py-7
+                "
+              >
+                <p
                   className="
-                    mt-auto
-                    border-t
-                    border-slate-200/80
-                    px-6
-                    py-6
-                    dark:border-white/10
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-[0.2em]
+                    text-[#42A5F5]
                   "
                 >
-                  <p
-                    className="
-                      text-[11px]
-                      font-semibold
-                      uppercase
-                      tracking-[0.16em]
-                      text-slate-400
-                    "
-                  >
-                    Whispers of Wisdom
-                  </p>
+                  Whispers of Wisdom
+                </p>
 
-                  <p
-                    className="
-                      mt-2
-                      text-xs
-                      leading-5
-                      text-slate-500
-                      dark:text-slate-400
-                    "
-                  >
-                    Explore ideas, stories and wisdom.
-                  </p>
-                </div>
-              </motion.aside>
-            </>
-          )}
-        </AnimatePresence>
-      </motion.header>
+                <p
+                  className="
+                    mt-2
+                    max-w-[260px]
+                    text-xs
+                    leading-5
+                    text-slate-400
+                  "
+                >
+                  Explore ideas, stories and wisdom.
+                </p>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </>
-  );
-}
-
-// =========================================================
-// ACTIVE UNDERLINE
-// =========================================================
-
-function ActiveUnderline() {
-  return (
-    <motion.span
-      layoutId="navbar-active-link"
-      transition={{
-        type: "spring",
-        stiffness: 350,
-        damping: 30,
-      }}
-      className="
-        absolute
-        bottom-[18px]
-        left-0
-        h-[2px]
-        w-full
-        rounded-full
-        bg-[#2196F3]
-      "
-    />
   );
 }
