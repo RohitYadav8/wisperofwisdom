@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       marketingConsent,
     } = body;
 
-    // Required fields
+    
     if (
       !firstName?.trim() ||
       !lastName?.trim() ||
