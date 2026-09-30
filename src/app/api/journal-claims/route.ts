@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     if (!emailRegex.test(email.trim())) {
       return NextResponse.json(
         {
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 
         termsAccepted: true,
         marketingConsent: marketingConsent === true,
-
+            
         status: "NEW",
       },
     });

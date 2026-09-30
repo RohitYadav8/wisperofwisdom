@@ -507,7 +507,7 @@ export default function ShopPage() {
                   )}
                 </button>
 
-                <div className="relative">
+                <div className="relative">                                          
                   <select
                     value={sort}
                     onChange={(e) =>

@@ -191,7 +191,7 @@ export function Footer() {
               {/* DARK LOGO */}
 
               <Image
-                src="/logo-dark-1.png"
+                src="/logo-dark.png"
                 alt="Whispers of Wisdom"
                 width={230}
                 height={110}
