@@ -507,13 +507,12 @@ export default function ShopPage() {
                   )}
                 </button>
 
-                <div className="relative">                                          
+                <div className="relative">                                          z
                   <select
                     value={sort}
                     onChange={(e) =>
                       setSort(
-                        e.target
-                          .value as SortValue
+                        e.target.value as SortValue
                       )
                     }
                     className="

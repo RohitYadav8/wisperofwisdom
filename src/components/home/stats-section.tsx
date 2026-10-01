@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+
 import { motion, useInView } from "motion/react";
 
 const stats = [
@@ -58,13 +59,14 @@ function Counter({
       }
 
       const elapsed = timestamp - startTime;
-
       const progress = Math.min(elapsed / duration, 1);
 
       // Smooth ease-out animation
       const easedProgress = 1 - Math.pow(1 - progress, 3);
 
-      const currentValue = Math.floor(easedProgress * value);
+      const currentValue = Math.floor(
+        easedProgress * value
+      );
 
       setCount(currentValue);
 
@@ -97,15 +99,21 @@ export function StatsSection() {
         relative
         overflow-hidden
         bg-[#F7F5EE]
-        py-16
+        py-10
+
         transition-colors
         duration-500
+
         dark:bg-[#061522]
-        sm:py-20
-        lg:py-24
+
+        sm:py-12
+        lg:py-14
       "
     >
-      {/* BACKGROUND GLOW */}
+      {/* =====================================================
+          BACKGROUND GLOW
+      ===================================================== */}
+
       <div
         aria-hidden="true"
         className="
@@ -113,16 +121,21 @@ export function StatsSection() {
           absolute
           left-1/2
           top-1/2
-          h-[320px]
-          w-[520px]
+          h-[260px]
+          w-[440px]
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
-          bg-[#2196F3]/[0.035]
-          blur-[120px]
+          bg-[#2196F3]/[0.03]
+          blur-[100px]
+
           dark:bg-[#2196F3]/[0.06]
         "
       />
+
+      {/* =====================================================
+          CONTAINER
+      ===================================================== */}
 
       <div
         className="
@@ -131,17 +144,25 @@ export function StatsSection() {
           mx-auto
           max-w-[1380px]
           px-5
+
           sm:px-8
+
           lg:px-12
+
           xl:px-16
         "
       >
+        {/* =====================================================
+            STATS GRID
+        ===================================================== */}
+
         <div
           className="
             grid
             grid-cols-2
             gap-x-4
-            gap-y-12
+            gap-y-8
+
             md:grid-cols-4
             md:gap-0
           "
@@ -151,7 +172,7 @@ export function StatsSection() {
               key={stat.label}
               initial={{
                 opacity: 0,
-                y: 24,
+                y: 18,
               }}
               whileInView={{
                 opacity: 1,
@@ -162,8 +183,8 @@ export function StatsSection() {
                 amount: 0.4,
               }}
               transition={{
-                duration: 0.65,
-                delay: index * 0.08,
+                duration: 0.6,
+                delay: index * 0.07,
                 ease: [0.22, 1, 0.36, 1],
               }}
               className="
@@ -177,6 +198,7 @@ export function StatsSection() {
               "
             >
               {/* COUNTER */}
+
               <motion.p
                 whileHover={{
                   y: -3,
@@ -188,19 +210,25 @@ export function StatsSection() {
                 }}
                 className="
                   font-serif
-                  text-[48px]
+                  text-[42px]
                   font-normal
                   leading-none
                   tracking-[-0.04em]
                   text-[#66686A]
+
                   transition-colors
                   duration-300
+
                   group-hover:text-[#2196F3]
+
                   dark:text-slate-100
                   dark:group-hover:text-[#42A5F5]
-                  sm:text-[58px]
-                  lg:text-[68px]
-                  xl:text-[72px]
+
+                  sm:text-[52px]
+
+                  lg:text-[60px]
+
+                  xl:text-[64px]
                 "
               >
                 <Counter
@@ -211,37 +239,44 @@ export function StatsSection() {
               </motion.p>
 
               {/* LABEL */}
+
               <p
                 className="
-                  mt-7
-                  text-[10px]
+                  mt-4
+                  text-[9px]
                   font-medium
                   uppercase
-                  tracking-[0.3em]
+                  tracking-[0.28em]
                   text-[#9A9DA1]
+
                   transition-colors
                   duration-300
+
                   group-hover:text-[#2196F3]
+
                   dark:text-slate-500
                   dark:group-hover:text-[#42A5F5]
-                  sm:text-[11px]
-                  lg:mt-8
-                  lg:text-[12px]
+
+                  sm:text-[10px]
+
+                  lg:mt-5
+                  lg:text-[11px]
                 "
               >
                 {stat.label}
               </p>
 
               {/* HOVER LINE */}
+
               <div
                 className="
-                  mt-4
+                  mt-3
                   h-px
                   w-0
                   bg-[#2196F3]
                   transition-all
                   duration-500
-                  group-hover:w-8
+                  group-hover:w-7
                 "
               />
             </motion.div>
@@ -250,4 +285,4 @@ export function StatsSection() {
       </div>
     </section>
   );
-}                                                                                       
+}

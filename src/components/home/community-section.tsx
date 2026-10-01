@@ -80,14 +80,16 @@ export function CommunitySection() {
         relative
         overflow-hidden
         bg-[#FAFAF7]
-        py-16
+        py-10
         transition-colors
         duration-500
         dark:bg-[#061522]
-        sm:py-20
-        lg:py-24
+        sm:py-12
+        lg:py-14
       "
     >
+      {/* BACKGROUND GLOW */}
+
       <div
         aria-hidden="true"
         className="
@@ -95,15 +97,17 @@ export function CommunitySection() {
           absolute
           left-1/2
           top-0
-          h-[360px]
-          w-[360px]
+          h-[280px]
+          w-[280px]
           -translate-x-1/2
           rounded-full
           bg-[#2196F3]/6
-          blur-[120px]
+          blur-[100px]
           dark:bg-[#2196F3]/10
         "
       />
+
+      {/* CONTAINER */}
 
       <div
         className="
@@ -116,28 +120,34 @@ export function CommunitySection() {
           lg:px-12
         "
       >
+        {/* CARD */}
+
         <div
           className="
             relative
             overflow-hidden
-            rounded-[32px]
+            rounded-[26px]
             border
             border-slate-200/80
             bg-white
-            px-6
-            py-12
+            px-5
+            py-8
             text-center
-            shadow-[0_24px_70px_rgba(15,23,42,0.06)]
+            shadow-[0_18px_55px_rgba(15,23,42,0.05)]
+
             dark:border-white/[0.07]
             dark:bg-[#0B2031]
-            dark:shadow-[0_28px_80px_rgba(0,0,0,0.22)]
-            sm:px-10
-            sm:py-14
-            lg:px-16
-            lg:py-16
+            dark:shadow-[0_22px_65px_rgba(0,0,0,0.20)]
+
+            sm:px-8
+            sm:py-9
+
+            lg:px-12
+            lg:py-10
           "
         >
-          
+          {/* TOP BLUE LINE */}
+
           <div
             aria-hidden="true"
             className="
@@ -145,20 +155,22 @@ export function CommunitySection() {
               left-1/2
               top-0
               h-[3px]
-              w-20
+              w-16
               -translate-x-1/2
               rounded-b-full
               bg-[#2196F3]
             "
           />
 
+          {/* EYEBROW */}
+
           <AnimateIn>
             <p
               className="
-                text-[10px]
+                text-[9px]
                 font-semibold
                 uppercase
-                tracking-[0.3em]
+                tracking-[0.28em]
                 text-[#2196F3]
               "
             >
@@ -166,38 +178,46 @@ export function CommunitySection() {
             </p>
           </AnimateIn>
 
+          {/* HEADING */}
+
           <AnimateIn delay={0.08}>
             <h2
               className="
                 mx-auto
-                mt-3
-                max-w-[760px]
+                mt-2
+                max-w-[700px]
                 font-serif
-                text-[38px]
+                text-[34px]
                 font-normal
                 leading-[1.08]
                 tracking-[-0.035em]
                 text-[#26343C]
+
                 dark:text-white
-                sm:text-[46px]
-                lg:text-[52px]
+
+                sm:text-[40px]
+                lg:text-[46px]
               "
             >
               Join the community
             </h2>
           </AnimateIn>
 
+          {/* DESCRIPTION */}
+
           <AnimateIn delay={0.14}>
             <p
               className="
                 mx-auto
-                mt-5
-                max-w-[650px]
-                text-[14px]
-                leading-7
+                mt-3
+                max-w-[600px]
+                text-[13px]
+                leading-6
                 text-slate-500
+
                 dark:text-slate-400
-                sm:text-[16px]
+
+                sm:text-[14px]
               "
             >
               Stay connected with Whispers of Wisdom and receive
@@ -205,19 +225,24 @@ export function CommunitySection() {
             </p>
           </AnimateIn>
 
+          {/* FORM */}
+
           <AnimateIn delay={0.2}>
             <form
               onSubmit={handleSubmit}
               className="
                 mx-auto
-                mt-8
+                mt-6
                 flex
-                max-w-[620px]
+                max-w-[600px]
                 flex-col
-                gap-3
+                gap-2.5
+
                 sm:flex-row
               "
             >
+              {/* EMAIL */}
+
               <div
                 className="
                   flex
@@ -228,17 +253,20 @@ export function CommunitySection() {
                   border
                   border-slate-200
                   bg-[#FAFAF7]
-                  px-5
+                  px-4
+
                   transition
+
                   focus-within:border-[#2196F3]/60
                   focus-within:ring-4
                   focus-within:ring-[#2196F3]/10
+
                   dark:border-white/10
                   dark:bg-[#071B29]
                 "
               >
                 <Mail
-                  size={17}
+                  size={16}
                   strokeWidth={1.6}
                   className="shrink-0 text-slate-400"
                 />
@@ -253,20 +281,23 @@ export function CommunitySection() {
                   disabled={loading}
                   required
                   className="
-                    h-14
+                    h-12
                     w-full
                     bg-transparent
-                    text-[14px]
+                    text-[13px]
                     text-slate-800
                     outline-none
                     placeholder:text-slate-400
                     disabled:cursor-not-allowed
                     disabled:opacity-60
+
                     dark:text-white
                     dark:placeholder:text-slate-500
                   "
                 />
               </div>
+
+              {/* BUTTON */}
 
               <motion.button
                 type="submit"
@@ -284,29 +315,33 @@ export function CommunitySection() {
                 }}
                 className="
                   inline-flex
-                  h-14
+                  h-12
                   items-center
                   justify-center
                   gap-2
                   rounded-full
                   bg-[#2196F3]
-                  px-7
-                  text-[12px]
+                  px-6
+                  text-[11px]
                   font-semibold
                   uppercase
-                  tracking-[0.14em]
+                  tracking-[0.12em]
                   text-white
+
                   transition-colors
+
                   hover:bg-[#1976D2]
+
                   disabled:cursor-not-allowed
                   disabled:opacity-60
-                  sm:min-w-[180px]
+
+                  sm:min-w-[160px]
                 "
               >
                 {loading ? (
                   <>
                     <Loader2
-                      size={16}
+                      size={15}
                       className="animate-spin"
                     />
                     Joining...
@@ -315,7 +350,7 @@ export function CommunitySection() {
                   <>
                     Join Now
                     <ArrowRight
-                      size={16}
+                      size={15}
                       strokeWidth={1.8}
                     />
                   </>
@@ -323,16 +358,46 @@ export function CommunitySection() {
               </motion.button>
             </form>
 
+            {/* SUCCESS */}
+
             {success && (
-              <div className="mx-auto mt-4 flex max-w-[620px] items-center justify-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 size={17} />
+              <div
+                className="
+                  mx-auto
+                  mt-3
+                  flex
+                  max-w-[600px]
+                  items-center
+                  justify-center
+                  gap-2
+                  text-xs
+                  text-emerald-600
+
+                  dark:text-emerald-400
+                "
+              >
+                <CheckCircle2 size={15} />
                 <span>{success}</span>
               </div>
             )}
 
+            {/* ERROR */}
+
             {error && (
-              <div className="mx-auto mt-4 flex max-w-[620px] items-center justify-center gap-2 text-sm text-red-500">
-                <AlertCircle size={17} />
+              <div
+                className="
+                  mx-auto
+                  mt-3
+                  flex
+                  max-w-[600px]
+                  items-center
+                  justify-center
+                  gap-2
+                  text-xs
+                  text-red-500
+                "
+              >
+                <AlertCircle size={15} />
                 <span>{error}</span>
               </div>
             )}

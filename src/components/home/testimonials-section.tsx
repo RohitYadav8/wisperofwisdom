@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 import { motion } from "motion/react";
 
 import { AnimateIn } from "../animations/animate-in";
+
 import {
   StaggerContainer,
   StaggerItem,
@@ -33,12 +34,13 @@ export function TestimonialsSection() {
         relative
         overflow-hidden
         bg-white
-        py-16
+        py-10
         transition-colors
         duration-500
         dark:bg-[#071B29]
-        sm:py-20
-        lg:py-24
+
+        sm:py-12
+        lg:py-14
       "
     >
       {/* BACKGROUND DECORATION */}
@@ -49,13 +51,13 @@ export function TestimonialsSection() {
           pointer-events-none
           absolute
           left-1/2
-          top-14
-          h-[300px]
-          w-[300px]
+          top-8
+          h-[250px]
+          w-[250px]
           -translate-x-1/2
           rounded-full
           bg-[#2196F3]/5
-          blur-[110px]
+          blur-[100px]
           dark:bg-[#2196F3]/8
         "
       />
@@ -67,7 +69,9 @@ export function TestimonialsSection() {
           mx-auto
           max-w-[1180px]
           px-5
+
           sm:px-8
+
           lg:px-12
         "
       >
@@ -79,10 +83,10 @@ export function TestimonialsSection() {
           <AnimateIn>
             <p
               className="
-                text-[10px]
+                text-[9px]
                 font-semibold
                 uppercase
-                tracking-[0.3em]
+                tracking-[0.28em]
                 text-[#2196F3]
               "
             >
@@ -93,16 +97,18 @@ export function TestimonialsSection() {
           <AnimateIn delay={0.08}>
             <h2
               className="
-                mt-3
+                mt-2
                 font-serif
-                text-[38px]
+                text-[34px]
                 font-normal
                 leading-[1.08]
                 tracking-[-0.035em]
                 text-[#2D3439]
+
                 dark:text-white
-                sm:text-[46px]
-                lg:text-[52px]
+
+                sm:text-[40px]
+                lg:text-[46px]
               "
             >
               Read Reviews by My Readers
@@ -113,9 +119,9 @@ export function TestimonialsSection() {
             <div
               className="
                 mx-auto
-                mt-5
+                mt-4
                 h-[2px]
-                w-14
+                w-12
                 rounded-full
                 bg-[#2196F3]
               "
@@ -129,19 +135,21 @@ export function TestimonialsSection() {
 
         <StaggerContainer
           className="
-            mt-14
+            mt-9
             grid
-            gap-8
+            gap-5
+
             md:grid-cols-2
-            lg:mt-16
-            lg:gap-10
+
+            lg:mt-10
+            lg:gap-7
           "
         >
           {testimonials.map((testimonial) => (
             <StaggerItem key={testimonial.id}>
               <motion.article
                 whileHover={{
-                  y: -5,
+                  y: -4,
                 }}
                 transition={{
                   type: "spring",
@@ -153,20 +161,22 @@ export function TestimonialsSection() {
                   relative
                   h-full
                   overflow-hidden
-                  rounded-[28px]
+                  rounded-[24px]
                   border
                   border-slate-200/80
                   bg-[#FCFCFA]
-                  px-7
-                  py-9
-                  shadow-[0_20px_50px_rgba(15,23,42,0.05)]
+                  px-6
+                  py-7
+                  shadow-[0_16px_42px_rgba(15,23,42,0.045)]
                   transition-colors
                   duration-300
+
                   dark:border-white/[0.07]
                   dark:bg-[#0B2031]
-                  dark:shadow-[0_22px_60px_rgba(0,0,0,0.18)]
-                  sm:px-9
-                  sm:py-10
+                  dark:shadow-[0_18px_50px_rgba(0,0,0,0.17)]
+
+                  sm:px-8
+                  sm:py-8
                 "
               >
                 {/* TOP ACCENT */}
@@ -194,20 +204,21 @@ export function TestimonialsSection() {
                   className="
                     mx-auto
                     flex
-                    h-16
-                    w-16
+                    h-14
+                    w-14
                     items-center
                     justify-center
-                    rounded-2xl
+                    rounded-xl
                     border
                     border-slate-200
                     bg-white
                     font-serif
-                    text-[36px]
+                    text-[31px]
                     font-black
                     leading-none
                     text-black
                     shadow-sm
+
                     dark:border-white/10
                     dark:bg-white/[0.04]
                     dark:text-white
@@ -221,16 +232,18 @@ export function TestimonialsSection() {
                 <p
                   className="
                     mx-auto
-                    mt-7
+                    mt-5
                     max-w-[430px]
                     text-center
                     font-serif
-                    text-[16px]
+                    text-[15px]
                     italic
-                    leading-[1.8]
+                    leading-[1.75]
                     text-slate-600
+
                     dark:text-slate-300
-                    sm:text-[17px]
+
+                    sm:text-[16px]
                   "
                 >
                   “{testimonial.text}”
@@ -240,7 +253,7 @@ export function TestimonialsSection() {
 
                 <div
                   className="
-                    mt-7
+                    mt-5
                     flex
                     justify-center
                     gap-1
@@ -251,7 +264,7 @@ export function TestimonialsSection() {
                   }).map((_, index) => (
                     <Star
                       key={index}
-                      size={14}
+                      size={13}
                       fill="currentColor"
                       strokeWidth={1.4}
                       className="text-[#C8A46A]"
@@ -261,14 +274,15 @@ export function TestimonialsSection() {
 
                 {/* SOURCE */}
 
-                <div className="mt-4 text-center">
+                <div className="mt-3 text-center">
                   <p
                     className="
-                      text-[11px]
+                      text-[10px]
                       font-semibold
                       uppercase
-                      tracking-[0.16em]
+                      tracking-[0.15em]
                       text-[#26343C]
+
                       dark:text-white
                     "
                   >
@@ -277,9 +291,10 @@ export function TestimonialsSection() {
 
                   <p
                     className="
-                      mt-1
-                      text-[10px]
+                      mt-0.5
+                      text-[9px]
                       text-slate-400
+
                       dark:text-slate-500
                     "
                   >

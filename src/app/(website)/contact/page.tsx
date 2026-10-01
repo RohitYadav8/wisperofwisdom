@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
   Clock3,
   Mail,
@@ -11,6 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+
 import { motion } from "motion/react";
 
 const contactItems = [
@@ -134,29 +136,73 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="bg-white text-slate-900 transition-colors duration-300 dark:bg-[#061522] dark:text-white">
+    <div
+      className="
+        bg-white
+        text-slate-900
+        transition-colors
+        duration-300
+        dark:bg-[#061522]
+        dark:text-white
+      "
+    >
       {/* =========================================================
           CONTACT CONTENT
       ========================================================= */}
 
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        {/* Background glow */}
+      <section
+        className="
+          relative
+          overflow-hidden
+          py-10
+
+          sm:py-12
+
+          lg:py-14
+        "
+      >
+        {/* BACKGROUND GLOW */}
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-24 h-[360px] w-[360px] -translate-x-1/2 rounded-full bg-[#2196F3]/5 blur-[120px] dark:bg-[#2196F3]/8"
+          className="
+            pointer-events-none
+            absolute
+            left-1/2
+            top-16
+            h-[280px]
+            w-[280px]
+            -translate-x-1/2
+            rounded-full
+            bg-[#2196F3]/5
+            blur-[100px]
+
+            dark:bg-[#2196F3]/8
+          "
         />
 
-        <div className="relative z-10 mx-auto max-w-[1180px] px-5 sm:px-8 lg:px-12">
+        <div
+          className="
+            relative
+            z-10
+            mx-auto
+            max-w-[1180px]
+            px-5
+
+            sm:px-8
+
+            lg:px-12
+          "
+        >
           {/* =====================================================
               INTRO
           ===================================================== */}
 
-          <div className="mx-auto max-w-[760px] text-center">
+          <div className="mx-auto max-w-[740px] text-center">
             <motion.h2
               initial={{
                 opacity: 0,
-                y: 24,
+                y: 20,
               }}
               whileInView={{
                 opacity: 1,
@@ -167,10 +213,23 @@ export default function ContactPage() {
                 amount: 0.4,
               }}
               transition={{
-                duration: 0.65,
+                duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="font-serif text-[40px] font-normal leading-[1.08] tracking-[-0.035em] text-[#343A3F] dark:text-white sm:text-[48px] lg:text-[54px]"
+              className="
+                font-serif
+                text-[36px]
+                font-normal
+                leading-[1.08]
+                tracking-[-0.035em]
+                text-[#343A3F]
+
+                dark:text-white
+
+                sm:text-[42px]
+
+                lg:text-[48px]
+              "
             >
               Keep In Touch With Us
             </motion.h2>
@@ -178,7 +237,7 @@ export default function ContactPage() {
             <motion.p
               initial={{
                 opacity: 0,
-                y: 14,
+                y: 12,
               }}
               whileInView={{
                 opacity: 1,
@@ -188,10 +247,21 @@ export default function ContactPage() {
                 once: true,
               }}
               transition={{
-                duration: 0.55,
-                delay: 0.08,
+                duration: 0.5,
+                delay: 0.06,
               }}
-              className="mx-auto mt-5 max-w-[700px] text-[14px] leading-7 text-slate-500 dark:text-slate-400 sm:text-[15px]"
+              className="
+                mx-auto
+                mt-3
+                max-w-[680px]
+                text-[13px]
+                leading-6
+                text-slate-500
+
+                dark:text-slate-400
+
+                sm:text-[14px]
+              "
             >
               We&apos;d love to hear from you! Whether you have
               questions, feedback, or just want to share your
@@ -204,7 +274,18 @@ export default function ContactPage() {
               CONTACT INFORMATION
           ===================================================== */}
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3 lg:mt-16 lg:gap-10">
+          <div
+            className="
+              mt-9
+              grid
+              gap-5
+
+              md:grid-cols-3
+
+              lg:mt-10
+              lg:gap-6
+            "
+          >
             {contactItems.map((item, index) => {
               const Icon = item.icon;
 
@@ -213,7 +294,7 @@ export default function ContactPage() {
                   key={item.title}
                   initial={{
                     opacity: 0,
-                    y: 22,
+                    y: 18,
                   }}
                   whileInView={{
                     opacity: 1,
@@ -224,30 +305,81 @@ export default function ContactPage() {
                     amount: 0.35,
                   }}
                   transition={{
-                    duration: 0.55,
-                    delay: index * 0.08,
+                    duration: 0.5,
+                    delay: index * 0.07,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="rounded-[24px] border border-slate-200/80 bg-[#FCFCFA] p-7 shadow-[0_16px_50px_rgba(15,23,42,0.04)] transition-colors dark:border-white/[0.07] dark:bg-[#0B2031] dark:shadow-[0_18px_50px_rgba(0,0,0,0.18)]"
+                  className="
+                    rounded-[20px]
+                    border
+                    border-slate-200/80
+                    bg-[#FCFCFA]
+                    p-5
+                    shadow-[0_12px_38px_rgba(15,23,42,0.035)]
+                    transition-all
+                    duration-300
+
+                    hover:-translate-y-1
+                    hover:shadow-[0_18px_45px_rgba(15,23,42,0.06)]
+
+                    dark:border-white/[0.07]
+                    dark:bg-[#0B2031]
+                    dark:shadow-[0_16px_45px_rgba(0,0,0,0.16)]
+                  "
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2196F3]/8 text-[#2196F3] dark:bg-[#2196F3]/12">
+                  <div className="flex items-start gap-3">
+                    {/* ICON */}
+
+                    <div
+                      className="
+                        flex
+                        h-10
+                        w-10
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-[#2196F3]/8
+                        text-[#2196F3]
+
+                        dark:bg-[#2196F3]/12
+                      "
+                    >
                       <Icon
-                        size={20}
+                        size={18}
                         strokeWidth={1.6}
                       />
                     </div>
 
-                    <div>
-                      <h3 className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#31383D] dark:text-white">
+                    {/* CONTENT */}
+
+                    <div className="min-w-0">
+                      <h3
+                        className="
+                          text-[12px]
+                          font-semibold
+                          uppercase
+                          tracking-[0.14em]
+                          text-[#31383D]
+
+                          dark:text-white
+                        "
+                      >
                         {item.title}
                       </h3>
 
-                      <div className="mt-4 space-y-1.5">
+                      <div className="mt-3 space-y-1">
                         {item.lines.map((line) => (
                           <p
                             key={line}
-                            className="font-serif text-[15px] leading-7 text-slate-500 dark:text-slate-400"
+                            className="
+                              font-serif
+                              text-[14px]
+                              leading-6
+                              text-slate-500
+
+                              dark:text-slate-400
+                            "
                           >
                             {line}
                           </p>
@@ -264,11 +396,21 @@ export default function ContactPage() {
               MESSAGE FORM
           ===================================================== */}
 
-          <div className="mx-auto mt-20 max-w-[820px] lg:mt-24">
+          <div
+            className="
+              mx-auto
+              mt-12
+              max-w-[820px]
+
+              lg:mt-14
+            "
+          >
+            {/* FORM HEADING */}
+
             <motion.div
               initial={{
                 opacity: 0,
-                y: 22,
+                y: 18,
               }}
               whileInView={{
                 opacity: 1,
@@ -279,21 +421,48 @@ export default function ContactPage() {
                 amount: 0.35,
               }}
               transition={{
-                duration: 0.6,
+                duration: 0.55,
                 ease: [0.22, 1, 0.36, 1],
               }}
               className="text-center"
             >
-              <h2 className="font-serif text-[40px] font-normal leading-[1.08] tracking-[-0.035em] text-[#343A3F] dark:text-white sm:text-[48px]">
+              <h2
+                className="
+                  font-serif
+                  text-[36px]
+                  font-normal
+                  leading-[1.08]
+                  tracking-[-0.035em]
+                  text-[#343A3F]
+
+                  dark:text-white
+
+                  sm:text-[42px]
+                  lg:text-[46px]
+                "
+              >
                 Send A Message
               </h2>
+
+              <div
+                className="
+                  mx-auto
+                  mt-3
+                  h-[2px]
+                  w-12
+                  rounded-full
+                  bg-[#2196F3]
+                "
+              />
             </motion.div>
+
+            {/* FORM */}
 
             <motion.form
               onSubmit={handleSubmit}
               initial={{
                 opacity: 0,
-                y: 20,
+                y: 18,
               }}
               whileInView={{
                 opacity: 1,
@@ -304,15 +473,38 @@ export default function ContactPage() {
                 amount: 0.2,
               }}
               transition={{
-                duration: 0.6,
-                delay: 0.08,
+                duration: 0.55,
+                delay: 0.06,
               }}
-              className="mt-10 rounded-[28px] border border-slate-200/80 bg-[#FCFCFA] p-6 shadow-[0_24px_70px_rgba(15,23,42,0.05)] dark:border-white/[0.07] dark:bg-[#0B2031] dark:shadow-[0_26px_70px_rgba(0,0,0,0.2)] sm:p-8 lg:p-10"
-            >
-              {/* Name + Email */}
+              className="
+                mt-7
+                rounded-[24px]
+                border
+                border-slate-200/80
+                bg-[#FCFCFA]
+                p-5
+                shadow-[0_18px_55px_rgba(15,23,42,0.045)]
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                {/* Name */}
+                dark:border-white/[0.07]
+                dark:bg-[#0B2031]
+                dark:shadow-[0_20px_55px_rgba(0,0,0,0.18)]
+
+                sm:p-7
+
+                lg:p-8
+              "
+            >
+              {/* NAME + EMAIL */}
+
+              <div
+                className="
+                  grid
+                  gap-4
+
+                  sm:grid-cols-2
+                "
+              >
+                {/* NAME */}
 
                 <div className="relative">
                   <input
@@ -324,17 +516,50 @@ export default function ContactPage() {
                     required
                     disabled={loading}
                     autoComplete="name"
-                    className="h-14 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                    className="
+                      h-12
+                      w-full
+                      rounded-xl
+                      border
+                      border-slate-200
+                      bg-white
+                      px-4
+                      text-[13px]
+                      text-slate-800
+                      outline-none
+                      transition
+
+                      placeholder:text-slate-400
+
+                      focus:border-[#2196F3]/60
+                      focus:ring-4
+                      focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
+
+                      dark:border-white/10
+                      dark:bg-[#071B29]
+                      dark:text-white
+                      dark:placeholder:text-slate-500
+                    "
                   />
                 </div>
 
-                {/* Email */}
+                {/* EMAIL */}
 
                 <div className="relative">
                   <Mail
-                    size={16}
+                    size={15}
                     strokeWidth={1.6}
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                    className="
+                      pointer-events-none
+                      absolute
+                      left-4
+                      top-1/2
+                      -translate-y-1/2
+                      text-slate-400
+                    "
                   />
 
                   <input
@@ -346,27 +571,83 @@ export default function ContactPage() {
                     required
                     disabled={loading}
                     autoComplete="email"
-                    className="h-14 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-[14px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                    className="
+                      h-12
+                      w-full
+                      rounded-xl
+                      border
+                      border-slate-200
+                      bg-white
+                      pl-11
+                      pr-4
+                      text-[13px]
+                      text-slate-800
+                      outline-none
+                      transition
+
+                      placeholder:text-slate-400
+
+                      focus:border-[#2196F3]/60
+                      focus:ring-4
+                      focus:ring-[#2196F3]/10
+
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
+
+                      dark:border-white/10
+                      dark:bg-[#071B29]
+                      dark:text-white
+                      dark:placeholder:text-slate-500
+                    "
                   />
                 </div>
               </div>
 
-              {/* Message */}
+              {/* MESSAGE */}
 
               <textarea
                 name="message"
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Message"
-                rows={7}
+                rows={5}
                 required
                 disabled={loading}
-                className="mt-5 w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-4 text-[14px] leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3]/60 focus:ring-4 focus:ring-[#2196F3]/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#071B29] dark:text-white dark:placeholder:text-slate-500"
+                className="
+                  mt-4
+                  w-full
+                  resize-none
+                  rounded-xl
+                  border
+                  border-slate-200
+                  bg-white
+                  px-4
+                  py-3.5
+                  text-[13px]
+                  leading-6
+                  text-slate-800
+                  outline-none
+                  transition
+
+                  placeholder:text-slate-400
+
+                  focus:border-[#2196F3]/60
+                  focus:ring-4
+                  focus:ring-[#2196F3]/10
+
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
+
+                  dark:border-white/10
+                  dark:bg-[#071B29]
+                  dark:text-white
+                  dark:placeholder:text-slate-500
+                "
               />
 
-              {/* Submit button */}
+              {/* SUBMIT BUTTON */}
 
-              <div className="mt-7 flex justify-center">
+              <div className="mt-5 flex justify-center">
                 <motion.button
                   type="submit"
                   disabled={loading}
@@ -389,7 +670,28 @@ export default function ContactPage() {
                     stiffness: 280,
                     damping: 22,
                   }}
-                  className="inline-flex min-h-[50px] min-w-[160px] items-center justify-center gap-2 rounded-full bg-[#2196F3] px-7 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-colors hover:bg-[#1976D2] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="
+                    inline-flex
+                    min-h-[48px]
+                    min-w-[155px]
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-full
+                    bg-[#2196F3]
+                    px-6
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-[0.15em]
+                    text-white
+                    transition-colors
+
+                    hover:bg-[#1976D2]
+
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+                  "
                 >
                   {loading ? (
                     <>
@@ -402,7 +704,6 @@ export default function ContactPage() {
                   ) : (
                     <>
                       Submit
-
                       <Send
                         size={15}
                         strokeWidth={1.8}
@@ -412,7 +713,7 @@ export default function ContactPage() {
                 </motion.button>
               </div>
 
-              {/* Success */}
+              {/* SUCCESS */}
 
               {success && (
                 <motion.div
@@ -424,10 +725,21 @@ export default function ContactPage() {
                     opacity: 1,
                     y: 0,
                   }}
-                  className="mt-5 flex items-center justify-center gap-2 text-center text-sm text-emerald-600 dark:text-emerald-400"
+                  className="
+                    mt-4
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    text-center
+                    text-xs
+                    text-emerald-600
+
+                    dark:text-emerald-400
+                  "
                 >
                   <CheckCircle2
-                    size={17}
+                    size={16}
                     className="shrink-0"
                   />
 
@@ -435,7 +747,7 @@ export default function ContactPage() {
                 </motion.div>
               )}
 
-              {/* Error */}
+              {/* ERROR */}
 
               {error && (
                 <motion.div
@@ -447,10 +759,19 @@ export default function ContactPage() {
                     opacity: 1,
                     y: 0,
                   }}
-                  className="mt-5 flex items-center justify-center gap-2 text-center text-sm text-red-500"
+                  className="
+                    mt-4
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    text-center
+                    text-xs
+                    text-red-500
+                  "
                 >
                   <AlertCircle
-                    size={17}
+                    size={16}
                     className="shrink-0"
                   />
 

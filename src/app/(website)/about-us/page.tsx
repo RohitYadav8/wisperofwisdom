@@ -35,7 +35,6 @@ export default function AboutPage() {
         text-[#26343C]
         transition-colors
         duration-500
-
         dark:bg-[#041522]
         dark:text-white
       "
@@ -48,14 +47,12 @@ export default function AboutPage() {
           relative
           overflow-hidden
           bg-[#F7FAFC]
-          py-14
+          py-10
           transition-colors
           duration-500
-
           dark:bg-[#041522]
-
-          sm:py-16
-          lg:py-20
+          sm:py-12
+          lg:py-14
         "
       >
         {/* BACKGROUND GRID */}
@@ -66,7 +63,6 @@ export default function AboutPage() {
             absolute
             inset-0
             opacity-[0.035]
-
             dark:opacity-[0.055]
           "
           style={{
@@ -90,7 +86,6 @@ export default function AboutPage() {
             rounded-full
             bg-[#2196F3]/10
             blur-[150px]
-
             dark:bg-[#2196F3]/18
           "
         />
@@ -108,7 +103,6 @@ export default function AboutPage() {
             rounded-full
             bg-cyan-400/10
             blur-[140px]
-
             dark:bg-cyan-400/[0.08]
           "
         />
@@ -126,7 +120,6 @@ export default function AboutPage() {
             rounded-full
             bg-[#2196F3]/10
             blur-[140px]
-
             dark:bg-[#2196F3]/10
           "
         />
@@ -138,7 +131,6 @@ export default function AboutPage() {
             mx-auto
             max-w-[1240px]
             px-5
-
             sm:px-8
             lg:px-12
           "
@@ -162,26 +154,21 @@ export default function AboutPage() {
             className="
               relative
               overflow-hidden
-              rounded-[32px]
+              rounded-[28px]
               border
               border-white/90
               bg-white/80
-              px-6
-              py-11
-
+              px-5
+              py-8
               shadow-[0_25px_80px_rgba(15,23,42,0.12)]
-
               backdrop-blur-xl
-
               dark:border-white/10
               dark:bg-[#071B29]/85
               dark:shadow-[0_32px_100px_rgba(0,0,0,0.45)]
-
-              sm:px-10
-              sm:py-14
-
-              lg:px-16
-              lg:py-16
+              sm:px-8
+              sm:py-10
+              lg:px-14
+              lg:py-12
             "
           >
             {/* TOP LIGHT */}
@@ -198,7 +185,6 @@ export default function AboutPage() {
                 rounded-full
                 bg-[#2196F3]/8
                 blur-[115px]
-
                 dark:bg-[#2196F3]/14
               "
             />
@@ -234,7 +220,6 @@ export default function AboutPage() {
                 rounded-full
                 border
                 border-[#2196F3]/10
-
                 dark:border-[#2196F3]/10
               "
             />
@@ -251,14 +236,11 @@ export default function AboutPage() {
                 rounded-full
                 border
                 border-[#2196F3]/10
-
                 dark:border-[#2196F3]/10
               "
             />
 
             <div className="relative z-10">
-             
-
               {/* HEADING */}
               <motion.h1
                 initial={{
@@ -278,20 +260,17 @@ export default function AboutPage() {
                 }}
                 className="
                   mx-auto
-                  mt-7
                   max-w-[1000px]
                   text-center
                   font-serif
-                  text-[35px]
+                  text-[32px]
                   font-normal
                   leading-[1.06]
                   tracking-[-0.04em]
                   text-[#1E293B]
-
                   dark:text-white
-
-                  sm:text-[46px]
-                  lg:text-[58px]
+                  sm:text-[42px]
+                  lg:text-[54px]
                 "
               >
                 Welcome To Whispers Of Wisdom
@@ -312,24 +291,22 @@ export default function AboutPage() {
                   delay: 0.2,
                 }}
                 className="
-                  mt-7
+                  mt-5
                   flex
                   items-center
                   justify-center
-                  gap-4
-
-                  sm:gap-6
+                  gap-3
+                  sm:gap-5
                 "
               >
                 <span
                   className="
                     h-px
-                    w-10
+                    w-8
                     bg-gradient-to-r
                     from-transparent
                     to-[#2196F3]/70
-
-                    sm:w-20
+                    sm:w-16
                   "
                 />
 
@@ -339,10 +316,9 @@ export default function AboutPage() {
                     text-[10px]
                     font-semibold
                     uppercase
-                    tracking-[0.38em]
+                    tracking-[0.34em]
                     text-[#2196F3]
-
-                    sm:text-[13px]
+                    sm:text-[12px]
                   "
                 >
                   Unlocking The Path
@@ -351,12 +327,11 @@ export default function AboutPage() {
                 <span
                   className="
                     h-px
-                    w-10
+                    w-8
                     bg-gradient-to-l
                     from-transparent
                     to-[#2196F3]/70
-
-                    sm:w-20
+                    sm:w-16
                   "
                 />
               </motion.div>
@@ -378,24 +353,21 @@ export default function AboutPage() {
                 className="
                   relative
                   mx-auto
-                  mt-10
+                  mt-7
                   max-w-[900px]
                   overflow-hidden
-                  rounded-[24px]
+                  rounded-[20px]
                   border
                   border-slate-200/80
                   bg-white/65
-                  px-6
-                  py-7
-
+                  px-5
+                  py-6
                   shadow-[0_18px_55px_rgba(15,23,42,0.07)]
-
                   dark:border-white/[0.08]
                   dark:bg-white/[0.035]
                   dark:shadow-[0_20px_60px_rgba(0,0,0,0.22)]
-
-                  sm:px-9
-                  sm:py-8
+                  sm:px-8
+                  sm:py-7
                 "
               >
                 <div
@@ -411,7 +383,6 @@ export default function AboutPage() {
                     rounded-full
                     bg-[#2196F3]/5
                     blur-[80px]
-
                     dark:bg-[#2196F3]/7
                   "
                 />
@@ -422,14 +393,12 @@ export default function AboutPage() {
                     z-10
                     whitespace-pre-line
                     text-center
-                    text-[14px]
-                    leading-[1.9]
+                    text-[13px]
+                    leading-[1.8]
                     text-slate-600
-
                     dark:text-slate-300
-
-                    sm:text-[15px]
-                    lg:text-[16px]
+                    sm:text-[14px]
+                    lg:text-[15px]
                   "
                 >
                   {aboutDescription}
@@ -461,22 +430,19 @@ export default function AboutPage() {
             className="
               relative
               mx-auto
-              mt-14
+              mt-9
               max-w-[980px]
               overflow-hidden
-              rounded-[28px]
+              rounded-[24px]
               border
               border-slate-200/80
               bg-white
-              p-[5px]
-
+              p-[4px]
               shadow-[0_28px_80px_rgba(15,23,42,0.14)]
-
               dark:border-white/10
               dark:bg-[#0B2031]
               dark:shadow-[0_32px_90px_rgba(0,0,0,0.40)]
-
-              sm:mt-16
+              sm:mt-10
             "
           >
             <div
@@ -485,7 +451,7 @@ export default function AboutPage() {
                 aspect-video
                 w-full
                 overflow-hidden
-                rounded-[23px]
+                rounded-[20px]
               "
             >
               <iframe
@@ -513,14 +479,12 @@ export default function AboutPage() {
           relative
           overflow-hidden
           bg-white
-          py-16
+          py-12
           transition-colors
           duration-500
-
           dark:bg-[#061522]
-
-          sm:py-20
-          lg:py-24
+          sm:py-14
+          lg:py-16
         "
       >
         {/* BACKGROUND GLOW */}
@@ -537,7 +501,6 @@ export default function AboutPage() {
             rounded-full
             bg-[#2196F3]/5
             blur-[130px]
-
             dark:bg-[#2196F3]/7
           "
         />
@@ -550,12 +513,11 @@ export default function AboutPage() {
             grid
             max-w-[1180px]
             items-center
-            gap-14
+            gap-9
             px-5
-
             sm:px-8
-
             lg:grid-cols-[1fr_0.9fr]
+            lg:gap-12
             lg:px-12
           "
         >
@@ -580,11 +542,11 @@ export default function AboutPage() {
               grid
               grid-cols-2
               items-end
-              gap-5
-
-              sm:gap-8
+              gap-4
+              sm:gap-6
             "
           >
+            {/* BOOK 1 */}
             <motion.div
               whileHover={{
                 y: -8,
@@ -597,14 +559,12 @@ export default function AboutPage() {
                 relative
                 aspect-[4/5]
                 overflow-hidden
-                rounded-[24px]
+                rounded-[20px]
                 border
                 border-slate-200/70
                 bg-[#F7FBFE]
-                p-5
-
+                p-4
                 shadow-[0_20px_60px_rgba(15,23,42,0.08)]
-
                 dark:border-white/10
                 dark:bg-[#0B2031]
                 dark:shadow-[0_20px_60px_rgba(0,0,0,0.20)]
@@ -615,13 +575,11 @@ export default function AboutPage() {
                 alt="Whispers of Wisdom"
                 fill
                 sizes="(max-width: 1024px) 45vw, 280px"
-                className="
-                  object-contain
-                  p-5
-                "
+                className="object-contain p-4"
               />
             </motion.div>
 
+            {/* BOOK 2 */}
             <motion.div
               whileHover={{
                 y: -8,
@@ -634,14 +592,12 @@ export default function AboutPage() {
                 relative
                 aspect-[4/5]
                 overflow-hidden
-                rounded-[24px]
+                rounded-[20px]
                 border
                 border-slate-200/70
                 bg-[#F7FBFE]
-                p-5
-
+                p-4
                 shadow-[0_20px_60px_rgba(15,23,42,0.08)]
-
                 dark:border-white/10
                 dark:bg-[#0B2031]
                 dark:shadow-[0_20px_60px_rgba(0,0,0,0.20)]
@@ -652,10 +608,7 @@ export default function AboutPage() {
                 alt="Whispers of Wisdom"
                 fill
                 sizes="(max-width: 1024px) 45vw, 280px"
-                className="
-                  object-contain
-                  p-5
-                "
+                className="object-contain p-4"
               />
             </motion.div>
           </motion.div>
@@ -678,29 +631,25 @@ export default function AboutPage() {
               duration: 0.7,
             }}
             className="
-              rounded-[26px]
+              rounded-[22px]
               border
               border-slate-200/80
               bg-[#FAFCFE]
-              p-7
-
+              p-6
               shadow-[0_20px_65px_rgba(15,23,42,0.07)]
-
               dark:border-white/10
               dark:bg-[#0B2031]
               dark:shadow-[0_24px_70px_rgba(0,0,0,0.24)]
-
-              sm:p-9
+              sm:p-7
             "
           >
             <p
               className="
-                text-[13px]
+                text-[12px]
                 uppercase
-                leading-[1.9]
+                leading-[1.8]
                 tracking-[0.06em]
                 text-slate-600
-
                 dark:text-slate-300
               "
             >
@@ -712,7 +661,7 @@ export default function AboutPage() {
 
             <div
               className="
-                mt-8
+                mt-6
                 h-[2px]
                 w-10
                 rounded-full
@@ -720,31 +669,24 @@ export default function AboutPage() {
               "
             />
 
-            <div className="mt-8 space-y-7">
+            <div className="mt-6 space-y-5">
               {/* ADDRESS */}
-              <div
-                className="
-                  flex
-                  items-start
-                  gap-4
-                "
-              >
+              <div className="flex items-start gap-3.5">
                 <div
                   className="
                     flex
-                    h-11
-                    w-11
+                    h-10
+                    w-10
                     shrink-0
                     items-center
                     justify-center
-                    rounded-[14px]
+                    rounded-[13px]
                     bg-[#2196F3]/10
                     text-[#2196F3]
-
                     dark:bg-[#2196F3]/15
                   "
                 >
-                  <MapPin size={18} />
+                  <MapPin size={17} />
                 </div>
 
                 <div>
@@ -762,11 +704,10 @@ export default function AboutPage() {
 
                   <p
                     className="
-                      mt-2
-                      text-[14px]
+                      mt-1.5
+                      text-[13px]
                       leading-6
                       text-slate-600
-
                       dark:text-slate-300
                     "
                   >
@@ -777,29 +718,22 @@ export default function AboutPage() {
               </div>
 
               {/* PHONE */}
-              <div
-                className="
-                  flex
-                  items-start
-                  gap-4
-                "
-              >
+              <div className="flex items-start gap-3.5">
                 <div
                   className="
                     flex
-                    h-11
-                    w-11
+                    h-10
+                    w-10
                     shrink-0
                     items-center
                     justify-center
-                    rounded-[14px]
+                    rounded-[13px]
                     bg-[#2196F3]/10
                     text-[#2196F3]
-
                     dark:bg-[#2196F3]/15
                   "
                 >
-                  <Phone size={18} />
+                  <Phone size={17} />
                 </div>
 
                 <div>
@@ -817,10 +751,9 @@ export default function AboutPage() {
 
                   <p
                     className="
-                      mt-2
-                      text-[14px]
+                      mt-1.5
+                      text-[13px]
                       text-slate-600
-
                       dark:text-slate-300
                     "
                   >
@@ -830,29 +763,22 @@ export default function AboutPage() {
               </div>
 
               {/* EMAIL */}
-              <div
-                className="
-                  flex
-                  items-start
-                  gap-4
-                "
-              >
+              <div className="flex items-start gap-3.5">
                 <div
                   className="
                     flex
-                    h-11
-                    w-11
+                    h-10
+                    w-10
                     shrink-0
                     items-center
                     justify-center
-                    rounded-[14px]
+                    rounded-[13px]
                     bg-[#2196F3]/10
                     text-[#2196F3]
-
                     dark:bg-[#2196F3]/15
                   "
                 >
-                  <Mail size={18} />
+                  <Mail size={17} />
                 </div>
 
                 <div>
@@ -871,14 +797,12 @@ export default function AboutPage() {
                   <a
                     href="mailto:hello@whispersofwisdom.co.uk"
                     className="
-                      mt-2
+                      mt-1.5
                       inline-block
-                      text-[14px]
+                      text-[13px]
                       text-slate-600
                       transition-colors
-
                       hover:text-[#2196F3]
-
                       dark:text-slate-300
                       dark:hover:text-[#42A5F5]
                     "
@@ -896,9 +820,7 @@ export default function AboutPage() {
           EXISTING REUSED COMPONENTS
       ===================================================== */}
       <TestimonialsSection />
-
       <CommunitySection />
-
       <StatsSection />
     </div>
   );

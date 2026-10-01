@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+
 import { TenDayChallengeSuccessModal } from "../../../components/ten-day-challenge-success-modal";
+
 import {
   ArrowRight,
   BarChart3,
@@ -16,14 +18,21 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
+
 import { motion } from "motion/react";
 
 import { AnimateIn } from "../../../components/animations/animate-in";
+
 import {
   StaggerContainer,
   StaggerItem,
 } from "../../../components/animations/stagger";
+
 import { MagneticButton } from "../../../components/animations/magnetic-button";
+
+/* ============================================================
+   CHALLENGE BENEFITS
+============================================================ */
 
 const challengeBenefits = [
   {
@@ -54,6 +63,10 @@ const challengeBenefits = [
   },
 ];
 
+/* ============================================================
+   STEPS
+============================================================ */
+
 const steps = [
   {
     title: "Daily Delivery",
@@ -79,6 +92,10 @@ const steps = [
   },
 ];
 
+/* ============================================================
+   PAGE
+============================================================ */
+
 export default function TenDayEmailChallengePage() {
   const [challengeForm, setChallengeForm] = useState({
     name: "",
@@ -93,6 +110,10 @@ export default function TenDayEmailChallengePage() {
 
   const [showSuccessModal, setShowSuccessModal] =
     useState(false);
+
+  /* ==========================================================
+     SUBMIT
+  ========================================================== */
 
   async function handleChallengeSubmit(
     event: React.FormEvent<HTMLFormElement>
@@ -163,6 +184,7 @@ export default function TenDayEmailChallengePage() {
         text-[#0F172A]
         transition-colors
         duration-500
+
         dark:bg-[#041522]
         dark:text-white
       "
@@ -176,24 +198,30 @@ export default function TenDayEmailChallengePage() {
           relative
           overflow-hidden
           bg-[#FCFCFB]
-          py-20
+          py-10
+
           dark:bg-[#041522]
-          sm:py-24
-          lg:py-28
+
+          sm:py-12
+          lg:py-14
         "
       >
+        {/* BACKGROUND GLOW */}
+
         <div
+          aria-hidden="true"
           className="
             pointer-events-none
             absolute
             left-1/2
-            top-10
-            h-[480px]
-            w-[480px]
+            top-8
+            h-[320px]
+            w-[320px]
             -translate-x-1/2
             rounded-full
             bg-[#2196F3]/7
-            blur-[150px]
+            blur-[110px]
+
             dark:bg-[#2196F3]/10
           "
         />
@@ -206,6 +234,7 @@ export default function TenDayEmailChallengePage() {
             max-w-[1050px]
             px-5
             text-center
+
             sm:px-8
           "
         >
@@ -213,16 +242,19 @@ export default function TenDayEmailChallengePage() {
             <h2
               className="
                 mx-auto
-                max-w-[900px]
+                max-w-[880px]
                 font-serif
-                text-[38px]
+                text-[35px]
                 font-medium
                 leading-[1.08]
                 tracking-[-0.035em]
                 text-[#111827]
+
                 dark:text-white
-                sm:text-5xl
-                lg:text-[62px]
+
+                sm:text-[44px]
+
+                lg:text-[54px]
               "
             >
               The 10-Day “Whispers of Wisdom” Challenge
@@ -233,12 +265,13 @@ export default function TenDayEmailChallengePage() {
             <p
               className="
                 mx-auto
-                mt-6
-                max-w-[740px]
-                text-base
-                leading-8
+                mt-4
+                max-w-[700px]
+                text-[14px]
+                leading-6
                 text-[#2196F3]
-                sm:text-lg
+
+                sm:text-[15px]
               "
             >
               Unlock daily insights to transform your mindset,
@@ -247,35 +280,38 @@ export default function TenDayEmailChallengePage() {
           </AnimateIn>
 
           <AnimateIn delay={0.2}>
-            <div className="mt-9">
+            <div className="mt-6">
               <MagneticButton>
                 <a
                   href="#challenge-form"
                   className="
                     inline-flex
-                    min-h-12
+                    min-h-[46px]
                     items-center
                     justify-center
-                    gap-3
+                    gap-2.5
                     rounded-full
                     bg-[#2196F3]
-                    px-7
-                    text-[13px]
+                    px-6
+                    text-[11px]
                     font-semibold
                     uppercase
                     tracking-[0.07em]
                     text-white
-                    shadow-[0_14px_35px_rgba(33,150,243,0.24)]
+                    shadow-[0_12px_30px_rgba(33,150,243,0.20)]
+
                     transition-all
                     duration-300
+
+                    hover:-translate-y-0.5
                     hover:bg-[#1976D2]
-                    hover:shadow-[0_18px_45px_rgba(33,150,243,0.3)]
+                    hover:shadow-[0_16px_38px_rgba(33,150,243,0.26)]
+
                     dark:hover:bg-[#42A5F5]
                   "
                 >
                   Yes! Send Me The 10-Day Challenge
-
-                  <ArrowRight size={16} />
+                  <ArrowRight size={15} />
                 </a>
               </MagneticButton>
             </div>
@@ -291,12 +327,15 @@ export default function TenDayEmailChallengePage() {
         className="
           bg-[#FCFCFB]
           px-5
-          pb-20
+          pb-12
+
           dark:bg-[#041522]
+
           sm:px-8
-          sm:pb-24
+          sm:pb-14
+
           lg:px-12
-          lg:pb-28
+          lg:pb-16
         "
       >
         <div
@@ -304,40 +343,51 @@ export default function TenDayEmailChallengePage() {
             mx-auto
             max-w-[1280px]
             overflow-hidden
-            rounded-[34px]
+            rounded-[28px]
             border
             border-slate-200/70
             bg-white
-            shadow-[0_25px_80px_rgba(15,23,42,0.06)]
+            shadow-[0_20px_60px_rgba(15,23,42,0.05)]
+
             dark:border-white/10
             dark:bg-[#081B2A]
-            dark:shadow-[0_25px_80px_rgba(0,0,0,0.22)]
+            dark:shadow-[0_20px_65px_rgba(0,0,0,0.20)]
           "
         >
+          {/* HEADING */}
+
           <div
             className="
               border-b
               border-slate-200/70
               px-6
-              py-10
+              py-7
               text-center
+
               dark:border-white/10
+
               sm:px-10
+              sm:py-8
+
               lg:px-14
-              lg:py-12
+              lg:py-9
             "
           >
             <AnimateIn>
               <h2
                 className="
                   font-serif
-                  text-3xl
+                  text-[29px]
                   font-medium
+                  leading-[1.1]
                   tracking-[-0.03em]
                   text-[#0F172A]
+
                   dark:text-white
-                  sm:text-4xl
-                  lg:text-[46px]
+
+                  sm:text-[34px]
+
+                  lg:text-[40px]
                 "
               >
                 Why Join This Challenge?
@@ -346,21 +396,26 @@ export default function TenDayEmailChallengePage() {
               <p
                 className="
                   mx-auto
-                  mt-4
-                  max-w-[850px]
-                  text-sm
-                  leading-7
+                  mt-3
+                  max-w-[800px]
+                  text-[13px]
+                  leading-6
                   text-slate-600
+
                   dark:text-slate-400
-                  sm:text-base
+
+                  sm:text-[14px]
                 "
               >
-                Each day, you&apos;ll receive a powerful “Whisper
-                of Wisdom” to shift your perspective, fuel your
-                growth, and simplify your success journey.
+                Each day, you&apos;ll receive a powerful
+                “Whisper of Wisdom” to shift your perspective,
+                fuel your growth, and simplify your success
+                journey.
               </p>
             </AnimateIn>
           </div>
+
+          {/* BENEFITS */}
 
           <StaggerContainer
             className="
@@ -377,7 +432,9 @@ export default function TenDayEmailChallengePage() {
               return (
                 <StaggerItem
                   key={benefit.title}
-                  className={isLast ? "md:col-span-2" : ""}
+                  className={
+                    isLast ? "md:col-span-2" : ""
+                  }
                 >
                   <motion.div
                     whileHover={{
@@ -387,14 +444,16 @@ export default function TenDayEmailChallengePage() {
                     className={`
                       group
                       flex
-                      min-h-[145px]
+                      min-h-[125px]
                       items-center
-                      gap-5
-                      p-7
+                      gap-4
+                      p-5
                       transition-colors
                       duration-300
-                      sm:p-8
-                      lg:p-10
+
+                      sm:p-6
+
+                      lg:p-7
 
                       ${
                         index === 0
@@ -421,9 +480,11 @@ export default function TenDayEmailChallengePage() {
                       }
                     `}
                   >
+                    {/* ICON */}
+
                     <motion.div
                       whileHover={{
-                        scale: 1.08,
+                        scale: 1.07,
                         rotate: -4,
                       }}
                       transition={{
@@ -433,34 +494,38 @@ export default function TenDayEmailChallengePage() {
                       }}
                       className="
                         flex
-                        h-14
-                        w-14
+                        h-12
+                        w-12
                         shrink-0
                         items-center
                         justify-center
-                        rounded-2xl
+                        rounded-xl
                         border
                         border-[#2196F3]/15
                         bg-[#2196F3]/8
                         text-[#2196F3]
+
                         dark:border-[#42A5F5]/20
                         dark:bg-[#2196F3]/12
                       "
                     >
                       <Icon
-                        size={22}
+                        size={20}
                         strokeWidth={1.7}
                       />
                     </motion.div>
+
+                    {/* TEXT */}
 
                     <div>
                       <h3
                         className="
                           font-serif
-                          text-[22px]
+                          text-[20px]
                           font-semibold
                           tracking-[-0.015em]
                           text-[#0F172A]
+
                           dark:text-white
                         "
                       >
@@ -469,11 +534,12 @@ export default function TenDayEmailChallengePage() {
 
                       <p
                         className="
-                          mt-1.5
+                          mt-1
                           max-w-[440px]
-                          text-sm
-                          leading-6
+                          text-[13px]
+                          leading-5.5
                           text-slate-600
+
                           dark:text-slate-400
                         "
                       >
@@ -496,10 +562,13 @@ export default function TenDayEmailChallengePage() {
         className="
           relative
           bg-white
-          py-20
+          py-12
+
           dark:bg-[#061522]
-          sm:py-24
-          lg:py-28
+
+          sm:py-14
+
+          lg:py-16
         "
       >
         <div
@@ -507,7 +576,9 @@ export default function TenDayEmailChallengePage() {
             mx-auto
             max-w-[1250px]
             px-5
+
             sm:px-8
+
             lg:px-12
           "
         >
@@ -516,13 +587,16 @@ export default function TenDayEmailChallengePage() {
               <h2
                 className="
                   font-serif
-                  text-3xl
+                  text-[29px]
                   font-medium
                   tracking-[-0.03em]
                   text-[#0F172A]
+
                   dark:text-white
-                  sm:text-4xl
-                  lg:text-[46px]
+
+                  sm:text-[34px]
+
+                  lg:text-[40px]
                 "
               >
                 How It Works
@@ -531,13 +605,15 @@ export default function TenDayEmailChallengePage() {
               <p
                 className="
                   mx-auto
-                  mt-4
-                  max-w-[720px]
-                  text-sm
-                  leading-7
+                  mt-3
+                  max-w-[700px]
+                  text-[13px]
+                  leading-6
                   text-slate-600
+
                   dark:text-slate-400
-                  sm:text-base
+
+                  sm:text-[14px]
                 "
               >
                 Over 10 days, you&apos;ll receive one powerful
@@ -547,13 +623,17 @@ export default function TenDayEmailChallengePage() {
             </div>
           </AnimateIn>
 
+          {/* STEPS */}
+
           <StaggerContainer
             className="
-              mt-14
+              mt-8
               grid
-              gap-5
+              gap-4
+
               md:grid-cols-2
-              lg:mt-16
+
+              lg:mt-10
               lg:grid-cols-4
             "
           >
@@ -564,7 +644,7 @@ export default function TenDayEmailChallengePage() {
                 <StaggerItem key={step.title}>
                   <motion.div
                     whileHover={{
-                      y: -7,
+                      y: -5,
                     }}
                     transition={{
                       type: "spring",
@@ -574,81 +654,95 @@ export default function TenDayEmailChallengePage() {
                     className="
                       relative
                       h-full
-                      min-h-[260px]
+                      min-h-[220px]
                       overflow-hidden
-                      rounded-[26px]
+                      rounded-[22px]
                       border
                       border-slate-200/80
                       bg-[#FCFCFB]
-                      p-7
-                      shadow-[0_12px_35px_rgba(15,23,42,0.04)]
+                      p-6
+                      shadow-[0_10px_30px_rgba(15,23,42,0.035)]
                       transition-colors
                       duration-300
+
                       hover:border-[#2196F3]/25
+
                       dark:border-white/10
                       dark:bg-[#0B2031]
                       dark:hover:border-[#2196F3]/30
                     "
                   >
+                    {/* NUMBER */}
+
                     <span
                       className="
                         absolute
-                        right-6
-                        top-5
+                        right-5
+                        top-4
                         font-serif
-                        text-5xl
+                        text-4xl
                         text-slate-100
+
                         dark:text-white/[0.035]
                       "
                     >
                       0{index + 1}
                     </span>
 
+                    {/* ICON */}
+
                     <div
                       className="
                         relative
                         z-10
                         flex
-                        h-14
-                        w-14
+                        h-12
+                        w-12
                         items-center
                         justify-center
                         rounded-full
                         bg-[#2196F3]/10
                         text-[#2196F3]
+
                         dark:bg-[#2196F3]/15
                       "
                     >
                       <Icon
-                        size={23}
+                        size={21}
                         strokeWidth={1.7}
                       />
                     </div>
+
+                    {/* TITLE */}
 
                     <h3
                       className="
                         relative
                         z-10
-                        mt-8
+                        mt-6
                         font-serif
-                        text-2xl
+                        text-[21px]
                         font-semibold
                         tracking-[-0.02em]
                         text-[#0F172A]
+
                         dark:text-white
                       "
                     >
                       {step.title}
                     </h3>
 
+                    {/* DESCRIPTION */}
+
                     <p
                       className="
                         relative
                         z-10
-                        mt-3
-                        text-sm
-                        leading-6
+                        mt-2
+                        text-[13px]
+                        leading-5.5
                         text-slate-600
+
                         dark:text-slate-400
                       "
                     >
@@ -670,9 +764,12 @@ export default function TenDayEmailChallengePage() {
         className="
           bg-white
           px-5
-          pb-5
+          pb-4
+
           dark:bg-[#061522]
+
           sm:px-8
+
           lg:px-12
         "
       >
@@ -683,26 +780,32 @@ export default function TenDayEmailChallengePage() {
               mx-auto
               max-w-[1280px]
               overflow-hidden
-              rounded-[32px]
+              rounded-[28px]
               bg-[#0D7BC0]
-              px-7
-              py-12
+              px-6
+              py-9
               text-white
-              shadow-[0_25px_60px_rgba(13,123,192,0.24)]
-              sm:px-10
-              md:px-12
-              lg:px-16
-              lg:py-14
+              shadow-[0_20px_55px_rgba(13,123,192,0.20)]
+
+              sm:px-9
+              sm:py-10
+
+              md:px-11
+
+              lg:px-14
+              lg:py-11
             "
           >
+            {/* DECORATION */}
+
             <div
               className="
                 pointer-events-none
                 absolute
-                -right-28
-                -top-32
-                h-[340px]
-                w-[340px]
+                -right-24
+                -top-28
+                h-[300px]
+                w-[300px]
                 rounded-full
                 border
                 border-white/10
@@ -713,15 +816,17 @@ export default function TenDayEmailChallengePage() {
               className="
                 pointer-events-none
                 absolute
-                -bottom-40
+                -bottom-32
                 left-[35%]
-                h-[360px]
-                w-[360px]
+                h-[320px]
+                w-[320px]
                 rounded-full
                 bg-white/[0.06]
-                blur-[80px]
+                blur-[70px]
               "
             />
+
+            {/* CONTENT */}
 
             <div
               className="
@@ -731,7 +836,8 @@ export default function TenDayEmailChallengePage() {
                 flex-col
                 items-start
                 justify-between
-                gap-8
+                gap-6
+
                 md:flex-row
                 md:items-center
               "
@@ -740,11 +846,13 @@ export default function TenDayEmailChallengePage() {
                 <h2
                   className="
                     font-serif
-                    text-3xl
+                    text-[29px]
                     font-medium
                     tracking-[-0.03em]
-                    sm:text-4xl
-                    lg:text-[46px]
+
+                    sm:text-[34px]
+
+                    lg:text-[40px]
                   "
                 >
                   A Journey Worth Starting
@@ -752,12 +860,13 @@ export default function TenDayEmailChallengePage() {
 
                 <p
                   className="
-                    mt-4
-                    max-w-[700px]
-                    text-sm
-                    leading-7
+                    mt-2.5
+                    max-w-[680px]
+                    text-[13px]
+                    leading-6
                     text-white/80
-                    sm:text-base
+
+                    sm:text-[14px]
                   "
                 >
                   Success is built on small, consistent steps.
@@ -771,28 +880,29 @@ export default function TenDayEmailChallengePage() {
                   href="#challenge-form"
                   className="
                     inline-flex
-                    min-h-12
+                    min-h-[46px]
                     items-center
                     justify-center
-                    gap-3
+                    gap-2.5
                     rounded-full
                     bg-white
-                    px-7
-                    text-[13px]
+                    px-6
+                    text-[11px]
                     font-semibold
                     uppercase
                     tracking-[0.06em]
                     text-[#0D7BC0]
-                    shadow-[0_12px_30px_rgba(0,0,0,0.12)]
+                    shadow-[0_10px_25px_rgba(0,0,0,0.10)]
+
                     transition-all
                     duration-300
+
                     hover:-translate-y-0.5
-                    hover:shadow-[0_16px_35px_rgba(0,0,0,0.16)]
+                    hover:shadow-[0_14px_30px_rgba(0,0,0,0.14)]
                   "
                 >
                   Yes! I Want The Challenge
-
-                  <ArrowRight size={16} />
+                  <ArrowRight size={15} />
                 </a>
               </MagneticButton>
             </div>
@@ -809,12 +919,15 @@ export default function TenDayEmailChallengePage() {
         className="
           bg-white
           px-5
-          py-20
+          py-12
+
           dark:bg-[#061522]
+
           sm:px-8
-          sm:py-24
+          sm:py-14
+
           lg:px-12
-          lg:py-28
+          lg:py-16
         "
       >
         <div
@@ -823,17 +936,21 @@ export default function TenDayEmailChallengePage() {
             grid
             max-w-[1280px]
             overflow-hidden
-            rounded-[32px]
+            rounded-[28px]
             border
             border-slate-200/70
             bg-[#F7FAFC]
-            shadow-[0_24px_70px_rgba(15,23,42,0.05)]
+            shadow-[0_20px_60px_rgba(15,23,42,0.045)]
+
             dark:border-white/10
             dark:bg-[#081B2A]
-            dark:shadow-[0_24px_70px_rgba(0,0,0,0.2)]
+            dark:shadow-[0_20px_60px_rgba(0,0,0,0.18)]
+
             lg:grid-cols-[0.85fr_1.15fr]
           "
         >
+          {/* LEFT */}
+
           <AnimateIn direction="right">
             <div
               className="
@@ -843,25 +960,30 @@ export default function TenDayEmailChallengePage() {
                 justify-center
                 border-b
                 border-slate-200/70
-                px-7
-                py-10
+                px-6
+                py-8
+
                 dark:border-white/10
-                sm:px-10
+
+                sm:px-8
+
                 lg:border-b-0
                 lg:border-r
-                lg:px-12
-                lg:py-14
+                lg:px-10
+                lg:py-11
               "
             >
               <h2
                 className="
                   font-serif
-                  text-4xl
+                  text-[32px]
                   font-medium
                   tracking-[-0.035em]
                   text-[#0F172A]
+
                   dark:text-white
-                  lg:text-[48px]
+
+                  lg:text-[42px]
                 "
               >
                 Ready to Begin?
@@ -869,9 +991,9 @@ export default function TenDayEmailChallengePage() {
 
               <div
                 className="
-                  mt-5
+                  mt-4
                   h-[2px]
-                  w-14
+                  w-12
                   rounded-full
                   bg-[#2196F3]
                 "
@@ -879,13 +1001,15 @@ export default function TenDayEmailChallengePage() {
 
               <p
                 className="
-                  mt-6
-                  max-w-[480px]
-                  text-sm
-                  leading-7
+                  mt-5
+                  max-w-[470px]
+                  text-[13px]
+                  leading-6
                   text-slate-600
+
                   dark:text-slate-400
-                  sm:text-base
+
+                  sm:text-[14px]
                 "
               >
                 Sign up now to receive your first “Whisper of
@@ -895,6 +1019,8 @@ export default function TenDayEmailChallengePage() {
             </div>
           </AnimateIn>
 
+          {/* RIGHT FORM */}
+
           <AnimateIn direction="left" delay={0.1}>
             <form
               onSubmit={handleChallengeSubmit}
@@ -903,21 +1029,24 @@ export default function TenDayEmailChallengePage() {
                 h-full
                 flex-col
                 justify-center
-                gap-4
+                gap-3
                 bg-white
-                px-7
-                py-10
+                px-6
+                py-8
+
                 dark:bg-[#0B2031]
-                sm:px-10
-                lg:px-12
-                lg:py-14
+
+                sm:px-8
+
+                lg:px-10
+                lg:py-11
               "
             >
               {/* NAME */}
 
               <div className="relative">
                 <UserRound
-                  size={18}
+                  size={17}
                   strokeWidth={1.7}
                   className="
                     absolute
@@ -945,26 +1074,31 @@ export default function TenDayEmailChallengePage() {
                   disabled={challengeLoading}
                   autoComplete="name"
                   className="
-                    h-14
+                    h-12
                     w-full
                     rounded-xl
                     border
                     border-slate-200
                     bg-[#FCFCFB]
-                    pl-12
+                    pl-11
                     pr-4
-                    text-sm
+                    text-[13px]
                     text-slate-900
                     outline-none
                     transition-all
+
                     placeholder:text-slate-400
+
                     hover:border-slate-300
+
                     focus:border-[#2196F3]
                     focus:bg-white
                     focus:ring-4
                     focus:ring-[#2196F3]/8
+
                     disabled:cursor-not-allowed
                     disabled:opacity-60
+
                     dark:border-white/10
                     dark:bg-[#081B2A]
                     dark:text-white
@@ -976,7 +1110,7 @@ export default function TenDayEmailChallengePage() {
 
               <div className="relative">
                 <Mail
-                  size={18}
+                  size={17}
                   strokeWidth={1.7}
                   className="
                     absolute
@@ -1004,26 +1138,31 @@ export default function TenDayEmailChallengePage() {
                   disabled={challengeLoading}
                   autoComplete="email"
                   className="
-                    h-14
+                    h-12
                     w-full
                     rounded-xl
                     border
                     border-slate-200
                     bg-[#FCFCFB]
-                    pl-12
+                    pl-11
                     pr-4
-                    text-sm
+                    text-[13px]
                     text-slate-900
                     outline-none
                     transition-all
+
                     placeholder:text-slate-400
+
                     hover:border-slate-300
+
                     focus:border-[#2196F3]
                     focus:bg-white
                     focus:ring-4
                     focus:ring-[#2196F3]/8
+
                     disabled:cursor-not-allowed
                     disabled:opacity-60
+
                     dark:border-white/10
                     dark:bg-[#081B2A]
                     dark:text-white
@@ -1052,48 +1191,49 @@ export default function TenDayEmailChallengePage() {
                 }
                 className="
                   flex
-                  h-14
+                  h-12
                   w-full
                   items-center
                   justify-center
-                  gap-3
+                  gap-2.5
                   rounded-xl
                   bg-[#2196F3]
-                  px-6
-                  text-[13px]
+                  px-5
+                  text-[11px]
                   font-semibold
                   uppercase
                   tracking-[0.06em]
                   text-white
-                  shadow-[0_14px_35px_rgba(33,150,243,0.22)]
+                  shadow-[0_12px_28px_rgba(33,150,243,0.20)]
                   transition-all
                   duration-300
+
                   hover:bg-[#1976D2]
-                  hover:shadow-[0_18px_40px_rgba(33,150,243,0.28)]
+                  hover:shadow-[0_16px_34px_rgba(33,150,243,0.25)]
+
                   disabled:cursor-not-allowed
                   disabled:opacity-60
+
                   dark:hover:bg-[#42A5F5]
                 "
               >
                 {challengeLoading ? (
                   <>
                     <Loader2
-                      size={17}
+                      size={16}
                       className="animate-spin"
                     />
-
                     Joining...
                   </>
                 ) : (
                   <>
                     Start The 10-Day Challenge
-
-                    <ArrowRight size={16} />
+                    <ArrowRight size={15} />
                   </>
                 )}
               </motion.button>
 
-              {/* ERROR MESSAGE */}
+              {/* ERROR */}
 
               {challengeError && (
                 <motion.div
@@ -1113,18 +1253,19 @@ export default function TenDayEmailChallengePage() {
                     border
                     border-red-200
                     bg-red-50
-                    px-4
-                    py-3
-                    text-sm
-                    leading-6
+                    px-3.5
+                    py-2.5
+                    text-[12px]
+                    leading-5
                     text-red-600
+
                     dark:border-red-500/20
                     dark:bg-red-500/10
                     dark:text-red-400
                   "
                 >
                   <AlertCircle
-                    size={18}
+                    size={17}
                     className="mt-0.5 shrink-0"
                   />
 
@@ -1132,12 +1273,15 @@ export default function TenDayEmailChallengePage() {
                 </motion.div>
               )}
 
+              {/* NOTE */}
+
               <p
                 className="
-                  pt-1
-                  text-xs
+                  pt-0.5
+                  text-[11px]
                   leading-5
                   text-slate-500
+
                   dark:text-slate-500
                 "
               >
@@ -1150,7 +1294,7 @@ export default function TenDayEmailChallengePage() {
       </section>
 
       {/* =========================================================
-          PREMIUM SUCCESS POPUP
+          SUCCESS MODAL
       ========================================================= */}
 
       <TenDayChallengeSuccessModal

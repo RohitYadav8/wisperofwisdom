@@ -10,14 +10,21 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+
 import { motion } from "motion/react";
 
 import { AnimateIn } from "../../../components/animations/animate-in";
+
 import { MagneticButton } from "../../../components/animations/magnetic-button";
+
 import {
   StaggerContainer,
   StaggerItem,
 } from "../../../components/animations/stagger";
+
+/* ============================================================
+   JOURNAL BENEFITS
+============================================================ */
 
 const journalBenefits = [
   "Break free from overwhelm and confusion",
@@ -26,6 +33,10 @@ const journalBenefits = [
   "Stay motivated and inspired, even on hard days",
   "Record your growth so you can see how far you've come",
 ];
+
+/* ============================================================
+   JOURNAL INSIDE
+============================================================ */
 
 const journalInside = [
   {
@@ -55,6 +66,10 @@ const journalInside = [
   },
 ];
 
+/* ============================================================
+   READER REVIEWS
+============================================================ */
+
 const readerReviews = [
   {
     text: `"This journal kept me accountable to my actions and helped me finally achieve my 3-month goals."`,
@@ -69,6 +84,10 @@ const readerReviews = [
     author: "Priya R.",
   },
 ];
+
+/* ============================================================
+   JOURNAL PAGE
+============================================================ */
 
 export default function JournalPage() {
   return (
@@ -96,22 +115,26 @@ export default function JournalPage() {
           via-[#238ecb]
           to-[#073b5c]
           px-5
-          py-20
+          py-12
           text-white
+
           sm:px-8
-          sm:py-24
+          sm:py-14
+
           lg:px-12
-          lg:py-28
+          lg:py-16
         "
       >
+        {/* DECORATION */}
+
         <div
           className="
             pointer-events-none
             absolute
-            -right-[130px]
-            -top-[150px]
-            h-[500px]
-            w-[500px]
+            -right-[120px]
+            -top-[140px]
+            h-[420px]
+            w-[420px]
             rounded-full
             border
             border-white/10
@@ -122,15 +145,17 @@ export default function JournalPage() {
           className="
             pointer-events-none
             absolute
-            bottom-[-200px]
+            bottom-[-170px]
             left-[20%]
-            h-[500px]
-            w-[500px]
+            h-[420px]
+            w-[420px]
             rounded-full
             bg-white/[0.08]
-            blur-[120px]
+            blur-[100px]
           "
         />
+
+        {/* HERO CONTENT */}
 
         <div
           className="
@@ -145,10 +170,10 @@ export default function JournalPage() {
             <div
               className="
                 mx-auto
-                mb-6
+                mb-4
                 flex
-                h-12
-                w-12
+                h-10
+                w-10
                 items-center
                 justify-center
                 rounded-full
@@ -158,7 +183,7 @@ export default function JournalPage() {
                 backdrop-blur-sm
               "
             >
-              <Sparkles size={20} />
+              <Sparkles size={17} />
             </div>
           </AnimateIn>
 
@@ -166,12 +191,14 @@ export default function JournalPage() {
             <h1
               className="
                 font-serif
-                text-4xl
+                text-[34px]
                 font-medium
                 leading-[1.08]
                 tracking-[-0.035em]
-                sm:text-5xl
-                lg:text-[62px]
+
+                sm:text-[44px]
+
+                lg:text-[54px]
               "
             >
               Unlock Your Free Whispers of Wisdom Journal
@@ -182,50 +209,52 @@ export default function JournalPage() {
             <p
               className="
                 mx-auto
-                mt-6
-                max-w-[760px]
-                text-sm
-                leading-7
+                mt-4
+                max-w-[700px]
+                text-[13px]
+                leading-6
                 text-white/80
-                sm:text-base
-                sm:leading-8
+
+                sm:text-[14px]
               "
             >
-              Imagine waking up each day with clarity, confidence, and a simple
-              plan for success. This free journal is your first step.
+              Imagine waking up each day with clarity, confidence, and a
+              simple plan for success. This free journal is your first step.
             </p>
           </AnimateIn>
 
           <AnimateIn delay={0.22}>
-            <div className="mt-9">
+            <div className="mt-6">
               <MagneticButton>
                 <a
                   href="#journal-form"
                   className="
                     inline-flex
-                    min-h-12
+                    min-h-[46px]
                     items-center
                     justify-center
-                    gap-3
+                    gap-2.5
                     rounded-full
                     bg-[#061522]
-                    px-7
-                    text-xs
+                    px-6
+                    text-[11px]
                     font-semibold
                     uppercase
                     tracking-[0.07em]
                     text-white
-                    shadow-[0_16px_40px_rgba(0,0,0,0.22)]
+                    shadow-[0_14px_32px_rgba(0,0,0,0.20)]
                     transition-all
                     duration-300
+
+                    hover:-translate-y-0.5
                     hover:bg-white
                     hover:text-[#061522]
-                    hover:shadow-[0_20px_50px_rgba(0,0,0,0.24)]
+                    hover:shadow-[0_18px_40px_rgba(0,0,0,0.22)]
                   "
                 >
-                  <BookOpen size={15} />
+                  <BookOpen size={14} />
                   Yes, I Want My Free Journal
-                  <ArrowRight size={15} />
+                  <ArrowRight size={14} />
                 </a>
               </MagneticButton>
             </div>
@@ -243,8 +272,9 @@ export default function JournalPage() {
           border-[#2196F3]/10
           bg-[#edf8ff]
           px-5
-          py-6
+          py-4
           text-center
+
           dark:border-white/10
           dark:bg-[#061b2a]
         "
@@ -253,10 +283,12 @@ export default function JournalPage() {
           <p
             className="
               font-serif
-              text-base
+              text-[14px]
               italic
               text-[#2196F3]
-              sm:text-lg
+
+              sm:text-[15px]
+
               dark:text-[#42A5F5]
             "
           >
@@ -273,12 +305,15 @@ export default function JournalPage() {
         className="
           bg-[#edf8ff]
           px-5
-          py-16
+          py-10
+
           dark:bg-[#061b2a]
+
           sm:px-8
-          sm:py-20
+          sm:py-12
+
           lg:px-12
-          lg:py-24
+          lg:py-14
         "
       >
         <div className="mx-auto max-w-[1180px]">
@@ -289,89 +324,101 @@ export default function JournalPage() {
           <AnimateIn>
             <div
               className="
-                rounded-[30px]
+                rounded-[26px]
                 border
                 border-white
                 bg-white
-                p-7
-                shadow-[0_25px_70px_rgba(15,23,42,0.08)]
+                p-6
+                shadow-[0_20px_55px_rgba(15,23,42,0.07)]
+
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                dark:shadow-[0_25px_70px_rgba(0,0,0,0.25)]
-                sm:p-10
-                lg:p-12
+                dark:shadow-[0_20px_55px_rgba(0,0,0,0.22)]
+
+                sm:p-8
+
+                lg:p-9
               "
             >
               <div
                 className="
                   flex
                   flex-col
-                  gap-8
+                  gap-6
+
                   lg:grid
                   lg:grid-cols-[0.8fr_1.2fr]
                   lg:items-start
-                  lg:gap-12
+                  lg:gap-10
                 "
               >
+                {/* LEFT */}
+
                 <div>
                   <div
                     className="
                       flex
-                      h-12
-                      w-12
+                      h-11
+                      w-11
                       items-center
                       justify-center
-                      rounded-2xl
+                      rounded-xl
                       bg-[#2196F3]/10
                       text-[#2196F3]
                     "
                   >
-                    <BookOpen size={22} />
+                    <BookOpen size={20} />
                   </div>
 
                   <h2
                     className="
-                      mt-5
+                      mt-4
                       font-serif
-                      text-3xl
+                      text-[27px]
                       font-medium
-                      leading-tight
+                      leading-[1.08]
                       tracking-[-0.03em]
                       text-[#2196F3]
-                      sm:text-4xl
+
+                      sm:text-[32px]
                     "
                   >
                     This Journal Is More Than Just Pages
                   </h2>
                 </div>
 
+                {/* RIGHT */}
+
                 <div>
                   <p
                     className="
-                      text-sm
-                      leading-7
+                      text-[13px]
+                      leading-6
                       text-slate-600
+
                       dark:text-slate-400
-                      sm:text-base
+
+                      sm:text-[14px]
                     "
                   >
-                    It&apos;s a daily companion that helps you turn whispers of
-                    wisdom into real transformation. With guided prompts,
+                    It&apos;s a daily companion that helps you turn whispers
+                    of wisdom into real transformation. With guided prompts,
                     reflection space, and simple action steps, you&apos;ll
                     finally have the structure to:
                   </p>
 
-                  <StaggerContainer className="mt-7 space-y-3">
+                  <StaggerContainer className="mt-5 space-y-2.5">
                     {journalBenefits.map((benefit) => (
                       <StaggerItem key={benefit}>
                         <div
                           className="
                             flex
                             items-start
-                            gap-3
-                            text-sm
-                            leading-6
+                            gap-2.5
+                            text-[13px]
+                            leading-5.5
                             text-slate-700
+
                             dark:text-slate-300
                           "
                         >
@@ -389,7 +436,7 @@ export default function JournalPage() {
                               text-[#2196F3]
                             "
                           >
-                            <Check size={12} />
+                            <Check size={11} />
                           </span>
 
                           {benefit}
@@ -400,33 +447,35 @@ export default function JournalPage() {
                 </div>
               </div>
 
-              <div className="mt-10 flex justify-center">
+              <div className="mt-7 flex justify-center">
                 <MagneticButton>
                   <a
                     href="#journal-form"
                     className="
                       inline-flex
-                      min-h-12
+                      min-h-[46px]
                       items-center
                       justify-center
-                      gap-3
+                      gap-2.5
                       rounded-full
                       bg-[#2196F3]
-                      px-7
-                      text-xs
+                      px-6
+                      text-[11px]
                       font-semibold
                       uppercase
                       tracking-[0.06em]
                       text-white
-                      shadow-[0_12px_30px_rgba(33,150,243,0.2)]
+                      shadow-[0_10px_25px_rgba(33,150,243,0.18)]
                       transition-all
                       duration-300
+
+                      hover:-translate-y-0.5
                       hover:bg-[#1976D2]
-                      hover:shadow-[0_16px_38px_rgba(33,150,243,0.28)]
+                      hover:shadow-[0_14px_32px_rgba(33,150,243,0.25)]
                     "
                   >
                     Claim My Free Journal Now
-                    <ArrowRight size={15} />
+                    <ArrowRight size={14} />
                   </a>
                 </MagneticButton>
               </div>
@@ -440,25 +489,29 @@ export default function JournalPage() {
           <AnimateIn delay={0.06}>
             <div
               className="
-                mt-8
+                mt-6
                 overflow-hidden
-                rounded-[30px]
+                rounded-[26px]
                 border
                 border-white
                 bg-white
-                p-7
-                shadow-[0_25px_70px_rgba(15,23,42,0.08)]
+                p-6
+                shadow-[0_20px_55px_rgba(15,23,42,0.07)]
+
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                sm:p-10
-                lg:p-12
+
+                sm:p-8
+
+                lg:p-9
               "
             >
               <div
                 className="
                   flex
                   flex-col
-                  gap-3
+                  gap-2
+
                   sm:flex-row
                   sm:items-center
                   sm:justify-between
@@ -467,11 +520,12 @@ export default function JournalPage() {
                 <h2
                   className="
                     font-serif
-                    text-3xl
+                    text-[27px]
                     font-medium
                     tracking-[-0.03em]
                     text-[#2196F3]
-                    sm:text-4xl
+
+                    sm:text-[32px]
                   "
                 >
                   What&apos;s Inside the Journal
@@ -480,36 +534,40 @@ export default function JournalPage() {
                 <div
                   className="
                     hidden
-                    h-10
-                    w-10
+                    h-9
+                    w-9
                     items-center
                     justify-center
                     rounded-full
                     bg-[#2196F3]/10
                     text-[#2196F3]
+
                     sm:flex
                   "
                 >
-                  <Target size={19} />
+                  <Target size={18} />
                 </div>
               </div>
 
-              <div className="mt-8 overflow-x-auto">
-                <table className="w-full min-w-[780px] border-collapse">
+              {/* TABLE */}
+
+              <div className="mt-6 overflow-x-auto">
+                <table className="w-full min-w-[720px] border-collapse">
                   <thead>
                     <tr
                       className="
                         bg-[#f5f9fc]
                         text-left
+
                         dark:bg-white/[0.04]
                       "
                     >
                       <th
                         className="
-                          rounded-l-xl
-                          px-5
-                          py-4
-                          text-xs
+                          rounded-l-lg
+                          px-4
+                          py-3
+                          text-[11px]
                           font-semibold
                           uppercase
                           tracking-[0.05em]
@@ -521,9 +579,9 @@ export default function JournalPage() {
 
                       <th
                         className="
-                          px-5
-                          py-4
-                          text-xs
+                          px-4
+                          py-3
+                          text-[11px]
                           font-semibold
                           uppercase
                           tracking-[0.05em]
@@ -535,10 +593,10 @@ export default function JournalPage() {
 
                       <th
                         className="
-                          rounded-r-xl
-                          px-5
-                          py-4
-                          text-xs
+                          rounded-r-lg
+                          px-4
+                          py-3
+                          text-[11px]
                           font-semibold
                           uppercase
                           tracking-[0.05em]
@@ -559,18 +617,21 @@ export default function JournalPage() {
                           border-slate-200/70
                           transition-colors
                           duration-300
+
                           hover:bg-[#2196F3]/[0.025]
+
                           dark:border-white/10
                           dark:hover:bg-white/[0.025]
                         "
                       >
                         <td
                           className="
-                            px-5
-                            py-5
-                            text-sm
+                            px-4
+                            py-3.5
+                            text-[13px]
                             font-semibold
                             text-slate-800
+
                             dark:text-white
                           "
                         >
@@ -579,10 +640,11 @@ export default function JournalPage() {
 
                         <td
                           className="
-                            px-5
-                            py-5
-                            text-sm
+                            px-4
+                            py-3.5
+                            text-[13px]
                             text-slate-600
+
                             dark:text-slate-400
                           "
                         >
@@ -591,10 +653,11 @@ export default function JournalPage() {
 
                         <td
                           className="
-                            px-5
-                            py-5
-                            text-sm
+                            px-4
+                            py-3.5
+                            text-[13px]
                             text-slate-600
+
                             dark:text-slate-400
                           "
                         >
@@ -606,27 +669,29 @@ export default function JournalPage() {
                 </table>
               </div>
 
-              <div className="mt-9 flex justify-center">
+              <div className="mt-7 flex justify-center">
                 <MagneticButton>
                   <a
                     href="#journal-form"
                     className="
                       inline-flex
-                      min-h-12
+                      min-h-[46px]
                       items-center
                       justify-center
-                      gap-3
+                      gap-2.5
                       rounded-full
                       bg-[#2196F3]
-                      px-7
-                      text-xs
+                      px-6
+                      text-[11px]
                       font-semibold
                       uppercase
                       tracking-[0.06em]
                       text-white
-                      shadow-[0_12px_30px_rgba(33,150,243,0.2)]
+                      shadow-[0_10px_25px_rgba(33,150,243,0.18)]
                       transition-all
                       duration-300
+
+                      hover:-translate-y-0.5
                       hover:bg-[#1976D2]
                     "
                   >
@@ -645,27 +710,31 @@ export default function JournalPage() {
           <AnimateIn delay={0.08}>
             <div
               className="
-                mt-8
-                rounded-[30px]
+                mt-6
+                rounded-[26px]
                 border
                 border-white
                 bg-white
-                p-7
-                shadow-[0_25px_70px_rgba(15,23,42,0.08)]
+                p-6
+                shadow-[0_20px_55px_rgba(15,23,42,0.07)]
+
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                sm:p-10
-                lg:p-12
+
+                sm:p-8
+
+                lg:p-9
               "
             >
               <h2
                 className="
                   font-serif
-                  text-3xl
+                  text-[27px]
                   font-medium
                   tracking-[-0.03em]
                   text-[#2196F3]
-                  sm:text-4xl
+
+                  sm:text-[32px]
                 "
               >
                 Why Readers Love It
@@ -673,9 +742,10 @@ export default function JournalPage() {
 
               <StaggerContainer
                 className="
-                  mt-8
+                  mt-6
                   grid
                   gap-4
+
                   lg:grid-cols-3
                 "
               >
@@ -683,7 +753,7 @@ export default function JournalPage() {
                   <StaggerItem key={review.author}>
                     <motion.div
                       whileHover={{
-                        y: -5,
+                        y: -4,
                       }}
                       transition={{
                         type: "spring",
@@ -692,14 +762,16 @@ export default function JournalPage() {
                       }}
                       className="
                         h-full
-                        rounded-[22px]
+                        rounded-[20px]
                         border
                         border-slate-200/80
                         bg-[#fbfcfd]
-                        p-6
+                        p-5
                         transition-colors
                         duration-300
+
                         hover:border-[#2196F3]/25
+
                         dark:border-white/10
                         dark:bg-[#081B2A]
                       "
@@ -707,10 +779,11 @@ export default function JournalPage() {
                       <p
                         className="
                           font-serif
-                          text-[17px]
+                          text-[15px]
                           italic
-                          leading-7
+                          leading-6
                           text-slate-700
+
                           dark:text-slate-300
                         "
                       >
@@ -719,8 +792,8 @@ export default function JournalPage() {
 
                       <p
                         className="
-                          mt-5
-                          text-sm
+                          mt-4
+                          text-[12px]
                           font-semibold
                           text-[#2196F3]
                         "
@@ -732,25 +805,26 @@ export default function JournalPage() {
                 ))}
               </StaggerContainer>
 
-              <div className="mt-9 flex justify-center">
+              <div className="mt-7 flex justify-center">
                 <a
                   href="#journal-form"
                   className="
                     inline-flex
-                    min-h-12
+                    min-h-[46px]
                     items-center
                     justify-center
-                    gap-3
+                    gap-2.5
                     rounded-full
                     bg-[#2196F3]
-                    px-7
-                    text-xs
+                    px-6
+                    text-[11px]
                     font-semibold
                     uppercase
                     tracking-[0.06em]
                     text-white
                     transition-colors
                     duration-300
+
                     hover:bg-[#1976D2]
                   "
                 >
@@ -769,29 +843,35 @@ export default function JournalPage() {
             <div
               id="journal-form"
               className="
-                mt-8
-                rounded-[30px]
+                mt-6
+                rounded-[26px]
                 border
                 border-white
                 bg-white
-                p-7
-                shadow-[0_25px_70px_rgba(15,23,42,0.08)]
+                p-6
+                shadow-[0_20px_55px_rgba(15,23,42,0.07)]
+
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                sm:p-10
-                lg:p-12
+
+                sm:p-8
+
+                lg:p-9
               "
             >
               <div className="mx-auto max-w-[900px]">
+                {/* FORM HEADING */}
+
                 <div className="text-center">
                   <h2
                     className="
                       font-serif
-                      text-3xl
+                      text-[27px]
                       font-medium
                       tracking-[-0.03em]
                       text-[#2196F3]
-                      sm:text-4xl
+
+                      sm:text-[32px]
                     "
                   >
                     Claim Your Free Journal Now
@@ -800,37 +880,47 @@ export default function JournalPage() {
                   <p
                     className="
                       mx-auto
-                      mt-4
-                      max-w-[760px]
-                      text-sm
-                      leading-7
+                      mt-3
+                      max-w-[740px]
+                      text-[13px]
+                      leading-6
                       text-slate-600
+
                       dark:text-slate-400
-                      sm:text-base
+
+                      sm:text-[14px]
                     "
                   >
                     <span
                       className="
                         font-semibold
                         text-slate-800
+
                         dark:text-white
                       "
                     >
                       Limited-Time Free Download:
                     </span>{" "}
-                    Join thousands who are using this journal to create clarity
-                    and momentum in their lives.
+                    Join thousands who are using this journal to create
+                    clarity and momentum in their lives.
                   </p>
                 </div>
 
+                {/* FORM */}
+
                 <form
-                  onSubmit={(event) => event.preventDefault()}
-                  className="mt-10 space-y-5"
+                  onSubmit={(event) =>
+                    event.preventDefault()
+                  }
+                  className="mt-7 space-y-4"
                 >
+                  {/* NAME + LAST NAME */}
+
                   <div
                     className="
                       grid
-                      gap-5
+                      gap-4
+
                       md:grid-cols-2
                     "
                   >
@@ -847,11 +937,15 @@ export default function JournalPage() {
                     />
                   </div>
 
+                  {/* EMAIL */}
+
                   <FormField
                     label="Email Address *"
                     name="email"
                     type="email"
                   />
+
+                  {/* PHONE */}
 
                   <FormField
                     label="Phone Number"
@@ -859,25 +953,29 @@ export default function JournalPage() {
                     type="tel"
                   />
 
+                  {/* CHALLENGE */}
+
                   <div>
                     <label
                       htmlFor="challenge"
                       className="
-                        mb-2
+                        mb-1.5
                         block
-                        text-sm
+                        text-[13px]
                         font-medium
                         text-slate-700
+
                         dark:text-slate-300
                       "
                     >
-                      What&apos;s your biggest personal/professional challenge? *
+                      What&apos;s your biggest
+                      personal/professional challenge? *
                     </label>
 
                     <textarea
                       id="challenge"
                       name="challenge"
-                      rows={5}
+                      rows={4}
                       className="
                         w-full
                         resize-none
@@ -887,42 +985,49 @@ export default function JournalPage() {
                         bg-[#fbfcfd]
                         px-4
                         py-3
-                        text-sm
+                        text-[13px]
                         text-slate-900
                         outline-none
                         transition-all
                         duration-300
+
                         hover:border-slate-400
+
                         focus:border-[#2196F3]
                         focus:bg-white
                         focus:ring-4
                         focus:ring-[#2196F3]/8
+
                         dark:border-white/10
                         dark:bg-[#081B2A]
                         dark:text-white
                       "
                     />
                   </div>
+
+                  {/* GOALS */}
 
                   <div>
                     <label
                       htmlFor="goals"
                       className="
-                        mb-2
+                        mb-1.5
                         block
-                        text-sm
+                        text-[13px]
                         font-medium
                         text-slate-700
+
                         dark:text-slate-300
                       "
                     >
-                      What are your key goals for the next 3-6 months? *
+                      What are your key goals for the next
+                      3-6 months? *
                     </label>
 
                     <textarea
                       id="goals"
                       name="goals"
-                      rows={5}
+                      rows={4}
                       className="
                         w-full
                         resize-none
@@ -932,32 +1037,38 @@ export default function JournalPage() {
                         bg-[#fbfcfd]
                         px-4
                         py-3
-                        text-sm
+                        text-[13px]
                         text-slate-900
                         outline-none
                         transition-all
                         duration-300
+
                         hover:border-slate-400
+
                         focus:border-[#2196F3]
                         focus:bg-white
                         focus:ring-4
                         focus:ring-[#2196F3]/8
+
                         dark:border-white/10
                         dark:bg-[#081B2A]
                         dark:text-white
                       "
                     />
                   </div>
+
+                  {/* TERMS */}
 
                   <label
                     className="
                       flex
                       cursor-pointer
                       items-start
-                      gap-3
-                      text-sm
-                      leading-6
+                      gap-2.5
+                      text-[13px]
+                      leading-5
                       text-slate-600
+
                       dark:text-slate-400
                     "
                   >
@@ -965,7 +1076,7 @@ export default function JournalPage() {
                       type="checkbox"
                       required
                       className="
-                        mt-1
+                        mt-0.5
                         h-4
                         w-4
                         accent-[#2196F3]
@@ -973,26 +1084,30 @@ export default function JournalPage() {
                     />
 
                     <span>
-                      I agree to the Standard Terms and Conditions *
+                      I agree to the Standard Terms and
+                      Conditions *
                     </span>
                   </label>
+
+                  {/* MARKETING */}
 
                   <label
                     className="
                       flex
                       cursor-pointer
                       items-start
-                      gap-3
-                      text-sm
-                      leading-6
+                      gap-2.5
+                      text-[13px]
+                      leading-5
                       text-slate-600
+
                       dark:text-slate-400
                     "
                   >
                     <input
                       type="checkbox"
                       className="
-                        mt-1
+                        mt-0.5
                         h-4
                         w-4
                         accent-[#2196F3]
@@ -1000,11 +1115,14 @@ export default function JournalPage() {
                     />
 
                     <span>
-                      I consent to receive occasional offers and marketing
-                      communications from Whispers of Wisdom and its associated
-                      companies and partners.
+                      I consent to receive occasional offers and
+                      marketing communications from Whispers of
+                      Wisdom and its associated companies and
+                      partners.
                     </span>
                   </label>
+
+                  {/* GDPR */}
 
                   <div
                     className="
@@ -1012,11 +1130,12 @@ export default function JournalPage() {
                       border
                       border-cyan-200
                       bg-cyan-50
-                      px-4
-                      py-3
-                      text-xs
+                      px-3.5
+                      py-2.5
+                      text-[11px]
                       leading-5
                       text-slate-600
+
                       dark:border-cyan-400/10
                       dark:bg-cyan-400/[0.05]
                       dark:text-slate-400
@@ -1026,16 +1145,20 @@ export default function JournalPage() {
                       className="
                         font-semibold
                         text-slate-700
+
                         dark:text-slate-300
                       "
                     >
                       GDPR Disclaimer:
                     </span>{" "}
-                    We respect your privacy. Your data will never be sold to
-                    third parties. You can unsubscribe at any time.
+                    We respect your privacy. Your data will never
+                    be sold to third parties. You can unsubscribe
+                    at any time.
                   </div>
 
-                  <div className="pt-2 text-center">
+                  {/* SUBMIT */}
+
+                  <div className="pt-1 text-center">
                     <motion.button
                       type="submit"
                       whileHover={{
@@ -1046,26 +1169,27 @@ export default function JournalPage() {
                       }}
                       className="
                         inline-flex
-                        min-h-13
+                        min-h-[48px]
                         items-center
                         justify-center
-                        gap-3
+                        gap-2.5
                         rounded-full
                         bg-[#2196F3]
-                        px-8
-                        text-xs
+                        px-7
+                        text-[11px]
                         font-semibold
                         uppercase
                         tracking-[0.06em]
                         text-white
-                        shadow-[0_14px_35px_rgba(33,150,243,0.22)]
+                        shadow-[0_12px_28px_rgba(33,150,243,0.20)]
+
                         transition-all
                         duration-300
+
                         hover:bg-[#1976D2]
-                        hover:shadow-[0_18px_42px_rgba(33,150,243,0.28)]
                       "
                     >
-                      <Download size={15} />
+                      <Download size={14} />
                       Download My Free Journal
                     </motion.button>
                   </div>
@@ -1081,30 +1205,34 @@ export default function JournalPage() {
           <AnimateIn delay={0.12}>
             <div
               className="
-                mt-8
-                rounded-[30px]
+                mt-6
+                rounded-[26px]
                 border
                 border-white
                 bg-white
-                px-7
-                py-10
+                px-6
+                py-8
                 text-center
-                shadow-[0_25px_70px_rgba(15,23,42,0.08)]
+                shadow-[0_20px_55px_rgba(15,23,42,0.07)]
+
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                sm:px-10
-                sm:py-12
-                lg:px-14
+
+                sm:px-8
+                sm:py-9
+
+                lg:px-10
               "
             >
               <h2
                 className="
                   font-serif
-                  text-3xl
+                  text-[28px]
                   font-medium
                   tracking-[-0.03em]
                   text-[#2196F3]
-                  sm:text-4xl
+
+                  sm:text-[32px]
                 "
               >
                 Don&apos;t Miss Out
@@ -1113,47 +1241,51 @@ export default function JournalPage() {
               <p
                 className="
                   mx-auto
-                  mt-4
-                  max-w-[820px]
-                  text-sm
-                  leading-7
+                  mt-3
+                  max-w-[800px]
+                  text-[13px]
+                  leading-6
                   text-slate-600
+
                   dark:text-slate-400
-                  sm:text-base
+
+                  sm:text-[14px]
                 "
               >
-                Stop pushing, procrastinating, and putting up with the same old
-                stories. This journal is free for a limited time — grab it now
-                and begin transforming the future, not just dreaming about it.
+                Stop pushing, procrastinating, and putting up with
+                the same old stories. This journal is free for a
+                limited time — grab it now and begin transforming
+                the future, not just dreaming about it.
               </p>
 
-              <div className="mt-8">
+              <div className="mt-6">
                 <MagneticButton>
                   <a
                     href="#journal-form"
                     className="
                       inline-flex
-                      min-h-12
+                      min-h-[46px]
                       items-center
                       justify-center
-                      gap-3
+                      gap-2.5
                       rounded-full
                       bg-[#2196F3]
-                      px-8
-                      text-xs
+                      px-7
+                      text-[11px]
                       font-semibold
                       uppercase
                       tracking-[0.06em]
                       text-white
-                      shadow-[0_12px_30px_rgba(33,150,243,0.2)]
+                      shadow-[0_10px_25px_rgba(33,150,243,0.18)]
                       transition-all
                       duration-300
+
+                      hover:-translate-y-0.5
                       hover:bg-[#1976D2]
-                      hover:shadow-[0_16px_38px_rgba(33,150,243,0.28)]
                     "
                   >
                     Get My Free Journal
-                    <ArrowRight size={15} />
+                    <ArrowRight size={14} />
                   </a>
                 </MagneticButton>
               </div>
@@ -1164,6 +1296,10 @@ export default function JournalPage() {
     </main>
   );
 }
+
+/* ============================================================
+   FORM FIELD
+============================================================ */
 
 function FormField({
   label,
@@ -1179,11 +1315,12 @@ function FormField({
       <label
         htmlFor={name}
         className="
-          mb-2
+          mb-1.5
           block
-          text-sm
+          text-[13px]
           font-medium
           text-slate-700
+
           dark:text-slate-300
         "
       >
@@ -1195,23 +1332,26 @@ function FormField({
         name={name}
         type={type}
         className="
-          h-13
+          h-12
           w-full
           rounded-xl
           border
           border-slate-300
           bg-[#fbfcfd]
           px-4
-          text-sm
+          text-[13px]
           text-slate-900
           outline-none
           transition-all
           duration-300
+
           hover:border-slate-400
+
           focus:border-[#2196F3]
           focus:bg-white
           focus:ring-4
           focus:ring-[#2196F3]/8
+
           dark:border-white/10
           dark:bg-[#081B2A]
           dark:text-white

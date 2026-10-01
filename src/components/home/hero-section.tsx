@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import Image from "next/image";
+
 import Link from "next/link";
 
 import {
@@ -26,15 +28,15 @@ const slides = [
     alt: "Whispers of Wisdom new edition",
   },
   {
-  id: 2,
-  eyebrow: "For Personal And Professional Success",
-  title: ["Feature books", "of the month"],
-  button: "Purchase",
-  href: "https://www.amazon.co.uk/dp/B0F5GXGHF8",
-  lightImage: "/light-slide-2.png",
-  darkImage: "/dark-slide-2.png",
-  alt: "Whispers of Wisdom featured books",
-},
+    id: 2,
+    eyebrow: "For Personal And Professional Success",
+    title: ["Feature books", "of the month"],
+    button: "Purchase",
+    href: "https://www.amazon.co.uk/dp/B0F5GXGHF8",
+    lightImage: "/light-slide-2.png",
+    darkImage: "/dark-slide-2.png",
+    alt: "Whispers of Wisdom featured books",
+  },
   {
     id: 3,
     eyebrow: "For Personal And Professional Success",
@@ -140,19 +142,20 @@ export function HeroSection() {
         relative
         isolate
         overflow-hidden
-
-        min-h-[470px]
-
+        min-h-[420px]
         border-b
         border-black/[0.04]
-
         bg-[#f7f3ea]
 
-        sm:min-h-[490px]
-        md:min-h-[510px]
-        lg:min-h-[500px]
-        xl:min-h-[520px]
-        2xl:min-h-[530px]
+        sm:min-h-[440px]
+
+        md:min-h-[460px]
+
+        lg:min-h-[450px]
+
+        xl:min-h-[470px]
+
+        2xl:min-h-[480px]
 
         dark:border-white/[0.05]
         dark:bg-[#06131d]
@@ -204,21 +207,17 @@ export function HeroSection() {
               z-0
             "
           >
-            {/* ==================================================
-                LIGHT THEME IMAGE
-            ================================================== */}
+            {/* LIGHT THEME IMAGE */}
 
             <div className="absolute inset-0 dark:hidden">
               <Image
                 src={slide.lightImage}
                 alt={slide.alt}
                 fill
-                priority
-                quality={100}
+                quality={90}
                 sizes="100vw"
                 className="
                   object-cover
-
                   object-[78%_center]
 
                   sm:object-[76%_center]
@@ -232,21 +231,17 @@ export function HeroSection() {
               />
             </div>
 
-            {/* ==================================================
-                DARK THEME IMAGE
-            ================================================== */}
+            {/* DARK THEME IMAGE */}
 
             <div className="absolute inset-0 hidden dark:block">
               <Image
                 src={slide.darkImage}
                 alt={slide.alt}
                 fill
-                priority
-                quality={100}
+                quality={90}
                 sizes="100vw"
                 className="
                   object-cover
-
                   object-[78%_center]
 
                   sm:object-[76%_center]
@@ -260,68 +255,51 @@ export function HeroSection() {
               />
             </div>
 
-            {/* ==================================================
-                LIGHT THEME LEFT OVERLAY
-            ================================================== */}
+            {/* LIGHT THEME LEFT OVERLAY */}
 
             <div
               aria-hidden="true"
               className="
                 absolute
                 inset-0
-
                 bg-gradient-to-r
-
                 from-[#f7f3ea]/96
                 via-[#f7f3ea]/42
                 via-[27%]
                 to-transparent
-
                 dark:hidden
               "
             />
 
-            {/* ==================================================
-                DARK THEME LEFT OVERLAY
-            ================================================== */}
+            {/* DARK THEME LEFT OVERLAY */}
 
             <div
               aria-hidden="true"
               className="
                 absolute
                 inset-0
-
                 hidden
-
                 bg-gradient-to-r
-
                 from-[#06131d]/95
                 via-[#06131d]/45
                 via-[27%]
                 to-transparent
-
                 dark:block
               "
             />
 
-            {/* ==================================================
-                MOBILE EXTRA OVERLAY
-            ================================================== */}
+            {/* MOBILE EXTRA OVERLAY */}
 
             <div
               aria-hidden="true"
               className="
                 absolute
                 inset-0
-
                 bg-gradient-to-b
-
                 from-transparent
                 via-transparent
                 to-[#f7f3ea]/5
-
                 lg:hidden
-
                 dark:to-[#06131d]/5
               "
             />
@@ -335,43 +313,37 @@ export function HeroSection() {
             className="
               relative
               z-20
-
               mx-auto
-
               flex
-
               h-full
-              min-h-[470px]
+              min-h-[420px]
               w-full
               max-w-[1500px]
-
               items-center
-
               px-5
-              py-10
+              py-7
 
-              sm:min-h-[490px]
+              sm:min-h-[440px]
               sm:px-8
-              sm:py-11
+              sm:py-8
 
-              md:min-h-[510px]
+              md:min-h-[460px]
               md:px-10
 
-              lg:min-h-[500px]
+              lg:min-h-[450px]
               lg:px-12
-              lg:py-10
+              lg:py-7
 
-              xl:min-h-[520px]
+              xl:min-h-[470px]
               xl:px-16
 
-              2xl:min-h-[530px]
+              2xl:min-h-[480px]
               2xl:px-20
             "
           >
             <div
               className="
                 w-full
-
                 max-w-[560px]
 
                 sm:max-w-[590px]
@@ -416,11 +388,8 @@ export function HeroSection() {
                     text-[10px]
                     font-semibold
                     uppercase
-
                     leading-relaxed
-
-                    tracking-[0.26em]
-
+                    tracking-[0.25em]
                     text-[#52636d]
 
                     sm:text-[11px]
@@ -460,23 +429,16 @@ export function HeroSection() {
                   },
                 }}
                 className="
-                  mt-4
-
+                  mt-3
                   max-w-[570px]
-
                   font-serif
-
-                  text-[clamp(2.45rem,3.7vw,4rem)]
-
+                  text-[clamp(2.3rem,3.5vw,3.8rem)]
                   font-normal
-
                   leading-[1.01]
-
                   tracking-[-0.045em]
-
                   text-[#26333b]
 
-                  sm:mt-5
+                  sm:mt-4
 
                   dark:text-[#f8f3e9]
                 "
@@ -487,11 +449,8 @@ export function HeroSection() {
                     className="
                       flex
                       flex-wrap
-
                       gap-x-[0.2em]
-
                       overflow-hidden
-
                       pb-[0.09em]
                     "
                   >
@@ -549,52 +508,52 @@ export function HeroSection() {
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 className="
-                  mt-7
+                  mt-5
 
-                  sm:mt-8
+                  sm:mt-6
 
-                  lg:mt-9
+                  lg:mt-7
                 "
               >
                 <Link
                   href={slide.href}
+                  target={
+                    slide.href.startsWith("http")
+                      ? "_blank"
+                      : undefined
+                  }
+                  rel={
+                    slide.href.startsWith("http")
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
                   className="
                     group
-
                     inline-flex
-
-                    min-h-[48px]
-                    min-w-[156px]
-
+                    min-h-[46px]
+                    min-w-[150px]
                     items-center
                     justify-center
-
                     border
                     border-[#1597cb]
-
                     bg-[#1c9fd2]
-
-                    px-7
-
-                    text-[11px]
+                    px-6
+                    text-[10px]
                     font-bold
                     uppercase
-
-                    tracking-[0.14em]
-
+                    tracking-[0.13em]
                     text-white
 
-                    shadow-[0_14px_30px_-18px_rgba(25,157,209,0.85)]
+                    shadow-[0_12px_28px_-18px_rgba(25,157,209,0.85)]
 
                     transition-all
                     duration-300
 
                     hover:-translate-y-[2px]
-
                     hover:border-[#087da8]
                     hover:bg-[#087da8]
 
-                    hover:shadow-[0_18px_36px_-18px_rgba(8,124,167,0.75)]
+                    hover:shadow-[0_16px_32px_-18px_rgba(8,124,167,0.75)]
 
                     focus-visible:outline-none
                     focus-visible:ring-2
@@ -604,10 +563,8 @@ export function HeroSection() {
 
                     dark:border-[#26a9df]
                     dark:bg-[#159bd5]
-
                     dark:hover:border-[#3cbced]
                     dark:hover:bg-[#21aae2]
-
                     dark:focus-visible:ring-offset-[#06131d]
                   "
                 >
@@ -615,7 +572,6 @@ export function HeroSection() {
                     className="
                       transition-transform
                       duration-300
-
                       group-hover:translate-x-[1px]
                     "
                   >
@@ -635,18 +591,12 @@ export function HeroSection() {
       <div
         className="
           absolute
-
-          bottom-3
+          bottom-2.5
           left-1/2
-
           z-40
-
           flex
-
           -translate-x-1/2
-
           items-center
-
           gap-2
         "
       >
@@ -662,18 +612,14 @@ export function HeroSection() {
               aria-current={active ? "true" : undefined}
               className="
                 relative
-
                 flex
-
-                h-7
-                w-11
-
+                h-6
+                w-10
                 cursor-pointer
-
                 items-center
                 justify-center
 
-                sm:w-12
+                sm:w-11
 
                 focus-visible:outline-none
                 focus-visible:ring-2
@@ -683,16 +629,11 @@ export function HeroSection() {
               <span
                 className="
                   relative
-
                   block
-
                   h-[2px]
                   w-full
-
                   overflow-hidden
-
                   rounded-full
-
                   bg-black/15
 
                   dark:bg-white/20
@@ -713,14 +654,10 @@ export function HeroSection() {
                     }}
                     className="
                       block
-
                       h-full
                       w-full
-
                       origin-left
-
                       rounded-full
-
                       bg-[#159bd2]
 
                       dark:bg-[#29b5ec]

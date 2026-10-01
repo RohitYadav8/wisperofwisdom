@@ -13,31 +13,31 @@ export function AuthorSection() {
         relative
         overflow-hidden
         bg-white
-        py-20
+        py-10
         transition-colors
         duration-500
-
         dark:bg-[#061522]
 
-        sm:py-24
-        lg:py-28
+        sm:py-12
+        lg:py-14
       "
     >
-      {/* BACKGROUND GLOW */}
+      {/* =====================================================
+          BACKGROUND GLOW
+      ===================================================== */}
 
       <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
-          -right-24
-          top-20
-          h-[320px]
-          w-[320px]
+          -right-20
+          top-16
+          h-[260px]
+          w-[260px]
           rounded-full
           bg-[#2196F3]/8
-          blur-[110px]
-
+          blur-[90px]
           dark:bg-[#2196F3]/10
         "
       />
@@ -47,19 +47,20 @@ export function AuthorSection() {
         className="
           pointer-events-none
           absolute
-          -left-24
-          bottom-10
-          h-[260px]
-          w-[260px]
+          -left-20
+          bottom-8
+          h-[220px]
+          w-[220px]
           rounded-full
           bg-[#2196F3]/5
-          blur-[100px]
-
+          blur-[85px]
           dark:bg-[#2196F3]/8
         "
       />
 
-      {/* MAIN CONTAINER */}
+      {/* =====================================================
+          MAIN CONTAINER
+      ===================================================== */}
 
       <div
         className="
@@ -69,61 +70,72 @@ export function AuthorSection() {
           grid
           max-w-[1280px]
           items-center
-          gap-14
+          gap-9
           px-5
 
+          sm:gap-10
           sm:px-8
 
           lg:grid-cols-[1.15fr_0.85fr]
-          lg:gap-16
+          lg:gap-12
           lg:px-12
         "
       >
-        {/* LEFT CONTENT */}
+        {/* =====================================================
+            LEFT CONTENT
+        ===================================================== */}
 
         <div>
+          {/* EYEBROW */}
+
           <AnimateIn>
             <p
               className="
-                text-xs
+                text-[10px]
                 font-semibold
                 uppercase
-                tracking-[0.24em]
+                tracking-[0.22em]
                 text-[#2196F3]
+
+                sm:text-[11px]
               "
             >
               Meet The Author
             </p>
           </AnimateIn>
 
+          {/* HEADING */}
+
           <AnimateIn delay={0.08}>
             <h2
               className="
-                mt-4
-                max-w-[600px]
+                mt-2.5
+                max-w-[560px]
                 font-serif
-                text-4xl
+                text-[36px]
                 font-semibold
-                leading-[1.08]
+                leading-[1.06]
                 tracking-[-0.03em]
                 text-[#0F172A]
 
                 dark:text-white
 
-                sm:text-5xl
-                lg:text-[58px]
+                sm:text-[44px]
+                lg:text-[50px]
               "
             >
               Meet The Author
             </h2>
           </AnimateIn>
 
+          {/* BLUE LINE */}
+
           <AnimateIn delay={0.16}>
             <div
               className="
-                mt-7
+                mt-4
                 h-[2px]
-                w-16
+                w-14
                 rounded-full
                 bg-[#2196F3]
               "
@@ -133,16 +145,16 @@ export function AuthorSection() {
           {/* AUTHOR BIO */}
 
           <AnimateIn delay={0.24}>
-            <div className="mt-8 max-w-[650px]">
+            <div className="mt-6 max-w-[650px]">
               <p
                 className="
-                  text-[15px]
-                  leading-[1.85]
+                  text-[14px]
+                  leading-[1.78]
                   text-slate-600
 
                   dark:text-slate-300
 
-                  sm:text-[16px]
+                  sm:text-[15px]
                 "
               >
                 Santosh Kumar has dedicated the entirety of his professional
@@ -160,14 +172,14 @@ export function AuthorSection() {
 
               <p
                 className="
-                  mt-6
-                  text-[15px]
-                  leading-[1.85]
+                  mt-4
+                  text-[14px]
+                  leading-[1.78]
                   text-slate-600
 
                   dark:text-slate-300
 
-                  sm:text-[16px]
+                  sm:text-[15px]
                 "
               >
                 By partnering with Santosh Kumar, you gain not just the
@@ -182,34 +194,32 @@ export function AuthorSection() {
           {/* BUTTON */}
 
           <AnimateIn delay={0.32}>
-            <div className="mt-8">
+            <div className="mt-6">
               <Link
                 href="https://santoshkumar.co.uk/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="
                   group
                   inline-flex
-                  min-h-[54px]
+                  min-h-[50px]
                   items-center
                   justify-center
-
                   bg-[#2196F3]
-
-                  px-8
-
-                  text-[12px]
+                  px-7
+                  text-[11px]
                   font-bold
                   uppercase
                   tracking-[0.1em]
                   text-white
-
-                  shadow-[0_14px_32px_-18px_rgba(33,150,243,0.8)]
-
+                  shadow-[0_12px_28px_-18px_rgba(33,150,243,0.8)]
                   transition-all
                   duration-300
 
                   hover:-translate-y-[2px]
                   hover:bg-[#1976D2]
-                  hover:shadow-[0_18px_36px_-18px_rgba(25,118,210,0.8)]
+
+                  hover:shadow-[0_16px_32px_-18px_rgba(25,118,210,0.8)]
 
                   focus-visible:outline-none
                   focus-visible:ring-2
@@ -219,14 +229,13 @@ export function AuthorSection() {
 
                   dark:focus-visible:ring-offset-[#061522]
 
-                  sm:text-[13px]
+                  sm:text-[12px]
                 "
               >
                 <span
                   className="
                     transition-transform
                     duration-300
-
                     group-hover:translate-x-[1px]
                   "
                 >
@@ -237,7 +246,9 @@ export function AuthorSection() {
           </AnimateIn>
         </div>
 
-        {/* RIGHT AUTHOR IMAGE */}
+        {/* =====================================================
+            RIGHT AUTHOR IMAGE
+        ===================================================== */}
 
         <AnimateIn direction="left">
           <div
@@ -258,13 +269,13 @@ export function AuthorSection() {
                 absolute
                 left-1/2
                 top-1/2
-                h-[78%]
-                w-[78%]
+                h-[76%]
+                w-[76%]
                 -translate-x-1/2
                 -translate-y-1/2
                 rounded-full
                 bg-[#2196F3]/10
-                blur-[80px]
+                blur-[70px]
 
                 dark:bg-[#2196F3]/12
               "
@@ -285,11 +296,11 @@ export function AuthorSection() {
               className="
                 pointer-events-none
                 absolute
-                -right-4
-                -top-5
+                -right-3
+                -top-4
                 hidden
-                h-40
-                w-40
+                h-32
+                w-32
                 rounded-full
                 border
                 border-dashed
@@ -305,7 +316,7 @@ export function AuthorSection() {
 
             <motion.div
               animate={{
-                y: [0, -8, 0],
+                y: [0, -6, 0],
               }}
               transition={{
                 duration: 5.5,
@@ -314,35 +325,32 @@ export function AuthorSection() {
               }}
               className="
                 relative
-                h-[430px]
+                h-[350px]
                 w-full
-                max-w-[390px]
+                max-w-[330px]
                 overflow-hidden
-                rounded-[30px]
-
+                rounded-[26px]
                 border
                 border-[#2196F3]/10
-
                 bg-[#FAFAF7]
-
-                shadow-[0_24px_70px_rgba(15,23,42,0.10)]
+                shadow-[0_20px_55px_rgba(15,23,42,0.09)]
 
                 dark:border-white/10
                 dark:bg-[#0B2031]
-                dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)]
+                dark:shadow-[0_20px_55px_rgba(0,0,0,0.28)]
 
-                sm:h-[500px]
-                sm:max-w-[420px]
+                sm:h-[400px]
+                sm:max-w-[350px]
 
-                lg:h-[530px]
-                lg:max-w-[430px]
+                lg:h-[440px]
+                lg:max-w-[360px]
               "
             >
               <Image
                 src="/author.jpg"
                 alt="Santosh Kumar"
                 fill
-                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 420px, 430px"
+                sizes="(max-width: 640px) 330px, (max-width: 1024px) 350px, 360px"
                 className="
                   object-cover
                   object-top
@@ -359,7 +367,6 @@ export function AuthorSection() {
                   inset-x-0
                   top-0
                   h-[18%]
-
                   bg-gradient-to-b
                   from-white/10
                   to-transparent
@@ -377,8 +384,7 @@ export function AuthorSection() {
                   absolute
                   inset-x-0
                   bottom-0
-                  h-[20%]
-
+                  h-[18%]
                   bg-gradient-to-t
                   from-black/20
                   to-transparent
@@ -393,7 +399,7 @@ export function AuthorSection() {
                   pointer-events-none
                   absolute
                   inset-0
-                  rounded-[30px]
+                  rounded-[26px]
                   ring-1
                   ring-inset
                   ring-white/10
@@ -408,10 +414,10 @@ export function AuthorSection() {
               className="
                 pointer-events-none
                 absolute
-                -bottom-5
-                left-8
-                h-24
-                w-24
+                -bottom-4
+                left-6
+                h-20
+                w-20
                 rounded-full
                 bg-[#2196F3]/10
                 blur-3xl

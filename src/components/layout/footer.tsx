@@ -55,9 +55,7 @@ export function Footer() {
           pointer-events-none
           absolute
           inset-0
-
           bg-[linear-gradient(135deg,rgba(255,248,216,0.50)_0%,rgba(255,255,255,0.25)_40%,rgba(223,243,255,0.48)_100%)]
-
           dark:bg-[linear-gradient(135deg,rgba(4,19,31,0.98)_0%,rgba(6,27,42,0.98)_55%,rgba(5,35,52,0.96)_100%)]
         "
       />
@@ -76,7 +74,6 @@ export function Footer() {
           rounded-full
           bg-[#FFD54F]/10
           blur-[160px]
-
           dark:hidden
         "
       />
@@ -95,7 +92,6 @@ export function Footer() {
           rounded-full
           bg-[#42A5F5]/10
           blur-[160px]
-
           dark:bg-[#2196F3]/[0.08]
         "
       />
@@ -115,7 +111,6 @@ export function Footer() {
           rounded-full
           bg-cyan-400/[0.035]
           blur-[150px]
-
           dark:block
         "
       />
@@ -131,13 +126,13 @@ export function Footer() {
           mx-auto
           max-w-[1580px]
           px-6
-          py-14
+          py-10
 
           sm:px-10
-          sm:py-16
+          sm:py-12
 
           lg:px-14
-          lg:py-20
+          lg:py-14
 
           xl:px-20
         "
@@ -149,15 +144,15 @@ export function Footer() {
         <div
           className="
             grid
-            gap-x-12
-            gap-y-14
+            gap-x-10
+            gap-y-10
 
             sm:grid-cols-2
 
             lg:grid-cols-[1.15fr_0.7fr_0.7fr_1.25fr]
-            lg:gap-x-14
+            lg:gap-x-12
 
-            xl:gap-x-20
+            xl:gap-x-16
           "
         >
           {/* ==================================================
@@ -179,10 +174,10 @@ export function Footer() {
                 height={110}
                 className="
                   h-auto
-                  w-[180px]
+                  w-[170px]
                   object-contain
 
-                  sm:w-[195px]
+                  sm:w-[185px]
 
                   dark:hidden
                 "
@@ -198,10 +193,10 @@ export function Footer() {
                 className="
                   hidden
                   h-auto
-                  w-[180px]
+                  w-[170px]
                   object-contain
 
-                  sm:w-[195px]
+                  sm:w-[185px]
 
                   dark:block
                 "
@@ -210,12 +205,12 @@ export function Footer() {
 
             <p
               className="
-                mt-7
+                mt-5
                 max-w-[360px]
 
                 font-sans
-                text-[15px]
-                leading-[1.95]
+                text-[14px]
+                leading-[1.8]
                 text-[#4C6175]
 
                 dark:text-slate-400
@@ -234,7 +229,7 @@ export function Footer() {
           <div>
             <FooterHeading>Quick Links</FooterHeading>
 
-            <div className="mt-7 flex flex-col gap-[18px]">
+            <div className="mt-5 flex flex-col gap-3">
               {quickLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -253,7 +248,7 @@ export function Footer() {
           <div>
             <FooterHeading>Your Account</FooterHeading>
 
-            <div className="mt-7 flex flex-col gap-[18px]">
+            <div className="mt-5 flex flex-col gap-3">
               {accountLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -276,15 +271,15 @@ export function Footer() {
               href="/product/whispers-of-wisdom"
               className="
                 group
-                mt-7
+                mt-5
                 grid
-                grid-cols-[92px_1fr]
+                grid-cols-[82px_1fr]
                 items-center
-                gap-5
+                gap-4
 
-                sm:grid-cols-[100px_1fr]
+                sm:grid-cols-[90px_1fr]
 
-                lg:grid-cols-[105px_1fr]
+                lg:grid-cols-[95px_1fr]
               "
             >
               {/* BOOK */}
@@ -293,7 +288,7 @@ export function Footer() {
                 className="
                   relative
                   flex
-                  h-[142px]
+                  h-[125px]
                   items-center
                   justify-center
                 "
@@ -304,12 +299,10 @@ export function Footer() {
                   aria-hidden="true"
                   className="
                     absolute
-                    h-[105px]
-                    w-[105px]
+                    h-[92px]
+                    w-[92px]
                     rounded-full
-
                     bg-[radial-gradient(circle,rgba(33,150,243,0.16)_0%,rgba(255,213,79,0.08)_45%,transparent_72%)]
-
                     blur-[2px]
 
                     dark:bg-[radial-gradient(circle,rgba(66,165,245,0.18)_0%,rgba(66,165,245,0.04)_45%,transparent_72%)]
@@ -322,12 +315,12 @@ export function Footer() {
                   aria-hidden="true"
                   className="
                     absolute
-                    bottom-[7px]
-                    h-[12px]
-                    w-[68px]
+                    bottom-[5px]
+                    h-[10px]
+                    w-[60px]
                     rounded-full
                     bg-slate-900/15
-                    blur-[8px]
+                    blur-[7px]
 
                     dark:bg-black/45
                   "
@@ -336,24 +329,24 @@ export function Footer() {
                 <Image
                   src="/books.png"
                   alt="The Journey of Whispers of Wisdom"
-                  width={105}
-                  height={140}
+                  width={95}
+                  height={128}
                   className="
                     relative
                     z-10
-                    h-[132px]
+                    h-[120px]
                     w-auto
                     object-contain
 
-                    drop-shadow-[0_16px_16px_rgba(15,23,42,0.18)]
+                    drop-shadow-[0_14px_14px_rgba(15,23,42,0.18)]
 
                     transition-transform
                     duration-500
 
-                    group-hover:-translate-y-2
+                    group-hover:-translate-y-1.5
                     group-hover:scale-[1.03]
 
-                    dark:drop-shadow-[0_18px_18px_rgba(0,0,0,0.38)]
+                    dark:drop-shadow-[0_16px_16px_rgba(0,0,0,0.38)]
                   "
                 />
               </div>
@@ -364,9 +357,9 @@ export function Footer() {
                 <h4
                   className="
                     font-sans
-                    text-[15px]
+                    text-[14px]
                     font-semibold
-                    leading-[1.5]
+                    leading-[1.45]
                     text-[#0F172A]
 
                     transition-colors
@@ -385,7 +378,7 @@ export function Footer() {
 
                 <div
                   className="
-                    mt-3
+                    mt-2
                     flex
                     items-center
                     gap-[3px]
@@ -396,7 +389,7 @@ export function Footer() {
                   {Array.from({ length: 5 }).map((_, index) => (
                     <Star
                       key={index}
-                      size={14}
+                      size={13}
                       strokeWidth={1.8}
                       fill="currentColor"
                     />
@@ -407,9 +400,9 @@ export function Footer() {
 
                 <p
                   className="
-                    mt-3
+                    mt-2
                     font-sans
-                    text-[17px]
+                    text-[16px]
                     font-bold
                     text-[#078DD1]
 
@@ -429,7 +422,7 @@ export function Footer() {
 
         <div
           className="
-            mt-14
+            mt-10
             h-px
             w-full
 
@@ -439,8 +432,6 @@ export function Footer() {
             to-transparent
 
             dark:via-white/10
-
-            lg:mt-16
           "
         />
 
@@ -450,10 +441,10 @@ export function Footer() {
 
         <div
           className="
-            mt-7
+            mt-5
             flex
             flex-col
-            gap-6
+            gap-4
 
             md:flex-row
             md:items-center
@@ -469,7 +460,7 @@ export function Footer() {
               flex
               flex-wrap
               items-center
-              gap-3
+              gap-2
             "
           >
             {/* VISA */}
@@ -477,23 +468,23 @@ export function Footer() {
             <div
               className="
                 flex
-                h-[38px]
-                w-[58px]
+                h-[34px]
+                w-[52px]
                 items-center
                 justify-center
-                rounded-[6px]
+                rounded-[5px]
                 border
                 border-slate-200/80
                 bg-white
-                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+                shadow-[0_3px_10px_rgba(15,23,42,0.05)]
               "
               title="Visa"
             >
               <FaCcVisa
                 aria-label="Visa"
                 className="
-                  h-[30px]
-                  w-[44px]
+                  h-[27px]
+                  w-[40px]
                   text-[#1A1F71]
                 "
               />
@@ -504,23 +495,23 @@ export function Footer() {
             <div
               className="
                 flex
-                h-[38px]
-                w-[58px]
+                h-[34px]
+                w-[52px]
                 items-center
                 justify-center
-                rounded-[6px]
+                rounded-[5px]
                 border
                 border-slate-200/80
                 bg-white
-                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+                shadow-[0_3px_10px_rgba(15,23,42,0.05)]
               "
               title="Mastercard"
             >
               <FaCcMastercard
                 aria-label="Mastercard"
                 className="
-                  h-[30px]
-                  w-[44px]
+                  h-[27px]
+                  w-[40px]
                   text-[#EB001B]
                 "
               />
@@ -531,27 +522,27 @@ export function Footer() {
             <div
               className="
                 flex
-                h-[38px]
-                w-[58px]
+                h-[34px]
+                w-[52px]
                 items-center
                 justify-center
-                rounded-[6px]
+                rounded-[5px]
                 border
                 border-slate-200/80
                 bg-white
-                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+                shadow-[0_3px_10px_rgba(15,23,42,0.05)]
               "
               title="Maestro"
               aria-label="Maestro"
             >
-              <div className="relative h-[23px] w-[38px]">
+              <div className="relative h-[21px] w-[35px]">
                 <span
                   className="
                     absolute
-                    left-[3px]
+                    left-[2px]
                     top-0
-                    h-[22px]
-                    w-[22px]
+                    h-[20px]
+                    w-[20px]
                     rounded-full
                     bg-[#EB001B]
                   "
@@ -560,10 +551,10 @@ export function Footer() {
                 <span
                   className="
                     absolute
-                    right-[3px]
+                    right-[2px]
                     top-0
-                    h-[22px]
-                    w-[22px]
+                    h-[20px]
+                    w-[20px]
                     rounded-full
                     bg-[#0099DF]/90
                   "
@@ -572,12 +563,12 @@ export function Footer() {
                 <span
                   className="
                     absolute
-                    bottom-[-5px]
+                    bottom-[-4px]
                     left-1/2
                     -translate-x-1/2
                     whitespace-nowrap
                     font-sans
-                    text-[6px]
+                    text-[5px]
                     font-bold
                     leading-none
                     text-[#1A1F71]
@@ -593,23 +584,23 @@ export function Footer() {
             <div
               className="
                 flex
-                h-[38px]
-                w-[58px]
+                h-[34px]
+                w-[52px]
                 items-center
                 justify-center
-                rounded-[6px]
+                rounded-[5px]
                 border
                 border-slate-200/80
                 bg-white
-                shadow-[0_4px_12px_rgba(15,23,42,0.06)]
+                shadow-[0_3px_10px_rgba(15,23,42,0.05)]
               "
               title="American Express"
             >
               <FaCcAmex
                 aria-label="American Express"
                 className="
-                  h-[30px]
-                  w-[44px]
+                  h-[27px]
+                  w-[40px]
                   text-[#2E77BC]
                 "
               />
@@ -625,7 +616,7 @@ export function Footer() {
               flex
               flex-wrap
               items-center
-              gap-5
+              gap-4
 
               md:justify-end
             "
@@ -633,7 +624,7 @@ export function Footer() {
             <p
               className="
                 font-sans
-                text-[13px]
+                text-[12px]
                 text-slate-500
 
                 dark:text-slate-500
@@ -650,13 +641,13 @@ export function Footer() {
               aria-label="Back to top"
               className="
                 flex
-                h-[44px]
-                w-[44px]
+                h-[40px]
+                w-[40px]
                 shrink-0
                 items-center
                 justify-center
 
-                rounded-[13px]
+                rounded-[11px]
 
                 border
                 border-slate-200/80
@@ -665,7 +656,7 @@ export function Footer() {
 
                 text-[#52677D]
 
-                shadow-[0_8px_22px_rgba(15,23,42,0.07)]
+                shadow-[0_6px_18px_rgba(15,23,42,0.06)]
 
                 backdrop-blur-xl
 
@@ -676,7 +667,7 @@ export function Footer() {
                 hover:border-[#2196F3]/40
                 hover:bg-[#2196F3]
                 hover:text-white
-                hover:shadow-[0_12px_28px_rgba(33,150,243,0.18)]
+                hover:shadow-[0_10px_24px_rgba(33,150,243,0.18)]
 
                 dark:border-white/10
                 dark:bg-white/[0.05]
@@ -687,7 +678,7 @@ export function Footer() {
                 dark:hover:text-white
               "
             >
-              <ArrowUp size={17} strokeWidth={2} />
+              <ArrowUp size={16} strokeWidth={2} />
             </a>
           </div>
         </div>
@@ -712,10 +703,10 @@ function FooterHeading({
         w-fit
 
         font-sans
-        text-[13px]
+        text-[12px]
         font-bold
         uppercase
-        tracking-[0.24em]
+        tracking-[0.22em]
 
         text-[#0F172A]
 
@@ -728,11 +719,11 @@ function FooterHeading({
         aria-hidden="true"
         className="
           absolute
-          -bottom-3
+          -bottom-2.5
           left-0
 
           h-[2px]
-          w-8
+          w-7
 
           rounded-full
 
@@ -770,7 +761,7 @@ function FooterLink({
         gap-2
 
         font-sans
-        text-[15px]
+        text-[14px]
 
         text-[#4C6175]
 
@@ -786,8 +777,8 @@ function FooterLink({
     >
       <span
         className="
-          h-[5px]
-          w-[5px]
+          h-[4px]
+          w-[4px]
           scale-0
           rounded-full
           bg-[#2196F3]
