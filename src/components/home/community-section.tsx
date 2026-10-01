@@ -406,4 +406,4 @@ export function CommunitySection() {
       </div>
     </section>
   );
-}
+} 

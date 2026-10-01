@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { ArrowUp, Star } from "lucide-react";
+
 import {
   FaCcVisa,
   FaCcMastercard,
@@ -39,7 +41,6 @@ export function Footer() {
         backdrop-blur-2xl
         transition-colors
         duration-300
-
         dark:border-white/[0.08]
         dark:bg-[#04131F]/95
         dark:text-slate-300
@@ -61,7 +62,6 @@ export function Footer() {
       />
 
       {/* LIGHT YELLOW GLOW */}
-
       <div
         aria-hidden="true"
         className="
@@ -79,7 +79,6 @@ export function Footer() {
       />
 
       {/* BLUE GLOW */}
-
       <div
         aria-hidden="true"
         className="
@@ -97,7 +96,6 @@ export function Footer() {
       />
 
       {/* DARK CENTER GLOW */}
-
       <div
         aria-hidden="true"
         className="
@@ -126,14 +124,11 @@ export function Footer() {
           mx-auto
           max-w-[1580px]
           px-6
-          py-10
-
+          py-8
           sm:px-10
-          sm:py-12
-
+          sm:py-10
           lg:px-14
-          lg:py-14
-
+          lg:py-12
           xl:px-20
         "
       >
@@ -145,13 +140,10 @@ export function Footer() {
           className="
             grid
             gap-x-10
-            gap-y-10
-
+            gap-y-8
             sm:grid-cols-2
-
             lg:grid-cols-[1.15fr_0.7fr_0.7fr_1.25fr]
             lg:gap-x-12
-
             xl:gap-x-16
           "
         >
@@ -166,9 +158,8 @@ export function Footer() {
               className="inline-flex"
             >
               {/* LIGHT LOGO */}
-
               <Image
-                src="/Wispers-of-Wisdom-logo.png"
+                src="/light-logo.png"
                 alt="Whispers of Wisdom"
                 width={230}
                 height={110}
@@ -176,15 +167,12 @@ export function Footer() {
                   h-auto
                   w-[170px]
                   object-contain
-
                   sm:w-[185px]
-
                   dark:hidden
                 "
               />
 
               {/* DARK LOGO */}
-
               <Image
                 src="/logo-dark.png"
                 alt="Whispers of Wisdom"
@@ -195,9 +183,7 @@ export function Footer() {
                   h-auto
                   w-[170px]
                   object-contain
-
                   sm:w-[185px]
-
                   dark:block
                 "
               />
@@ -205,14 +191,12 @@ export function Footer() {
 
             <p
               className="
-                mt-5
+                mt-4
                 max-w-[360px]
-
                 font-sans
-                text-[14px]
-                leading-[1.8]
+                text-[13px]
+                leading-[1.75]
                 text-[#4C6175]
-
                 dark:text-slate-400
               "
             >
@@ -229,7 +213,7 @@ export function Footer() {
           <div>
             <FooterHeading>Quick Links</FooterHeading>
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-4 flex flex-col gap-2.5">
               {quickLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -248,7 +232,7 @@ export function Footer() {
           <div>
             <FooterHeading>Your Account</FooterHeading>
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-4 flex flex-col gap-2.5">
               {accountLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -271,57 +255,50 @@ export function Footer() {
               href="/product/whispers-of-wisdom"
               className="
                 group
-                mt-5
+                mt-4
                 grid
                 grid-cols-[82px_1fr]
                 items-center
                 gap-4
-
                 sm:grid-cols-[90px_1fr]
-
                 lg:grid-cols-[95px_1fr]
               "
             >
               {/* BOOK */}
-
               <div
                 className="
                   relative
                   flex
-                  h-[125px]
+                  h-[118px]
                   items-center
                   justify-center
                 "
               >
                 {/* BOOK HALO */}
-
                 <div
                   aria-hidden="true"
                   className="
                     absolute
-                    h-[92px]
-                    w-[92px]
+                    h-[88px]
+                    w-[88px]
                     rounded-full
                     bg-[radial-gradient(circle,rgba(33,150,243,0.16)_0%,rgba(255,213,79,0.08)_45%,transparent_72%)]
                     blur-[2px]
-
                     dark:bg-[radial-gradient(circle,rgba(66,165,245,0.18)_0%,rgba(66,165,245,0.04)_45%,transparent_72%)]
                   "
                 />
 
                 {/* FLOOR SHADOW */}
-
                 <div
                   aria-hidden="true"
                   className="
                     absolute
-                    bottom-[5px]
-                    h-[10px]
-                    w-[60px]
+                    bottom-[4px]
+                    h-[9px]
+                    w-[58px]
                     rounded-full
                     bg-slate-900/15
                     blur-[7px]
-
                     dark:bg-black/45
                   "
                 />
@@ -334,25 +311,20 @@ export function Footer() {
                   className="
                     relative
                     z-10
-                    h-[120px]
+                    h-[114px]
                     w-auto
                     object-contain
-
                     drop-shadow-[0_14px_14px_rgba(15,23,42,0.18)]
-
                     transition-transform
                     duration-500
-
                     group-hover:-translate-y-1.5
                     group-hover:scale-[1.03]
-
                     dark:drop-shadow-[0_16px_16px_rgba(0,0,0,0.38)]
                   "
                 />
               </div>
 
               {/* BOOK DETAILS */}
-
               <div className="min-w-0">
                 <h4
                   className="
@@ -361,12 +333,9 @@ export function Footer() {
                     font-semibold
                     leading-[1.45]
                     text-[#0F172A]
-
                     transition-colors
                     duration-300
-
                     group-hover:text-[#2196F3]
-
                     dark:text-white
                     dark:group-hover:text-[#64B5F6]
                   "
@@ -375,7 +344,6 @@ export function Footer() {
                 </h4>
 
                 {/* RATING */}
-
                 <div
                   className="
                     mt-2
@@ -397,7 +365,6 @@ export function Footer() {
                 </div>
 
                 {/* PRICE */}
-
                 <p
                   className="
                     mt-2
@@ -405,7 +372,6 @@ export function Footer() {
                     text-[16px]
                     font-bold
                     text-[#078DD1]
-
                     dark:text-[#42A5F5]
                   "
                 >
@@ -422,15 +388,13 @@ export function Footer() {
 
         <div
           className="
-            mt-10
+            mt-8
             h-px
             w-full
-
             bg-gradient-to-r
             from-transparent
             via-slate-300/70
             to-transparent
-
             dark:via-white/10
           "
         />
@@ -441,11 +405,10 @@ export function Footer() {
 
         <div
           className="
-            mt-5
+            mt-4
             flex
             flex-col
-            gap-4
-
+            gap-3
             md:flex-row
             md:items-center
             md:justify-between
@@ -464,7 +427,6 @@ export function Footer() {
             "
           >
             {/* VISA */}
-
             <div
               className="
                 flex
@@ -491,7 +453,6 @@ export function Footer() {
             </div>
 
             {/* MASTERCARD */}
-
             <div
               className="
                 flex
@@ -518,7 +479,6 @@ export function Footer() {
             </div>
 
             {/* MAESTRO */}
-
             <div
               className="
                 flex
@@ -580,7 +540,6 @@ export function Footer() {
             </div>
 
             {/* AMERICAN EXPRESS */}
-
             <div
               className="
                 flex
@@ -616,8 +575,7 @@ export function Footer() {
               flex
               flex-wrap
               items-center
-              gap-4
-
+              gap-3
               md:justify-end
             "
           >
@@ -626,7 +584,6 @@ export function Footer() {
                 font-sans
                 text-[12px]
                 text-slate-500
-
                 dark:text-slate-500
               "
             >
@@ -635,7 +592,6 @@ export function Footer() {
             </p>
 
             {/* BACK TO TOP */}
-
             <a
               href="#top"
               aria-label="Back to top"
@@ -646,33 +602,23 @@ export function Footer() {
                 shrink-0
                 items-center
                 justify-center
-
                 rounded-[11px]
-
                 border
                 border-slate-200/80
-
                 bg-white/70
-
                 text-[#52677D]
-
                 shadow-[0_6px_18px_rgba(15,23,42,0.06)]
-
                 backdrop-blur-xl
-
                 transition-all
                 duration-300
-
                 hover:-translate-y-1
                 hover:border-[#2196F3]/40
                 hover:bg-[#2196F3]
                 hover:text-white
                 hover:shadow-[0_10px_24px_rgba(33,150,243,0.18)]
-
                 dark:border-white/10
                 dark:bg-white/[0.05]
                 dark:text-slate-300
-
                 dark:hover:border-[#42A5F5]/40
                 dark:hover:bg-[#2196F3]
                 dark:hover:text-white
@@ -701,15 +647,12 @@ function FooterHeading({
       className="
         relative
         w-fit
-
         font-sans
         text-[12px]
         font-bold
         uppercase
         tracking-[0.22em]
-
         text-[#0F172A]
-
         dark:text-white
       "
     >
@@ -721,16 +664,12 @@ function FooterHeading({
           absolute
           -bottom-2.5
           left-0
-
           h-[2px]
           w-7
-
           rounded-full
-
           bg-gradient-to-r
           from-[#2196F3]
           to-[#FFD54F]
-
           dark:from-[#42A5F5]
           dark:to-[#2196F3]
         "
@@ -759,18 +698,13 @@ function FooterLink({
         w-fit
         items-center
         gap-2
-
         font-sans
         text-[14px]
-
         text-[#4C6175]
-
         transition-all
         duration-300
-
         hover:translate-x-1
         hover:text-[#2196F3]
-
         dark:text-slate-400
         dark:hover:text-[#64B5F6]
       "
@@ -783,10 +717,8 @@ function FooterLink({
           rounded-full
           bg-[#2196F3]
           opacity-0
-
           transition-all
           duration-300
-
           group-hover:scale-100
           group-hover:opacity-100
         "
