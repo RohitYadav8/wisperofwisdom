@@ -5,9 +5,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "../providers/theme-provider";
 
-/* =====================================================
-   FONTS
-===================================================== */
+
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],

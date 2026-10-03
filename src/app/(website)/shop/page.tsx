@@ -1187,7 +1187,7 @@ export default function ShopPage() {
                     setFilterOpen(false)
                   }
                   aria-label="Close"
-                  className="
+                  className="                                                     
                     flex
                     h-10
                     w-10
