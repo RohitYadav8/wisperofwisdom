@@ -142,7 +142,7 @@ export function AdminSidebar({
             onClick={onClose}
           >
             <Image
-              src="/Wispers-of-Wisdom-logo.png"
+              src="/light-logo.png"
               alt="Whispers of Wisdom"
               width={190}
               height={90}
@@ -155,7 +155,7 @@ export function AdminSidebar({
             />
 
             <Image
-              src="/logo-dark-1.png"
+              src="/logo-dark.png"
               alt="Whispers of Wisdom"
               width={190}
               height={90}

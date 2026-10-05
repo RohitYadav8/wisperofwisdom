@@ -1,6 +1,14 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import {
   CheckCircle2,
   Edit3,
@@ -9,6 +17,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  ShieldCheck,
   Trash2,
   UserRound,
   Users,
@@ -25,50 +34,131 @@ type User = {
   updatedAt: string;
 };
 
-type UserForm = {
+type AdminUser = {
+  id: number;
   name: string;
   email: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
-const emptyForm: UserForm = {
+type AdminForm = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+const emptyAdminForm: AdminForm = {
   name: "",
   email: "",
+  password: "",
 };
 
 export default function AdminUsersPage() {
+  // =========================================================
+  // PUBLIC WEBSITE USERS
+  // =========================================================
+
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
   const [search, setSearch] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // =========================================================
+  // ADMIN USERS
+  // =========================================================
+
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [adminLoading, setAdminLoading] = useState(true);
+
+  // =========================================================
+  // ADMIN USER MODAL
+  // =========================================================
+
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [adminForm, setAdminForm] =
+    useState<AdminForm>(emptyAdminForm);
+  const [savingAdmin, setSavingAdmin] = useState(false);
+
+  // =========================================================
+  // PUBLIC USER ACTIONS
+  // =========================================================
+
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const [form, setForm] = useState<UserForm>(emptyForm);
-  const [saving, setSaving] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    email: "",
+  });
 
+  const [savingUser, setSavingUser] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [statusUpdatingId, setStatusUpdatingId] = useState<number | null>(null);
+  const [statusUpdatingId, setStatusUpdatingId] =
+    useState<number | null>(null);
+
+  // =========================================================
+  // MESSAGES
+  // =========================================================
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   // =========================================================
-  // FETCH USERS
+  // FETCH PUBLIC USERS
   // =========================================================
 
-  const fetchUsers = useCallback(async (showRefresh = false) => {
-    try {
-      if (showRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
+  const fetchUsers = useCallback(
+    async (showRefresh = false) => {
+      try {
+        if (showRefresh) {
+          setRefreshing(true);
+        } else {
+          setLoading(true);
+        }
+
+        setError("");
+
+        const response = await fetch("/api/admin/users", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Failed to fetch users."
+          );
+        }
+
+        setUsers(data.users ?? []);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch users.";
+
+        setError(message);
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
       }
+    },
+    []
+  );
 
-      setError("");
+  // =========================================================
+  // FETCH ADMIN USERS
+  // =========================================================
 
-      const response = await fetch("/api/admin/users", {
+  const fetchAdminUsers = useCallback(async () => {
+    try {
+      setAdminLoading(true);
+
+      const response = await fetch("/api/admin/admin-users", {
         method: "GET",
         credentials: "include",
         cache: "no-store",
@@ -77,29 +167,35 @@ export default function AdminUsersPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to fetch users.");
+        throw new Error(
+          data.message || "Failed to fetch admin users."
+        );
       }
 
-      setUsers(data.users ?? []);
+      setAdminUsers(data.adminUsers ?? []);
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to fetch users.";
+          : "Failed to fetch admin users.";
 
       setError(message);
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setAdminLoading(false);
     }
   }, []);
 
+  // =========================================================
+  // INITIAL LOAD
+  // =========================================================
+
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+    fetchAdminUsers();
+  }, [fetchUsers, fetchAdminUsers]);
 
   // =========================================================
-  // FILTER USERS
+  // FILTER PUBLIC USERS
   // =========================================================
 
   const filteredUsers = useMemo(() => {
@@ -130,57 +226,183 @@ export default function AdminUsersPage() {
   const inactiveUsers = totalUsers - activeUsers;
 
   // =========================================================
-  // OPEN ADD MODAL
+  // REFRESH EVERYTHING
   // =========================================================
 
-  function openAddModal() {
-    setEditingUser(null);
-    setForm(emptyForm);
+  async function handleRefresh() {
+    setRefreshing(true);
     setError("");
-    setSuccess("");
-    setIsModalOpen(true);
+
+    try {
+      await Promise.all([
+        fetchUsers(true),
+        fetchAdminUsers(),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
   }
 
   // =========================================================
-  // OPEN EDIT MODAL
+  // OPEN ADMIN MODAL
+  // =========================================================
+
+  function openAdminModal() {
+    setAdminForm(emptyAdminForm);
+    setError("");
+    setSuccess("");
+    setIsAdminModalOpen(true);
+  }
+
+  // =========================================================
+  // CLOSE ADMIN MODAL
+  // =========================================================
+
+  function closeAdminModal() {
+    if (savingAdmin) {
+      return;
+    }
+
+    setIsAdminModalOpen(false);
+    setAdminForm(emptyAdminForm);
+  }
+
+  // =========================================================
+  // CREATE ADMIN USER
+  // =========================================================
+
+  async function handleAdminSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    const name = adminForm.name.trim();
+    const email = adminForm.email.trim().toLowerCase();
+    const password = adminForm.password;
+
+    if (!name || !email || !password) {
+      setError(
+        "Name, email and password are required."
+      );
+      return;
+    }
+
+    if (password.length < 6) {
+      setError(
+        "Admin password must be at least 6 characters."
+      );
+      return;
+    }
+
+    try {
+      setSavingAdmin(true);
+      setError("");
+      setSuccess("");
+
+      const response = await fetch(
+        "/api/admin/admin-users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            "Failed to create admin user."
+        );
+      }
+
+      // Add newly created admin immediately to UI
+      if (data.adminUser) {
+        setAdminUsers((currentAdmins) => [
+          data.adminUser,
+          ...currentAdmins,
+        ]);
+      } else {
+        // Fallback: reload admin users
+        await fetchAdminUsers();
+      }
+
+      setIsAdminModalOpen(false);
+      setAdminForm(emptyAdminForm);
+
+      setSuccess(
+        `Admin user "${name}" was created successfully.`
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to create admin user.";
+
+      setError(message);
+    } finally {
+      setSavingAdmin(false);
+    }
+  }
+
+  // =========================================================
+  // OPEN EDIT USER MODAL
   // =========================================================
 
   function openEditModal(user: User) {
     setEditingUser(user);
 
-    setForm({
+    setEditForm({
       name: user.name,
       email: user.email,
     });
 
     setError("");
     setSuccess("");
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   }
 
   // =========================================================
-  // CLOSE MODAL
+  // CLOSE EDIT MODAL
   // =========================================================
 
-  function closeModal() {
-    if (saving) {
+  function closeEditModal() {
+    if (savingUser) {
       return;
     }
 
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
     setEditingUser(null);
-    setForm(emptyForm);
+
+    setEditForm({
+      name: "",
+      email: "",
+    });
   }
 
   // =========================================================
-  // CREATE / UPDATE USER
+  // UPDATE PUBLIC USER
   // =========================================================
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleUserUpdate(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
-    const name = form.name.trim();
-    const email = form.email.trim().toLowerCase();
+    if (!editingUser) {
+      return;
+    }
+
+    const name = editForm.name.trim();
+    const email = editForm.email.trim().toLowerCase();
 
     if (!name || !email) {
       setError("Name and email are required.");
@@ -188,60 +410,63 @@ export default function AdminUsersPage() {
     }
 
     try {
-      setSaving(true);
+      setSavingUser(true);
       setError("");
       setSuccess("");
 
-      const url = editingUser
-        ? `/api/admin/users/${editingUser.id}`
-        : "/api/admin/users";
-
-      const response = await fetch(url, {
-        method: editingUser ? "PUT" : "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        credentials: "include",
-
-        body: JSON.stringify({
-          name,
-          email,
-        }),
-      });
+      const response = await fetch(
+        `/api/admin/users/${editingUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            name,
+            email,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data.message ||
-            (editingUser
-              ? "Failed to update user."
-              : "Failed to create user.")
+          data.message || "Failed to update user."
         );
       }
 
-      setIsModalOpen(false);
-      setEditingUser(null);
-      setForm(emptyForm);
-
-      setSuccess(
-        editingUser
-          ? "User updated successfully."
-          : "User created successfully."
+      setUsers((currentUsers) =>
+        currentUsers.map((user) =>
+          user.id === editingUser.id
+            ? {
+                ...user,
+                name,
+                email,
+              }
+            : user
+        )
       );
 
-      await fetchUsers();
+      setIsEditModalOpen(false);
+      setEditingUser(null);
+
+      setEditForm({
+        name: "",
+        email: "",
+      });
+
+      setSuccess("User updated successfully.");
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Something went wrong.";
+          : "Failed to update user.";
 
       setError(message);
     } finally {
-      setSaving(false);
+      setSavingUser(false);
     }
   }
 
@@ -259,13 +484,10 @@ export default function AdminUsersPage() {
         `/api/admin/users/${user.id}`,
         {
           method: "PUT",
-
           headers: {
             "Content-Type": "application/json",
           },
-
           credentials: "include",
-
           body: JSON.stringify({
             isActive: !user.isActive,
           }),
@@ -276,7 +498,8 @@ export default function AdminUsersPage() {
 
       if (!response.ok) {
         throw new Error(
-          data.message || "Failed to update user status."
+          data.message ||
+            "Failed to update user status."
         );
       }
 
@@ -309,7 +532,7 @@ export default function AdminUsersPage() {
   }
 
   // =========================================================
-  // DELETE USER
+  // DELETE PUBLIC USER
   // =========================================================
 
   async function handleDelete(user: User) {
@@ -391,32 +614,33 @@ export default function AdminUsersPage() {
           </h1>
 
           <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-            Manage your Whispers of Wisdom users.
+            Manage registered Whispers of Wisdom members.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            onClick={() => fetchUsers(true)}
+            onClick={handleRefresh}
             disabled={refreshing}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:bg-[#0B2031] dark:text-slate-200 dark:hover:bg-white/5"
           >
             <RefreshCw
               size={17}
-              className={refreshing ? "animate-spin" : ""}
+              className={
+                refreshing ? "animate-spin" : ""
+              }
             />
-
             Refresh
           </button>
 
           <button
             type="button"
-            onClick={openAddModal}
+            onClick={openAdminModal}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#2196F3] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1976D2]"
           >
             <Plus size={18} />
-            Add User
+            Add Admin User
           </button>
         </div>
       </div>
@@ -465,7 +689,7 @@ export default function AdminUsersPage() {
         <StatCard
           title="Total Users"
           value={totalUsers}
-          description="All registered users"
+          description="All registered members"
           icon={<Users size={20} />}
         />
 
@@ -485,7 +709,7 @@ export default function AdminUsersPage() {
       </div>
 
       {/* =====================================================
-          USERS TABLE CARD
+          PUBLIC USERS TABLE
       ====================================================== */}
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B2031]">
@@ -494,12 +718,15 @@ export default function AdminUsersPage() {
         <div className="flex flex-col gap-4 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
           <div>
             <h2 className="font-semibold text-slate-950 dark:text-white">
-              All Users
+              All Registered Users
             </h2>
 
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               {filteredUsers.length} user
-              {filteredUsers.length === 1 ? "" : "s"} found
+              {filteredUsers.length === 1
+                ? ""
+                : "s"}{" "}
+              found
             </p>
           </div>
 
@@ -543,25 +770,16 @@ export default function AdminUsersPage() {
             </div>
 
             <h3 className="font-semibold text-slate-950 dark:text-white">
-              {search ? "No users found" : "No users yet"}
+              {search
+                ? "No users found"
+                : "No registered users yet"}
             </h3>
 
             <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
               {search
                 ? "Try searching with another name or email."
-                : "Users will appear here once they are added."}
+                : "Users who register from the website Account page will appear here automatically."}
             </p>
-
-            {!search && (
-              <button
-                type="button"
-                onClick={openAddModal}
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#2196F3] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1976D2]"
-              >
-                <Plus size={17} />
-                Add First User
-              </button>
-            )}
           </div>
         ) : (
           /* TABLE */
@@ -712,40 +930,208 @@ export default function AdminUsersPage() {
       </div>
 
       {/* =====================================================
-          ADD / EDIT MODAL
+          ADMIN USERS TABLE
       ====================================================== */}
 
-      {isModalOpen && (
+      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B2031]">
+        {/* HEADER */}
+
+        <div className="flex items-center justify-between border-b border-slate-200 p-5 dark:border-white/10">
+          <div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck
+                size={18}
+                className="text-[#2196F3]"
+              />
+
+              <h2 className="font-semibold text-slate-950 dark:text-white">
+                Admin Users
+              </h2>
+            </div>
+
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Users who have access to the Admin Panel.
+            </p>
+          </div>
+
+          <div className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-[#2196F3] dark:bg-[#2196F3]/10">
+            {adminUsers.length} Admin
+            {adminUsers.length === 1 ? "" : "s"}
+          </div>
+        </div>
+
+        {/* ADMIN LOADING */}
+
+        {adminLoading ? (
+          <div className="flex min-h-48 flex-col items-center justify-center gap-3">
+            <Loader2
+              size={28}
+              className="animate-spin text-[#2196F3]"
+            />
+
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Loading admin users...
+            </p>
+          </div>
+        ) : adminUsers.length === 0 ? (
+          /* EMPTY ADMIN STATE */
+
+          <div className="flex min-h-48 flex-col items-center justify-center px-6 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[#2196F3] dark:bg-[#2196F3]/10">
+              <ShieldCheck size={26} />
+            </div>
+
+            <h3 className="font-semibold text-slate-950 dark:text-white">
+              No admin users found
+            </h3>
+
+            <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
+              Click "Add Admin User" to create an admin account.
+            </p>
+          </div>
+        ) : (
+          /* ADMIN TABLE */
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[750px]">
+              <thead className="bg-slate-50/80 dark:bg-[#061522]/70">
+                <tr className="border-b border-slate-200 dark:border-white/10">
+                  <TableHeading>Admin</TableHeading>
+                  <TableHeading>Email</TableHeading>
+                  <TableHeading>Status</TableHeading>
+                  <TableHeading>Created</TableHeading>
+
+                  <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Access
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+                {adminUsers.map((admin) => (
+                  <tr
+                    key={admin.id}
+                    className="transition hover:bg-slate-50/70 dark:hover:bg-white/[0.025]"
+                  >
+                    {/* ADMIN */}
+
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#2196F3] to-[#06466B] text-sm font-bold text-white">
+                          {admin.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </div>
+
+                        <div>
+                          <p className="font-semibold text-slate-900 dark:text-white">
+                            {admin.name}
+                          </p>
+
+                          <p className="mt-0.5 text-xs text-slate-400">
+                            Admin ID #{admin.id}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* EMAIL */}
+
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                        <Mail
+                          size={15}
+                          className="text-slate-400"
+                        />
+
+                        {admin.email}
+                      </div>
+                    </td>
+
+                    {/* STATUS */}
+
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                          admin.isActive
+                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
+                            : "bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400"
+                        }`}
+                      >
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            admin.isActive
+                              ? "bg-emerald-500"
+                              : "bg-slate-400"
+                          }`}
+                        />
+
+                        {admin.isActive
+                          ? "Active"
+                          : "Inactive"}
+                      </span>
+                    </td>
+
+                    {/* CREATED */}
+
+                    <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                      {formatDate(admin.createdAt)}
+                    </td>
+
+                    {/* ACCESS */}
+
+                    <td className="px-6 py-4 text-right">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-[#2196F3] dark:bg-[#2196F3]/10">
+                        <ShieldCheck size={14} />
+                        Admin Access
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* =====================================================
+          ADD ADMIN USER MODAL
+      ====================================================== */}
+
+      {isAdminModalOpen && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
-              closeModal();
+              closeAdminModal();
             }
           }}
         >
           <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0B2031]">
-            {/* MODAL HEADER */}
+            {/* HEADER */}
 
             <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 dark:border-white/10">
               <div>
-                <h2 className="text-lg font-bold text-slate-950 dark:text-white">
-                  {editingUser
-                    ? "Edit User"
-                    : "Add New User"}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <ShieldCheck
+                    size={19}
+                    className="text-[#2196F3]"
+                  />
+
+                  <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+                    Add Admin User
+                  </h2>
+                </div>
 
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                  {editingUser
-                    ? "Update the user information."
-                    : "Create a new user."}
+                  Create an account that can access the Admin Panel.
                 </p>
               </div>
 
               <button
                 type="button"
-                onClick={closeModal}
-                disabled={saving}
+                onClick={closeAdminModal}
+                disabled={savingAdmin}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/5 dark:hover:text-white"
               >
                 <X size={20} />
@@ -755,24 +1141,183 @@ export default function AdminUsersPage() {
             {/* FORM */}
 
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleAdminSubmit}
               className="p-6"
             >
               <div className="space-y-5">
+                {/* NAME */}
+
                 <div>
                   <label
-                    htmlFor="user-name"
+                    htmlFor="admin-name"
                     className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
                   >
                     Full Name
                   </label>
 
                   <input
-                    id="user-name"
+                    id="admin-name"
                     type="text"
-                    value={form.name}
+                    value={adminForm.name}
                     onChange={(event) =>
-                      setForm((current) => ({
+                      setAdminForm((current) => ({
+                        ...current,
+                        name: event.target.value,
+                      }))
+                    }
+                    placeholder="Enter full name"
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                  />
+                </div>
+
+                {/* EMAIL */}
+
+                <div>
+                  <label
+                    htmlFor="admin-email"
+                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
+                  >
+                    Admin Email
+                  </label>
+
+                  <input
+                    id="admin-email"
+                    type="email"
+                    value={adminForm.email}
+                    onChange={(event) =>
+                      setAdminForm((current) => ({
+                        ...current,
+                        email: event.target.value,
+                      }))
+                    }
+                    placeholder="admin@example.com"
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                  />
+                </div>
+
+                {/* PASSWORD */}
+
+                <div>
+                  <label
+                    htmlFor="admin-password"
+                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
+                  >
+                    Password
+                  </label>
+
+                  <input
+                    id="admin-password"
+                    type="password"
+                    value={adminForm.password}
+                    onChange={(event) =>
+                      setAdminForm((current) => ({
+                        ...current,
+                        password: event.target.value,
+                      }))
+                    }
+                    placeholder="Minimum 6 characters"
+                    minLength={6}
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* BUTTONS */}
+
+              <div className="mt-7 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={closeAdminModal}
+                  disabled={savingAdmin}
+                  className="h-11 rounded-xl border border-slate-200 px-5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={savingAdmin}
+                  className="inline-flex h-11 min-w-36 items-center justify-center gap-2 rounded-xl bg-[#2196F3] px-5 text-sm font-semibold text-white transition hover:bg-[#1976D2] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {savingAdmin ? (
+                    <>
+                      <Loader2
+                        size={17}
+                        className="animate-spin"
+                      />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck size={17} />
+                      Create Admin
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* =====================================================
+          EDIT PUBLIC USER MODAL
+      ====================================================== */}
+
+      {isEditModalOpen && editingUser && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeEditModal();
+            }
+          }}
+        >
+          <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0B2031]">
+            {/* HEADER */}
+
+            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 dark:border-white/10">
+              <div>
+                <h2 className="text-lg font-bold text-slate-950 dark:text-white">
+                  Edit User
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  Update the registered user's information.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={closeEditModal}
+                disabled={savingUser}
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/5 dark:hover:text-white"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* FORM */}
+
+            <form
+              onSubmit={handleUserUpdate}
+              className="p-6"
+            >
+              <div className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="edit-user-name"
+                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
+                  >
+                    Full Name
+                  </label>
+
+                  <input
+                    id="edit-user-name"
+                    type="text"
+                    value={editForm.name}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
                         ...current,
                         name: event.target.value,
                       }))
@@ -784,18 +1329,18 @@ export default function AdminUsersPage() {
 
                 <div>
                   <label
-                    htmlFor="user-email"
+                    htmlFor="edit-user-email"
                     className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
                   >
                     Email Address
                   </label>
 
                   <input
-                    id="user-email"
+                    id="edit-user-email"
                     type="email"
-                    value={form.email}
+                    value={editForm.email}
                     onChange={(event) =>
-                      setForm((current) => ({
+                      setEditForm((current) => ({
                         ...current,
                         email: event.target.value,
                       }))
@@ -811,8 +1356,8 @@ export default function AdminUsersPage() {
               <div className="mt-7 flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  onClick={closeModal}
-                  disabled={saving}
+                  onClick={closeEditModal}
+                  disabled={savingUser}
                   className="h-11 rounded-xl border border-slate-200 px-5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
                 >
                   Cancel
@@ -820,27 +1365,21 @@ export default function AdminUsersPage() {
 
                 <button
                   type="submit"
-                  disabled={saving}
+                  disabled={savingUser}
                   className="inline-flex h-11 min-w-32 items-center justify-center gap-2 rounded-xl bg-[#2196F3] px-5 text-sm font-semibold text-white transition hover:bg-[#1976D2] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {saving ? (
+                  {savingUser ? (
                     <>
                       <Loader2
                         size={17}
                         className="animate-spin"
                       />
-
                       Saving...
-                    </>
-                  ) : editingUser ? (
-                    <>
-                      <Edit3 size={16} />
-                      Update User
                     </>
                   ) : (
                     <>
-                      <Plus size={17} />
-                      Add User
+                      <Edit3 size={16} />
+                      Update User
                     </>
                   )}
                 </button>
@@ -866,7 +1405,7 @@ function StatCard({
   title: string;
   value: number;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
 }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#0B2031]">
@@ -900,7 +1439,7 @@ function StatCard({
 function TableHeading({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { useCallback, useEffect, useState } from "react";
 
 import {
@@ -10,7 +11,6 @@ import {
   Loader2,
   MessageSquareText,
   RefreshCw,
-  Star,
   Users,
 } from "lucide-react";
 
@@ -30,12 +30,6 @@ const quickActions = [
     description: "Add or update books",
     href: "/admin/books",
     icon: BookOpen,
-  },
-  {
-    label: "Manage Reviews",
-    description: "Review customer feedback",
-    href: "/admin/reviews",
-    icon: Star,
   },
   {
     label: "Contact Messages",
@@ -64,20 +58,16 @@ export default function AdminDashboardPage() {
 
         setError("");
 
-        const response = await fetch(
-          "/api/admin/dashboard",
-          {
-            method: "GET",
-            cache: "no-store",
-          }
-        );
+        const response = await fetch("/api/admin/dashboard", {
+          method: "GET",
+          cache: "no-store",
+        });
 
         const data = await response.json();
 
         if (!response.ok) {
           throw new Error(
-            data.error ||
-              "Failed to load dashboard data."
+            data.error || "Failed to load dashboard data."
           );
         }
 
@@ -108,12 +98,6 @@ export default function AdminDashboardPage() {
       icon: BookOpen,
     },
     {
-      label: "Total Reviews",
-      value: 0,
-      description: "Customer reviews",
-      icon: Star,
-    },
-    {
       label: "Total Users",
       value: dashboard?.stats.totalUsers ?? 0,
       description: "Registered users",
@@ -139,7 +123,6 @@ export default function AdminDashboardPage() {
         "
       >
         {/* LEFT */}
-
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <h1
@@ -158,7 +141,6 @@ export default function AdminDashboardPage() {
             </h1>
 
             {/* DATABASE STATUS */}
-
             <div
               className="
                 inline-flex
@@ -209,7 +191,6 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* RIGHT */}
-
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -245,9 +226,7 @@ export default function AdminDashboardPage() {
           >
             <RefreshCw
               size={15}
-              className={
-                refreshing ? "animate-spin" : ""
-              }
+              className={refreshing ? "animate-spin" : ""}
             />
 
             {refreshing ? "Refreshing..." : "Refresh"}
@@ -255,7 +234,9 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* ERROR */}
+      {/* =====================================================
+          ERROR
+      ===================================================== */}
 
       {error && (
         <div
@@ -288,7 +269,6 @@ export default function AdminDashboardPage() {
           grid
           gap-4
           sm:grid-cols-2
-          xl:grid-cols-3
         "
       >
         {stats.map((item) => {
@@ -318,7 +298,6 @@ export default function AdminDashboardPage() {
               "
             >
               {/* DECORATION */}
-
               <div
                 aria-hidden="true"
                 className="
@@ -337,7 +316,6 @@ export default function AdminDashboardPage() {
 
               <div className="relative flex items-center gap-4">
                 {/* ICON */}
-
                 <div
                   className="
                     flex
@@ -368,7 +346,6 @@ export default function AdminDashboardPage() {
                 </div>
 
                 {/* CONTENT */}
-
                 <div className="min-w-0">
                   <p
                     className="
@@ -490,7 +467,6 @@ export default function AdminDashboardPage() {
             grid
             gap-3
             md:grid-cols-2
-            xl:grid-cols-3
           "
         >
           {quickActions.map((item) => {

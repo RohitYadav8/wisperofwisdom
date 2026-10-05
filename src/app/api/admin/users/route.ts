@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-
+import bcrypt from "bcryptjs";
 import { prisma } from "../../../../lib/prisma";
+import { getAdminSession } from "../../../../lib/admin-auth";
 
-// GET ALL USERS
+// GET ALL PUBLIC USERS
 export async function GET() {
   try {
+    const session = await getAdminSession();
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized." },
+        { status: 401 }
+      );
+    }
+
     const users = await prisma.user.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         name: true,
@@ -24,7 +32,7 @@ export async function GET() {
       users,
     });
   } catch (error) {
-    console.error("Get users error:", error);
+    console.error("GET USERS ERROR:", error);
 
     return NextResponse.json(
       {
@@ -36,9 +44,18 @@ export async function GET() {
   }
 }
 
-// CREATE USER
+// CREATE PUBLIC USER FROM ADMIN PANEL
 export async function POST(request: NextRequest) {
   try {
+    const session = await getAdminSession();
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized." },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
     const name =
@@ -51,20 +68,34 @@ export async function POST(request: NextRequest) {
         ? body.email.trim().toLowerCase()
         : "";
 
-    if (!name || !email) {
+    const password =
+      typeof body.password === "string"
+        ? body.password
+        : "";
+
+    if (!name || !email || !password) {
       return NextResponse.json(
         {
           success: false,
-          message: "Name and email are required.",
+          message: "Name, email and password are required.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Password must be at least 6 characters.",
         },
         { status: 400 }
       );
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+      where: { email },
+      select: { id: true },
     });
 
     if (existingUser) {
@@ -77,10 +108,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(password, 12);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
+        password: hashedPassword,
         isActive: true,
       },
       select: {
@@ -89,6 +123,7 @@ export async function POST(request: NextRequest) {
         email: true,
         isActive: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
 
@@ -101,7 +136,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Create user error:", error);
+    console.error("CREATE USER ERROR:", error);
 
     return NextResponse.json(
       {
