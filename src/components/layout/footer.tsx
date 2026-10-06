@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -56,12 +57,13 @@ export function Footer() {
           pointer-events-none
           absolute
           inset-0
-          bg-[linear-gradient(135deg,rgba(255,248,216,0.50)_0%,rgba(255,255,255,0.25)_40%,rgba(223,243,255,0.48)_100%)]
+          bg-[linear-gradient(135deg,rgba(255,248,216,0.58)_0%,rgba(255,255,255,0.30)_45%,rgba(223,243,255,0.52)_100%)]
           dark:bg-[linear-gradient(135deg,rgba(4,19,31,0.98)_0%,rgba(6,27,42,0.98)_55%,rgba(5,35,52,0.96)_100%)]
         "
       />
 
       {/* LIGHT YELLOW GLOW */}
+
       <div
         aria-hidden="true"
         className="
@@ -79,6 +81,7 @@ export function Footer() {
       />
 
       {/* BLUE GLOW */}
+
       <div
         aria-hidden="true"
         className="
@@ -96,6 +99,7 @@ export function Footer() {
       />
 
       {/* DARK CENTER GLOW */}
+
       <div
         aria-hidden="true"
         className="
@@ -155,9 +159,16 @@ export function Footer() {
             <Link
               href="/"
               aria-label="Whispers of Wisdom Home"
-              className="inline-flex"
+              className="
+                inline-flex
+                rounded-xl
+                transition-transform
+                duration-300
+                hover:-translate-y-0.5
+              "
             >
               {/* LIGHT LOGO */}
+
               <Image
                 src="/light-logo.png"
                 alt="Whispers of Wisdom"
@@ -173,6 +184,7 @@ export function Footer() {
               />
 
               {/* DARK LOGO */}
+
               <Image
                 src="/logo-dark.png"
                 alt="Whispers of Wisdom"
@@ -213,7 +225,7 @@ export function Footer() {
           <div>
             <FooterHeading>Quick Links</FooterHeading>
 
-            <div className="mt-4 flex flex-col gap-2.5">
+            <div className="mt-5 flex flex-col gap-3">
               {quickLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -232,7 +244,7 @@ export function Footer() {
           <div>
             <FooterHeading>Your Account</FooterHeading>
 
-            <div className="mt-4 flex flex-col gap-2.5">
+            <div className="mt-5 flex flex-col gap-3">
               {accountLinks.map((item) => (
                 <FooterLink
                   key={`${item.label}-${item.href}`}
@@ -255,16 +267,29 @@ export function Footer() {
               href="/product/whispers-of-wisdom"
               className="
                 group
-                mt-4
+                mt-5
                 grid
                 grid-cols-[82px_1fr]
                 items-center
                 gap-4
+                rounded-2xl
+                border
+                border-transparent
+                p-1
+                transition-all
+                duration-300
+                hover:border-[#2196F3]/10
+                hover:bg-white/35
+                hover:shadow-[0_12px_30px_rgba(15,23,42,0.05)]
                 sm:grid-cols-[90px_1fr]
                 lg:grid-cols-[95px_1fr]
+                dark:hover:border-white/[0.06]
+                dark:hover:bg-white/[0.025]
+                dark:hover:shadow-[0_12px_30px_rgba(0,0,0,0.18)]
               "
             >
               {/* BOOK */}
+
               <div
                 className="
                   relative
@@ -275,6 +300,7 @@ export function Footer() {
                 "
               >
                 {/* BOOK HALO */}
+
                 <div
                   aria-hidden="true"
                   className="
@@ -284,11 +310,15 @@ export function Footer() {
                     rounded-full
                     bg-[radial-gradient(circle,rgba(33,150,243,0.16)_0%,rgba(255,213,79,0.08)_45%,transparent_72%)]
                     blur-[2px]
+                    transition-transform
+                    duration-500
+                    group-hover:scale-110
                     dark:bg-[radial-gradient(circle,rgba(66,165,245,0.18)_0%,rgba(66,165,245,0.04)_45%,transparent_72%)]
                   "
                 />
 
                 {/* FLOOR SHADOW */}
+
                 <div
                   aria-hidden="true"
                   className="
@@ -299,6 +329,9 @@ export function Footer() {
                     rounded-full
                     bg-slate-900/15
                     blur-[7px]
+                    transition-all
+                    duration-500
+                    group-hover:w-[52px]
                     dark:bg-black/45
                   "
                 />
@@ -325,13 +358,13 @@ export function Footer() {
               </div>
 
               {/* BOOK DETAILS */}
+
               <div className="min-w-0">
                 <h4
                   className="
                     font-sans
                     text-[14px]
-                    font-semibold
-                    leading-[1.45]
+                    font-semibold                                                                                                                         leading-[1.45]
                     text-[#0F172A]
                     transition-colors
                     duration-300
@@ -344,6 +377,7 @@ export function Footer() {
                 </h4>
 
                 {/* RATING */}
+
                 <div
                   className="
                     mt-2
@@ -365,6 +399,7 @@ export function Footer() {
                 </div>
 
                 {/* PRICE */}
+
                 <p
                   className="
                     mt-2
@@ -388,7 +423,7 @@ export function Footer() {
 
         <div
           className="
-            mt-8
+            mt-9
             h-px
             w-full
             bg-gradient-to-r
@@ -405,10 +440,10 @@ export function Footer() {
 
         <div
           className="
-            mt-4
+            mt-5
             flex
             flex-col
-            gap-3
+            gap-4
             md:flex-row
             md:items-center
             md:justify-between
@@ -427,6 +462,7 @@ export function Footer() {
             "
           >
             {/* VISA */}
+
             <div
               className="
                 flex
@@ -434,11 +470,15 @@ export function Footer() {
                 w-[52px]
                 items-center
                 justify-center
-                rounded-[5px]
+                rounded-[6px]
                 border
                 border-slate-200/80
                 bg-white
                 shadow-[0_3px_10px_rgba(15,23,42,0.05)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-[0_6px_14px_rgba(15,23,42,0.08)]
               "
               title="Visa"
             >
@@ -453,6 +493,7 @@ export function Footer() {
             </div>
 
             {/* MASTERCARD */}
+
             <div
               className="
                 flex
@@ -460,11 +501,15 @@ export function Footer() {
                 w-[52px]
                 items-center
                 justify-center
-                rounded-[5px]
+                rounded-[6px]
                 border
                 border-slate-200/80
                 bg-white
                 shadow-[0_3px_10px_rgba(15,23,42,0.05)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-[0_6px_14px_rgba(15,23,42,0.08)]
               "
               title="Mastercard"
             >
@@ -479,6 +524,7 @@ export function Footer() {
             </div>
 
             {/* MAESTRO */}
+
             <div
               className="
                 flex
@@ -486,11 +532,15 @@ export function Footer() {
                 w-[52px]
                 items-center
                 justify-center
-                rounded-[5px]
+                rounded-[6px]
                 border
                 border-slate-200/80
                 bg-white
                 shadow-[0_3px_10px_rgba(15,23,42,0.05)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-[0_6px_14px_rgba(15,23,42,0.08)]
               "
               title="Maestro"
               aria-label="Maestro"
@@ -540,6 +590,7 @@ export function Footer() {
             </div>
 
             {/* AMERICAN EXPRESS */}
+
             <div
               className="
                 flex
@@ -547,11 +598,15 @@ export function Footer() {
                 w-[52px]
                 items-center
                 justify-center
-                rounded-[5px]
+                rounded-[6px]
                 border
                 border-slate-200/80
                 bg-white
                 shadow-[0_3px_10px_rgba(15,23,42,0.05)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-[0_6px_14px_rgba(15,23,42,0.08)]
               "
               title="American Express"
             >
@@ -592,10 +647,12 @@ export function Footer() {
             </p>
 
             {/* BACK TO TOP */}
+
             <a
               href="#top"
               aria-label="Back to top"
               className="
+                group
                 flex
                 h-[40px]
                 w-[40px]
@@ -624,7 +681,15 @@ export function Footer() {
                 dark:hover:text-white
               "
             >
-              <ArrowUp size={16} strokeWidth={2} />
+              <ArrowUp
+                size={16}
+                strokeWidth={2}
+                className="
+                  transition-transform
+                  duration-300
+                  group-hover:-translate-y-0.5
+                "
+              />
             </a>
           </div>
         </div>
@@ -670,6 +735,8 @@ function FooterHeading({
           bg-gradient-to-r
           from-[#2196F3]
           to-[#FFD54F]
+          transition-all
+          duration-300
           dark:from-[#42A5F5]
           dark:to-[#2196F3]
         "
@@ -728,3 +795,5 @@ function FooterLink({
     </Link>
   );
 }
+
+

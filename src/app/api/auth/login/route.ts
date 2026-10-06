@@ -9,6 +9,7 @@ export async function POST(request: Request) {
 
     const email = body.email?.trim().toLowerCase();
     const password = body.password;
+    const rememberMe = Boolean(body.rememberMe);
 
     if (!email || !password) {
       return NextResponse.json(
@@ -20,13 +21,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await prisma.user.findUnique({
+    // Admin login should use AdminUser model
+    const admin = await prisma.adminUser.findUnique({
       where: {
         email,
       },
     });
 
-    if (!user) {
+    if (!admin) {
       return NextResponse.json(
         {
           success: false,
@@ -36,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!user.isActive) {
+    if (!admin.isActive) {
       return NextResponse.json(
         {
           success: false,
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
 
     const passwordMatched = await bcrypt.compare(
       password,
-      user.password
+      admin.password
     );
 
     if (!passwordMatched) {
@@ -61,15 +63,36 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: "Login successful.",
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
       },
     });
+
+    // Store logged-in admin information in a secure HTTP-only cookie.
+    const cookieMaxAge = rememberMe
+      ? 60 * 60 * 24 * 30
+      : 60 * 60 * 24;
+
+    response.cookies.set({
+      name: "admin_session",
+      value: JSON.stringify({
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+      }),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: cookieMaxAge,
+    });
+
+    return response;
   } catch (error) {
     console.error("LOGIN_ERROR:", error);
 
