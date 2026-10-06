@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Star } from "lucide-react";
@@ -92,39 +92,202 @@ function WhatsAppIcon({ size = 13 }: { size?: number }) {
 }
 
 /* =========================================================
-   REVIEWS
+   TYPES
 ========================================================= */
 
-const reviewText = `Whispers of Wisdom has arrived at a perfect time for our business Creative Living Property. As we grow and scale our business the lessons and guidance within the book provide a navigation compass whilst inspiring us with the infectious entrepreneurial spirit of the author. We were lucky enough the meet the author earlier this year on a property training mastermind in Dubai. He took time out of a busy schedule to sit down with myself and family and passed on some amazing life lessons from his extensive experience in business. He went onto explain the importance of laying strong business foundations and structuring even small start up business’s with the same mindset and structure as a large successful corporation. We took his advice to heart and have since continued to grow our business based on many principles within Whispers of Wisdom which have held us in good stead. We are excited to dive deeper into the depths of knowledge within this book whilst applying the principle’s to our business and life in general.`;
+type Review = {
+  id: number;
+  name: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+};
 
-const reviews = [
-  {
-    id: 1,
-    name: "swapnil.rajwadkar",
-    date: "July 25, 2024",
-    text: reviewText,
-  },
-  {
-    id: 2,
-    name: "Anthony & Hannah Wiggins",
-    date: "July 25, 2024",
-    text: reviewText,
-  },
-];
+/* =========================================================
+   PRODUCT PAGE
+========================================================= */
 
 export default function WhispersOfWisdomProductPage() {
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  /* =======================================================
+     REVIEWS
+  ======================================================= */
+
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(true);
+  const [reviewLoadError, setReviewLoadError] = useState("");
+
+  /* =======================================================
+     REVIEW FORM
+  ======================================================= */
+
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [reviewText, setReviewText] = useState("");
+
+  const [isSubmittingReview, setIsSubmittingReview] =
+    useState(false);
+
+  const [reviewSuccess, setReviewSuccess] = useState("");
+  const [reviewSubmitError, setReviewSubmitError] = useState("");
+
+  /* =======================================================
+     LOAD APPROVED REVIEWS
+  ======================================================= */
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadReviews() {
+      try {
+        setIsLoadingReviews(true);
+        setReviewLoadError("");
+
+        const response = await fetch(
+          "/api/reviews?productSlug=whispers-of-wisdom",
+          {
+            cache: "no-store",
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to load reviews."
+          );
+        }
+
+        if (!cancelled) {
+          setReviews(data.reviews || []);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setReviewLoadError(
+            error instanceof Error
+              ? error.message
+              : "Failed to load reviews."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingReviews(false);
+        }
+      }
+    }
+
+    loadReviews();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* =======================================================
+     SUBMIT REVIEW
+  ======================================================= */
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
+
+    setReviewSuccess("");
+    setReviewSubmitError("");
+
+    if (rating < 1) {
+      setReviewSubmitError("Please select a rating.");
+      return;
+    }
+
+    if (!name.trim()) {
+      setReviewSubmitError("Please enter your name.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setReviewSubmitError("Please enter your email.");
+      return;
+    }
+
+    if (!reviewText.trim()) {
+      setReviewSubmitError("Please write your review.");
+      return;
+    }
+
+    try {
+      setIsSubmittingReview(true);
+
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productSlug: "whispers-of-wisdom",
+          name: name.trim(),
+          email: email.trim(),
+          rating,
+          review: reviewText.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Failed to submit review."
+        );
+      }
+
+      setName("");
+      setEmail("");
+      setReviewText("");
+      setRating(0);
+      setHoverRating(0);
+
+      setReviewSuccess(
+        "Thank you! Your review has been submitted and is waiting for approval."
+      );
+    } catch (error) {
+      setReviewSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while submitting your review."
+      );
+    } finally {
+      setIsSubmittingReview(false);
+    }
   }
+
+  /* =======================================================
+     ROTATE BOOK
+  ======================================================= */
 
   function rotateBook() {
     setCurrentImage((current) =>
       current === bookImages.length - 1 ? 0 : current + 1
     );
+  }
+
+  /* =======================================================
+     DATE FORMAT
+  ======================================================= */
+
+  function formatReviewDate(date: string) {
+    try {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }).format(new Date(date));
+    } catch {
+      return "";
+    }
   }
 
   return (
@@ -216,8 +379,6 @@ export default function WhispersOfWisdomProductPage() {
                   lg:border-r
                 "
               >
-                {/* CIRCLE WRAPPER */}
-
                 <div
                   className="
                     relative
@@ -233,8 +394,6 @@ export default function WhispersOfWisdomProductPage() {
                     sm:w-[470px]
                   "
                 >
-                  {/* CIRCLE BACKGROUND */}
-
                   <div
                     aria-hidden="true"
                     className="
@@ -245,8 +404,6 @@ export default function WhispersOfWisdomProductPage() {
                       dark:bg-[radial-gradient(circle,rgba(212,167,44,0.09)_0%,rgba(33,150,243,0.09)_55%,transparent_73%)]
                     "
                   />
-
-                  {/* OUTER RING */}
 
                   <motion.div
                     aria-hidden="true"
@@ -284,8 +441,6 @@ export default function WhispersOfWisdomProductPage() {
                     />
                   </motion.div>
 
-                  {/* INNER RING */}
-
                   <motion.div
                     aria-hidden="true"
                     animate={{ rotate: -360 }}
@@ -317,8 +472,6 @@ export default function WhispersOfWisdomProductPage() {
                     />
                   </motion.div>
 
-                  {/* DASHED RING */}
-
                   <motion.div
                     aria-hidden="true"
                     animate={{ rotate: 360 }}
@@ -338,8 +491,6 @@ export default function WhispersOfWisdomProductPage() {
                     "
                   />
 
-                  {/* INNER GLOW */}
-
                   <div
                     aria-hidden="true"
                     className="
@@ -353,8 +504,6 @@ export default function WhispersOfWisdomProductPage() {
                       dark:bg-[#D4A72C]/[0.06]
                     "
                   />
-
-                  {/* BOOK */}
 
                   <button
                     type="button"
@@ -386,7 +535,10 @@ export default function WhispersOfWisdomProductPage() {
                         transformStyle: "preserve-3d",
                       }}
                     >
-                      <AnimatePresence mode="wait" initial={false}>
+                      <AnimatePresence
+                        mode="wait"
+                        initial={false}
+                      >
                         <motion.div
                           key={bookImages[currentImage].id}
                           initial={{
@@ -539,7 +691,8 @@ export default function WhispersOfWisdomProductPage() {
                   </span>
 
                   <span className="text-[12px] italic text-slate-500 dark:text-slate-300">
-                    (2 customer reviews)
+                    ({reviews.length} customer{" "}
+                    {reviews.length === 1 ? "review" : "reviews"})
                   </span>
                 </Link>
 
@@ -554,14 +707,15 @@ export default function WhispersOfWisdomProductPage() {
                     sm:text-[15px]
                   "
                 >
-                  Embarking on the journey of entrepreneurship can feel both
-                  exciting and overwhelming. As you face the challenges and
-                  opportunities ahead, having a trustworthy guide can make all
-                  the difference. That&apos;s where &quot;Whispers of Wisdom&quot;
-                  steps in – it&apos;s a comprehensive handbook crafted to empower
-                  entrepreneurs like yourself to turn your dreams into reality
-                  and achieve lasting success in the competitive world of
-                  business.
+                  Embarking on the journey of entrepreneurship can
+                  feel both exciting and overwhelming. As you face
+                  the challenges and opportunities ahead, having a
+                  trustworthy guide can make all the difference.
+                  That&apos;s where &quot;Whispers of Wisdom&quot;
+                  steps in – it&apos;s a comprehensive handbook
+                  crafted to empower entrepreneurs like yourself to
+                  turn your dreams into reality and achieve lasting
+                  success in the competitive world of business.
                 </p>
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -636,7 +790,9 @@ export default function WhispersOfWisdomProductPage() {
                   "
                 >
                   <div className="grid grid-cols-[100px_1fr] gap-y-4 text-[13px]">
-                    <span className="text-slate-400">Author:</span>
+                    <span className="text-slate-400">
+                      Author:
+                    </span>
 
                     <span className="font-medium text-[#26343C] dark:text-slate-200">
                       Santosh Kumar
@@ -648,7 +804,9 @@ export default function WhispersOfWisdomProductPage() {
                       1399993070
                     </span>
 
-                    <span className="text-slate-400">Category:</span>
+                    <span className="text-slate-400">
+                      Category:
+                    </span>
 
                     <span className="text-[#26343C] dark:text-slate-200">
                       Whispers of Wisdom
@@ -969,25 +1127,30 @@ export default function WhispersOfWisdomProductPage() {
                 />
 
                 <p className="text-[15px] leading-[1.95] text-slate-600 dark:text-slate-300 sm:text-[16px]">
-                  Santosh Kumar has dedicated the entirety of his professional
-                  life to mastering and teaching the intricacies of strategic
-                  business management and execution. His journey over the years
-                  has culminated in a wealth of knowledge and a series of
-                  successful ventures that have not only propelled businesses
-                  from the ground up into six-figure successes but have also
-                  established a legacy that will continue to influence the
-                  business world for generations to come. Santosh’s teachings
-                  on strategy development, execution, and business growth have
-                  penetrated every level of the SME and startup sectors,
-                  reaching a global audience eager for transformation.
+                  Santosh Kumar has dedicated the entirety of his
+                  professional life to mastering and teaching the
+                  intricacies of strategic business management and
+                  execution. His journey over the years has
+                  culminated in a wealth of knowledge and a series
+                  of successful ventures that have not only
+                  propelled businesses from the ground up into
+                  six-figure successes but have also established a
+                  legacy that will continue to influence the
+                  business world for generations to come.
+                  Santosh’s teachings on strategy development,
+                  execution, and business growth have penetrated
+                  every level of the SME and startup sectors,
+                  reaching a global audience eager for
+                  transformation.
                 </p>
 
                 <p className="mt-6 text-[15px] leading-[1.95] text-slate-600 dark:text-slate-300 sm:text-[16px]">
-                  By partnering with Santosh Kumar, you gain not just the
-                  advantage of aligning with one of the most respected names in
-                  strategic business consulting, but you also inherit a legacy
-                  of success and a body of knowledge that can elevate your own
-                  brand to new heights.
+                  By partnering with Santosh Kumar, you gain not
+                  just the advantage of aligning with one of the
+                  most respected names in strategic business
+                  consulting, but you also inherit a legacy of
+                  success and a body of knowledge that can elevate
+                  your own brand to new heights.
                 </p>
               </motion.div>
             </div>
@@ -1000,10 +1163,8 @@ export default function WhispersOfWisdomProductPage() {
       ===================================================== */}
 
       <section
-        id="reviews"
         className="
           relative
-          scroll-mt-24
           overflow-hidden
           bg-transparent
           py-16
@@ -1093,14 +1254,15 @@ export default function WhispersOfWisdomProductPage() {
               />
 
               <p className="mt-7 max-w-[900px] text-[15px] leading-[1.95] text-slate-600 dark:text-slate-300 sm:text-[16px]">
-                Embarking on the journey of entrepreneurship can feel both
-                exciting and overwhelming. As you face the challenges and
-                opportunities ahead, having a trustworthy guide can make all
-                the difference. That&apos;s where &quot;Whispers of Wisdom&quot;
-                steps in – it&apos;s a comprehensive handbook crafted to empower
-                entrepreneurs like yourself to turn your dreams into reality
-                and achieve lasting success in the competitive world of
-                business.
+                Embarking on the journey of entrepreneurship can
+                feel both exciting and overwhelming. As you face
+                the challenges and opportunities ahead, having a
+                trustworthy guide can make all the difference.
+                That&apos;s where &quot;Whispers of Wisdom&quot;
+                steps in – it&apos;s a comprehensive handbook
+                crafted to empower entrepreneurs like yourself to
+                turn your dreams into reality and achieve lasting
+                success in the competitive world of business.
               </p>
             </div>
           </motion.div>
@@ -1111,7 +1273,17 @@ export default function WhispersOfWisdomProductPage() {
           REVIEWS
       ===================================================== */}
 
-      <section className="relative overflow-hidden bg-transparent pb-16 sm:pb-20">
+      <section
+        id="reviews"
+        className="
+          relative
+          scroll-mt-24
+          overflow-hidden
+          bg-transparent
+          pb-16
+          sm:pb-20
+        "
+      >
         <div className="relative z-10 mx-auto max-w-[1050px] px-5 sm:px-8 lg:px-12">
           <motion.div
             initial={{
@@ -1162,7 +1334,7 @@ export default function WhispersOfWisdomProductPage() {
 
             <div className="relative z-10">
               <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#2196F3]">
-                Reviews (2)
+                Reviews ({reviews.length})
               </p>
 
               <h2
@@ -1178,7 +1350,9 @@ export default function WhispersOfWisdomProductPage() {
                   sm:text-[40px]
                 "
               >
-                2 reviews for The Journey of Whispers of Wisdom
+                {reviews.length}{" "}
+                {reviews.length === 1 ? "review" : "reviews"} for
+                The Journey of Whispers of Wisdom
               </h2>
 
               <div
@@ -1193,99 +1367,170 @@ export default function WhispersOfWisdomProductPage() {
                 "
               />
 
-              <div className="mt-8 space-y-5">
-                {reviews.map((review) => (
-                  <motion.article
-                    key={review.id}
-                    whileHover={{
-                      y: -3,
-                    }}
-                    transition={{
-                      duration: 0.25,
-                    }}
-                    className="
-                      rounded-[24px]
-                      border
-                      border-slate-200/70
-                      bg-white/60
-                      p-5
-                      shadow-[0_14px_38px_rgba(15,23,42,0.06)]
-                      backdrop-blur-lg
-                      dark:border-white/[0.08]
-                      dark:bg-white/[0.035]
-                      sm:p-6
-                    "
-                  >
-                    <div className="grid gap-5 sm:grid-cols-[54px_1fr]">
-                      <div
+              {/* =================================================
+                  LOADING
+              ================================================= */}
+
+              {isLoadingReviews && (
+                <div className="mt-8 rounded-[22px] border border-slate-200/70 bg-white/50 p-8 text-center dark:border-white/10 dark:bg-white/[0.035]">
+                  <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-[#2196F3]/20 border-t-[#2196F3]" />
+
+                  <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                    Loading reviews...
+                  </p>
+                </div>
+              )}
+
+              {/* =================================================
+                  ERROR
+              ================================================= */}
+
+              {!isLoadingReviews && reviewLoadError && (
+                <div className="mt-8 rounded-[22px] border border-red-200 bg-red-50/70 p-6 text-center dark:border-red-500/20 dark:bg-red-500/[0.06]">
+                  <p className="text-sm text-red-600 dark:text-red-300">
+                    {reviewLoadError}
+                  </p>
+                </div>
+              )}
+
+              {/* =================================================
+                  EMPTY
+              ================================================= */}
+
+              {!isLoadingReviews &&
+                !reviewLoadError &&
+                reviews.length === 0 && (
+                  <div className="mt-8 rounded-[22px] border border-slate-200/70 bg-white/50 p-8 text-center dark:border-white/10 dark:bg-white/[0.035]">
+                    <div className="flex justify-center gap-1">
+                      {[1, 2, 3, 4, 5].map((item) => (
+                        <Star
+                          key={item}
+                          size={17}
+                          strokeWidth={1.5}
+                          className="text-slate-300 dark:text-slate-600"
+                        />
+                      ))}
+                    </div>
+
+                    <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                      No reviews yet. Be the first to share your
+                      experience.
+                    </p>
+                  </div>
+                )}
+
+              {/* =================================================
+                  REVIEW LIST
+              ================================================= */}
+
+              {!isLoadingReviews &&
+                !reviewLoadError &&
+                reviews.length > 0 && (
+                  <div className="mt-8 space-y-5">
+                    {reviews.map((review) => (
+                      <motion.article
+                        key={review.id}
+                        whileHover={{
+                          y: -3,
+                        }}
+                        transition={{
+                          duration: 0.25,
+                        }}
                         className="
-                          flex
-                          h-[50px]
-                          w-[50px]
-                          items-center
-                          justify-center
-                          rounded-full
+                          rounded-[24px]
                           border
-                          border-[#D4A72C]/25
-                          bg-gradient-to-br
-                          from-[#EAF7FF]
-                          to-[#FFF3C7]
-                          text-[18px]
-                          font-semibold
-                          uppercase
-                          text-[#2196F3]
-                          shadow-[0_8px_20px_rgba(33,150,243,0.10)]
-                          dark:border-white/10
-                          dark:bg-none
-                          dark:bg-white/[0.06]
-                          dark:text-[#64B5F6]
+                          border-slate-200/70
+                          bg-white/60
+                          p-5
+                          shadow-[0_14px_38px_rgba(15,23,42,0.06)]
+                          backdrop-blur-lg
+                          dark:border-white/[0.08]
+                          dark:bg-white/[0.035]
+                          sm:p-6
                         "
                       >
-                        {review.name.charAt(0)}
-                      </div>
-
-                      <div>
-                        <div
-                          className="
-                            flex
-                            flex-col
-                            gap-3
-                            sm:flex-row
-                            sm:items-center
-                            sm:justify-between
-                          "
-                        >
-                       <div className="flex flex-wrap items-center gap-3">
-                            <span className="flex gap-[2px]">
-                              {[1, 2, 3, 4, 5].map((item) => (
-                                <Star
-                                  key={item}
-                                  size={13}
-                                  fill="currentColor"
-                                  strokeWidth={1.5}
-                                  className="text-[#E5A91A]"
-                                />
-                              ))}
-                            </span>
-
-                            <strong className="text-[13px] text-[#26343C] dark:text-white">
-                              {review.name}
-                            </strong>
+                        <div className="grid gap-5 sm:grid-cols-[54px_1fr]">
+                          <div
+                            className="
+                              flex
+                              h-[50px]
+                              w-[50px]
+                              items-center
+                              justify-center
+                              rounded-full
+                              border
+                              border-[#D4A72C]/25
+                              bg-gradient-to-br
+                              from-[#EAF7FF]
+                              to-[#FFF3C7]
+                              text-[18px]
+                              font-semibold
+                              uppercase
+                              text-[#2196F3]
+                              shadow-[0_8px_20px_rgba(33,150,243,0.10)]
+                              dark:border-white/10
+                              dark:bg-white/[0.06]
+                              dark:text-[#64B5F6]
+                            "
+                          >
+                            {review.name.charAt(0)}
                           </div>
 
-                          <span className="text-[11px] italic text-slate-400">
-                            {review.date}
-                          </span>
-                        </div>
+                          <div>
+                            <div
+                              className="
+                                flex
+                                flex-col
+                                gap-3
+                                sm:flex-row
+                                sm:items-center
+                                sm:justify-between
+                              "
+                            >
+                              <div className="flex flex-wrap items-center gap-3">
+                                <span className="flex gap-[2px]">
+                                  {[1, 2, 3, 4, 5].map(
+                                    (item) => (
+                                      <Star
+                                        key={item}
+                                        size={13}
+                                        fill={
+                                          item <= review.rating
+                                            ? "currentColor"
+                                            : "none"
+                                        }
+                                        strokeWidth={1.5}
+                                        className={
+                                          item <= review.rating
+                                            ? "text-[#E5A91A]"
+                                            : "text-slate-300 dark:text-slate-600"
+                                        }
+                                      />
+                                    )
+                                  )}
+                                </span>
 
-                        <p className="mt-4 text-[13px] leading-[1.85] text-slate-600 dark:text-slate-300">
-                          {review.text}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
+                                <strong className="text-[13px] text-[#26343C] dark:text-white">
+                                  {review.name}
+                                </strong>
+                              </div>
+
+                              <span className="text-[11px] italic text-slate-400">
+                                {formatReviewDate(
+                                  review.createdAt
+                                )}
+                              </span>
+                            </div>
+
+                            <p className="mt-4 whitespace-pre-line text-[13px] leading-[1.85] text-slate-600 dark:text-slate-300">
+                              {review.review}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.article>
+                    ))}
+                  </div>
+                )}
             </div>
           </motion.div>
         </div>
@@ -1367,7 +1612,9 @@ export default function WhispersOfWisdomProductPage() {
                     <button
                       key={value}
                       type="button"
-                      onMouseEnter={() => setHoverRating(value)}
+                      onMouseEnter={() =>
+                        setHoverRating(value)
+                      }
                       onMouseLeave={() => setHoverRating(0)}
                       onClick={() => setRating(value)}
                       aria-label={`Rate ${value} stars`}
@@ -1403,8 +1650,15 @@ export default function WhispersOfWisdomProductPage() {
 
                 <textarea
                   id="review"
+                  value={reviewText}
+                  onChange={(event) =>
+                    setReviewText(event.target.value)
+                  }
                   required
+                  minLength={5}
+                  maxLength={5000}
                   rows={7}
+                  placeholder="Write your review..."
                   className="
                     mt-3
                     w-full
@@ -1419,11 +1673,13 @@ export default function WhispersOfWisdomProductPage() {
                     outline-none
                     transition-all
                     duration-300
+                    placeholder:text-slate-400
                     focus:border-[#2196F3]/50
                     focus:shadow-[0_0_0_4px_rgba(33,150,243,0.07)]
                     dark:border-white/10
                     dark:bg-[#0B2031]/70
                     dark:text-white
+                    dark:placeholder:text-slate-500
                   "
                 />
               </div>
@@ -1442,7 +1698,14 @@ export default function WhispersOfWisdomProductPage() {
                   <input
                     id="name"
                     type="text"
+                    value={name}
+                    onChange={(event) =>
+                      setName(event.target.value)
+                    }
                     required
+                    minLength={2}
+                    maxLength={100}
+                    placeholder="Your name"
                     className="
                       mt-2
                       h-12
@@ -1457,11 +1720,13 @@ export default function WhispersOfWisdomProductPage() {
                       outline-none
                       transition-all
                       duration-300
+                      placeholder:text-slate-400
                       focus:border-[#2196F3]/50
                       focus:shadow-[0_0_0_4px_rgba(33,150,243,0.07)]
                       dark:border-white/10
                       dark:bg-[#0B2031]/70
                       dark:text-white
+                      dark:placeholder:text-slate-500
                     "
                   />
                 </div>
@@ -1477,7 +1742,12 @@ export default function WhispersOfWisdomProductPage() {
                   <input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(event) =>
+                      setEmail(event.target.value)
+                    }
                     required
+                    placeholder="Your email"
                     className="
                       mt-2
                       h-12
@@ -1492,11 +1762,13 @@ export default function WhispersOfWisdomProductPage() {
                       outline-none
                       transition-all
                       duration-300
+                      placeholder:text-slate-400
                       focus:border-[#2196F3]/50
                       focus:shadow-[0_0_0_4px_rgba(33,150,243,0.07)]
                       dark:border-white/10
                       dark:bg-[#0B2031]/70
                       dark:text-white
+                      dark:placeholder:text-slate-500
                     "
                   />
                 </div>
@@ -1517,19 +1789,71 @@ export default function WhispersOfWisdomProductPage() {
                   dark:text-slate-400
                 "
               >
-                <input type="checkbox" className="mt-[2px]" />
+                <input
+                  type="checkbox"
+                  className="mt-[2px]"
+                />
 
                 <span>
-                  Save my name, email, and website in this browser for the next
-                  time I comment.
+                  Save my name, email, and website in this
+                  browser for the next time I comment.
                 </span>
               </label>
+
+              {/* SUCCESS */}
+
+              {reviewSuccess && (
+                <div
+                  role="status"
+                  className="
+                    mt-5
+                    rounded-[16px]
+                    border
+                    border-green-200
+                    bg-green-50
+                    px-4
+                    py-3
+                    text-sm
+                    text-green-700
+                    dark:border-green-500/20
+                    dark:bg-green-500/[0.08]
+                    dark:text-green-300
+                  "
+                >
+                  {reviewSuccess}
+                </div>
+              )}
+
+              {/* ERROR */}
+
+              {reviewSubmitError && (
+                <div
+                  role="alert"
+                  className="
+                    mt-5
+                    rounded-[16px]
+                    border
+                    border-red-200
+                    bg-red-50
+                    px-4
+                    py-3
+                    text-sm
+                    text-red-600
+                    dark:border-red-500/20
+                    dark:bg-red-500/[0.08]
+                    dark:text-red-300
+                  "
+                >
+                  {reviewSubmitError}
+                </div>
+              )}
 
               {/* SUBMIT */}
 
               <div className="mt-8 text-center">
                 <button
                   type="submit"
+                  disabled={isSubmittingReview}
                   className="
                     min-h-[46px]
                     rounded-full
@@ -1545,9 +1869,14 @@ export default function WhispersOfWisdomProductPage() {
                     duration-300
                     hover:-translate-y-1
                     hover:bg-[#1976D2]
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+                    disabled:hover:translate-y-0
                   "
                 >
-                  Submit
+                  {isSubmittingReview
+                    ? "Submitting..."
+                    : "Submit"}
                 </button>
               </div>
             </form>

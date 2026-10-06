@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -14,6 +13,7 @@ import {
   LogOut,
   X,
   NotebookTabs,
+  Star,
 } from "lucide-react";
 
 type AdminSidebarProps = {
@@ -36,6 +36,11 @@ const sidebarItems = [
     label: "Users",
     href: "/admin/users",
     icon: Users,
+  },
+  {
+    label: "Reviews",
+    href: "/admin/reviews",
+    icon: Star,
   },
   {
     label: "Journal Claims",
@@ -82,9 +87,7 @@ export function AdminSidebar({
 
   return (
     <>
-      {/* =====================================================
-          MOBILE OVERLAY
-      ====================================================== */}
+      {/* MOBILE OVERLAY */}
 
       <div
         onClick={onClose}
@@ -97,9 +100,7 @@ export function AdminSidebar({
           backdrop-blur-[2px]
           transition-opacity
           duration-300
-
           lg:hidden
-
           ${
             open
               ? "pointer-events-auto opacity-100"
@@ -108,9 +109,7 @@ export function AdminSidebar({
         `}
       />
 
-      {/* =====================================================
-          SIDEBAR
-      ====================================================== */}
+      {/* SIDEBAR */}
 
       <aside
         className={`
@@ -146,9 +145,7 @@ export function AdminSidebar({
           }
         `}
       >
-        {/* =================================================
-            LOGO HEADER
-        ================================================== */}
+        {/* LOGO HEADER */}
 
         <div
           className="
@@ -160,30 +157,18 @@ export function AdminSidebar({
             border-b
             border-slate-200/70
             px-4
-
             sm:min-h-[84px]
             sm:px-5
-
             md:px-6
-
             lg:min-h-[92px]
-
             dark:border-white/[0.08]
           "
         >
-          {/* LOGO */}
-
           <Link
             href="/admin/dashboard"
-            className="
-              inline-flex
-              min-w-0
-              items-center
-            "
+            className="inline-flex min-w-0 items-center"
             onClick={onClose}
           >
-            {/* LIGHT LOGO */}
-
             <Image
               src="/light-logo.png"
               alt="Whispers of Wisdom"
@@ -194,16 +179,11 @@ export function AdminSidebar({
                 h-auto
                 w-[135px]
                 object-contain
-
                 sm:w-[145px]
-
                 lg:w-[155px]
-
                 dark:hidden
               "
             />
-
-            {/* DARK LOGO */}
 
             <Image
               src="/logo-dark.png"
@@ -216,17 +196,12 @@ export function AdminSidebar({
                 h-auto
                 w-[135px]
                 object-contain
-
                 sm:w-[145px]
-
                 lg:w-[155px]
-
                 dark:block
               "
             />
           </Link>
-
-          {/* MOBILE CLOSE */}
 
           <button
             type="button"
@@ -243,17 +218,13 @@ export function AdminSidebar({
               text-slate-500
               transition-all
               duration-300
-
               hover:bg-slate-100
               hover:text-[#2196F3]
-
               sm:h-10
               sm:w-10
-
               dark:text-slate-400
               dark:hover:bg-white/[0.06]
               dark:hover:text-[#64B5F6]
-
               lg:hidden
             "
           >
@@ -261,9 +232,7 @@ export function AdminSidebar({
           </button>
         </div>
 
-        {/* =================================================
-            NAVIGATION
-        ================================================== */}
+        {/* NAVIGATION */}
 
         <nav
           className="
@@ -272,15 +241,11 @@ export function AdminSidebar({
             overscroll-contain
             px-3
             py-5
-
             sm:px-4
             sm:py-6
-
             [scrollbar-width:thin]
           "
         >
-          {/* MENU TITLE */}
-
           <p
             className="
               mb-3
@@ -290,17 +255,13 @@ export function AdminSidebar({
               uppercase
               tracking-[0.20em]
               text-slate-400
-
               sm:text-[10px]
               sm:tracking-[0.22em]
-
               dark:text-slate-500
             "
           >
             Admin Menu
           </p>
-
-          {/* MENU ITEMS */}
 
           <div className="space-y-1.5">
             {sidebarItems.map((item) => {
@@ -327,7 +288,6 @@ export function AdminSidebar({
                     font-medium
                     transition-all
                     duration-300
-
                     sm:min-h-[50px]
                     sm:gap-3.5
                     sm:px-4
@@ -338,16 +298,13 @@ export function AdminSidebar({
                         ? `
                           bg-[#2196F3]/10
                           text-[#1976D2]
-
                           dark:bg-[#2196F3]/15
                           dark:text-[#64B5F6]
                         `
                         : `
                           text-slate-600
-
                           hover:bg-slate-100/80
                           hover:text-[#2196F3]
-
                           dark:text-slate-400
                           dark:hover:bg-white/[0.05]
                           dark:hover:text-[#64B5F6]
@@ -355,8 +312,6 @@ export function AdminSidebar({
                     }
                   `}
                 >
-                  {/* ACTIVE LEFT BAR */}
-
                   {active && (
                     <span
                       className="
@@ -368,13 +323,10 @@ export function AdminSidebar({
                         -translate-y-1/2
                         rounded-r-full
                         bg-[#2196F3]
-
                         sm:h-7
                       "
                     />
                   )}
-
-                  {/* ICON */}
 
                   <Icon
                     size={18}
@@ -384,12 +336,9 @@ export function AdminSidebar({
                       transition-transform
                       duration-300
                       group-hover:scale-105
-
                       sm:size-[19px]
                     "
                   />
-
-                  {/* LABEL */}
 
                   <span className="truncate">
                     {item.label}
@@ -400,9 +349,7 @@ export function AdminSidebar({
           </div>
         </nav>
 
-        {/* =================================================
-            LOGOUT
-        ================================================== */}
+        {/* LOGOUT */}
 
         <div
           className="
@@ -410,9 +357,7 @@ export function AdminSidebar({
             border-t
             border-slate-200/70
             p-3
-
             sm:p-4
-
             dark:border-white/[0.08]
           "
         >
@@ -433,15 +378,12 @@ export function AdminSidebar({
               text-slate-600
               transition-all
               duration-300
-
               hover:bg-red-50
               hover:text-red-500
-
               sm:min-h-[50px]
               sm:gap-3.5
               sm:px-4
               sm:text-[14px]
-
               dark:text-slate-400
               dark:hover:bg-red-500/10
               dark:hover:text-red-400
@@ -454,7 +396,6 @@ export function AdminSidebar({
                 transition-transform
                 duration-300
                 group-hover:translate-x-0.5
-
                 sm:size-[19px]
               "
             />
@@ -466,5 +407,3 @@ export function AdminSidebar({
     </>
   );
 }
-
-
