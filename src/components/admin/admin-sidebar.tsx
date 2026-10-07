@@ -232,7 +232,7 @@ export function AdminSidebar({
           </button>
         </div>
 
-        {/* NAVIGATION */}
+      
 
         <nav
           className="
@@ -406,4 +406,4 @@ export function AdminSidebar({
       </aside>
     </>
   );
-}
+}               
