@@ -87,7 +87,7 @@ export function AdminSidebar({
 
   return (
     <>
-      {/* MOBILE OVERLAY */}
+    
 
       <div
         onClick={onClose}
