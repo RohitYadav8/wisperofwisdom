@@ -29,7 +29,7 @@ const items = [
     title: "Whispers of Wisdom",
     icon: BookOpen,
     description:
-      "Explore “Whispers of Wisdom,” a compelling journey of triumph, resilience, and transformation. Delve into inspiring stories that illuminate the path from challenges to success.",
+      "Explore “Whispers of Wisdom,” a compelling journey of triumph, resilience, and transformation. Delve into inspiring stories that illuminate the path from challenges to success. Discover your own victory within!",
   },
 ];
 

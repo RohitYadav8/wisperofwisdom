@@ -9,21 +9,7 @@ import { CommunitySection } from "../../../components/home/community-section";
 import { StatsSection } from "../../../components/home/stats-section";
 
 const aboutDescription = `
-The book navigates through foundational elements, strategic blueprints, and
-fundamental building blocks, emphasizing preparation, survival, and sustainable
-growth. From the initial entrepreneurial journey to market sustainability and
-celebrating success, it delves into scaling, diversification, and continuous
-improvement. Sections on personal growth, challenges, positivity, and purpose
-enrich the entrepreneurial spirit. Culminating in planning for the future,
-succession, mentorship, and a commitment to excellence, the book serves as a
-holistic compass for entrepreneurs seeking enduring success and significance.
-It encapsulates the transformative process of translating one's vision or
-entrepreneurial aspirations into tangible success and achievement. This journey
-involves strategic planning, goal setting, adaptability, overcoming challenges,
-sustaining growth, and ultimately achieving personal and professional
-fulfillment. It provides a roadmap where entrepreneurs not only conceptualize
-their vision but actively work towards realizing it, navigating obstacles and
-celebrating victories along the way.
+The book navigates through foundational elements, strategic blueprints, and fundamental building blocks, emphasising preparation, survival, and sustainable growth. From the initial entrepreneurial journey to market sustainability and celebrating success, it delves into scaling, diversification, and continuous improvement. Sections on personal growth, challenges, positivity, and purpose enrich the entrepreneurial spirit. Culminating in planning for the future, succession, mentorship, and a commitment to excellence, the book serves as a holistic compass for entrepreneurs seeking enduring success and significance. It encapsulates the transformative process of translating one’s vision or entrepreneurial aspirations into tangible success and achievement. This journey involves strategic planning, goal setting, adaptability, overcoming challenges, sustaining growth, and ultimately achieving personal and professional fulfilment. It provides a roadmap where entrepreneurs not only conceptualise their vision but actively work towards realising it, navigating obstacles and celebrating victories along the way.
 `;
 
 export default function AboutPage() {
