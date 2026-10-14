@@ -705,7 +705,7 @@ export default function AdminReviewsPage() {
                         "
                       >
                         <div className="flex items-start gap-4">
-                          {/* AVATAR */}
+                          
 
                           <div
                             className="
@@ -765,7 +765,7 @@ export default function AdminReviewsPage() {
                         </div>
                       </div>
 
-                      {/* RATING */}
+                      
 
                       <div className="mt-5 flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map(
@@ -792,7 +792,7 @@ export default function AdminReviewsPage() {
                         </span>
                       </div>
 
-                      {/* BOOK */}
+                      
 
                       {review.book && (
                         <div className="mt-4">
