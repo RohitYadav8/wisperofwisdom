@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         },
         { status: 400 }
       );
-    }
+    }   
 
     if (password.length < 6) {
       return NextResponse.json(
