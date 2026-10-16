@@ -27,7 +27,7 @@ import {
 
 type User = {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
   isActive: boolean;
   createdAt: string;
@@ -55,105 +55,81 @@ const emptyAdminForm: AdminForm = {
   password: "",
 };
 
-export default function AdminUsersPage() {
-  // =========================================================
-  // PUBLIC WEBSITE USERS
-  // =========================================================
+const inputClass =
+  "h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white";
 
+const labelClass =
+  "mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200";
+
+const avatarClass =
+  "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#2196F3] to-[#06466B] text-sm font-bold text-white";
+
+export default function AdminUsersPage() {
+  // PUBLIC WEBSITE USERS
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
 
-  // =========================================================
   // ADMIN USERS
-  // =========================================================
-
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
   const [adminLoading, setAdminLoading] = useState(true);
 
-  // =========================================================
   // ADMIN USER MODAL
-  // =========================================================
-
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-  const [adminForm, setAdminForm] =
-    useState<AdminForm>(emptyAdminForm);
+  const [adminForm, setAdminForm] = useState<AdminForm>(emptyAdminForm);
   const [savingAdmin, setSavingAdmin] = useState(false);
 
-  // =========================================================
   // PUBLIC USER ACTIONS
-  // =========================================================
-
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const [editForm, setEditForm] = useState({
-    name: "",
-    email: "",
-  });
-
+  const [editForm, setEditForm] = useState({ name: "", email: "" });
   const [savingUser, setSavingUser] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [statusUpdatingId, setStatusUpdatingId] =
-    useState<number | null>(null);
+  const [statusUpdatingId, setStatusUpdatingId] = useState<number | null>(
+    null
+  );
 
-  // =========================================================
   // MESSAGES
-  // =========================================================
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // =========================================================
   // FETCH PUBLIC USERS
-  // =========================================================
-
-  const fetchUsers = useCallback(
-    async (showRefresh = false) => {
-      try {
-        if (showRefresh) {
-          setRefreshing(true);
-        } else {
-          setLoading(true);
-        }
-
-        setError("");
-
-        const response = await fetch("/api/admin/users", {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            data.message || "Failed to fetch users."
-          );
-        }
-
-        setUsers(data.users ?? []);
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch users.";
-
-        setError(message);
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
+  const fetchUsers = useCallback(async (showRefresh = false) => {
+    try {
+      if (showRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
       }
-    },
-    []
-  );
 
-  // =========================================================
+      setError("");
+
+      const response = await fetch("/api/admin/users", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch users.");
+      }
+
+      setUsers(data.users ?? []);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch users.";
+
+      setError(message);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
   // FETCH ADMIN USERS
-  // =========================================================
-
   const fetchAdminUsers = useCallback(async () => {
     try {
       setAdminLoading(true);
@@ -167,9 +143,7 @@ export default function AdminUsersPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to fetch admin users."
-        );
+        throw new Error(data.message || "Failed to fetch admin users.");
       }
 
       setAdminUsers(data.adminUsers ?? []);
@@ -185,19 +159,13 @@ export default function AdminUsersPage() {
     }
   }, []);
 
-  // =========================================================
   // INITIAL LOAD
-  // =========================================================
-
   useEffect(() => {
     fetchUsers();
     fetchAdminUsers();
   }, [fetchUsers, fetchAdminUsers]);
 
-  // =========================================================
   // FILTER PUBLIC USERS
-  // =========================================================
-
   const filteredUsers = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -207,56 +175,36 @@ export default function AdminUsersPage() {
 
     return users.filter((user) => {
       return (
-        user.name.toLowerCase().includes(query) ||
+        (user.name ?? "").toLowerCase().includes(query) ||
         user.email.toLowerCase().includes(query)
       );
     });
   }, [users, search]);
 
-  // =========================================================
   // COUNTS
-  // =========================================================
-
   const totalUsers = users.length;
-
-  const activeUsers = users.filter(
-    (user) => user.isActive
-  ).length;
-
+  const activeUsers = users.filter((user) => user.isActive).length;
   const inactiveUsers = totalUsers - activeUsers;
 
-  // =========================================================
   // REFRESH EVERYTHING
-  // =========================================================
-
   async function handleRefresh() {
     setRefreshing(true);
     setError("");
 
     try {
-      await Promise.all([
-        fetchUsers(true),
-        fetchAdminUsers(),
-      ]);
+      await Promise.all([fetchUsers(true), fetchAdminUsers()]);
     } finally {
       setRefreshing(false);
     }
   }
 
-  // =========================================================
-  // OPEN ADMIN MODAL
-  // =========================================================
-
+  // ADMIN MODAL
   function openAdminModal() {
     setAdminForm(emptyAdminForm);
     setError("");
     setSuccess("");
     setIsAdminModalOpen(true);
   }
-
-  // =========================================================
-  // CLOSE ADMIN MODAL
-  // =========================================================
 
   function closeAdminModal() {
     if (savingAdmin) {
@@ -267,13 +215,8 @@ export default function AdminUsersPage() {
     setAdminForm(emptyAdminForm);
   }
 
-  // =========================================================
   // CREATE ADMIN USER
-  // =========================================================
-
-  async function handleAdminSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleAdminSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const name = adminForm.name.trim();
@@ -281,16 +224,12 @@ export default function AdminUsersPage() {
     const password = adminForm.password;
 
     if (!name || !email || !password) {
-      setError(
-        "Name, email and password are required."
-      );
+      setError("Name, email and password are required.");
       return;
     }
 
     if (password.length < 6) {
-      setError(
-        "Admin password must be at least 6 characters."
-      );
+      setError("Admin password must be at least 6 characters.");
       return;
     }
 
@@ -299,48 +238,29 @@ export default function AdminUsersPage() {
       setError("");
       setSuccess("");
 
-      const response = await fetch(
-        "/api/admin/admin-users",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("/api/admin/admin-users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password }),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to create admin user."
-        );
+        throw new Error(data.message || "Failed to create admin user.");
       }
 
-      // Add newly created admin immediately to UI
       if (data.adminUser) {
-        setAdminUsers((currentAdmins) => [
-          data.adminUser,
-          ...currentAdmins,
-        ]);
+        setAdminUsers((currentAdmins) => [data.adminUser, ...currentAdmins]);
       } else {
-        // Fallback: reload admin users
         await fetchAdminUsers();
       }
 
       setIsAdminModalOpen(false);
       setAdminForm(emptyAdminForm);
 
-      setSuccess(
-        `Admin user "${name}" was created successfully.`
-      );
+      setSuccess(`Admin user "${name}" was created successfully.`);
     } catch (error) {
       const message =
         error instanceof Error
@@ -353,15 +273,12 @@ export default function AdminUsersPage() {
     }
   }
 
-  // =========================================================
-  // OPEN EDIT USER MODAL
-  // =========================================================
-
+  // EDIT USER MODAL
   function openEditModal(user: User) {
     setEditingUser(user);
 
     setEditForm({
-      name: user.name,
+      name: user.name ?? "",
       email: user.email,
     });
 
@@ -370,10 +287,6 @@ export default function AdminUsersPage() {
     setIsEditModalOpen(true);
   }
 
-  // =========================================================
-  // CLOSE EDIT MODAL
-  // =========================================================
-
   function closeEditModal() {
     if (savingUser) {
       return;
@@ -381,20 +294,11 @@ export default function AdminUsersPage() {
 
     setIsEditModalOpen(false);
     setEditingUser(null);
-
-    setEditForm({
-      name: "",
-      email: "",
-    });
+    setEditForm({ name: "", email: "" });
   }
 
-  // =========================================================
   // UPDATE PUBLIC USER
-  // =========================================================
-
-  async function handleUserUpdate(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleUserUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!editingUser) {
@@ -404,8 +308,8 @@ export default function AdminUsersPage() {
     const name = editForm.name.trim();
     const email = editForm.email.trim().toLowerCase();
 
-    if (!name || !email) {
-      setError("Name and email are required.");
+    if (!email) {
+      setError("Email is required.");
       return;
     }
 
@@ -414,55 +318,35 @@ export default function AdminUsersPage() {
       setError("");
       setSuccess("");
 
-      const response = await fetch(
-        `/api/admin/users/${editingUser.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            name,
-            email,
-          }),
-        }
-      );
+      const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email }),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to update user."
-        );
+        throw new Error(data.message || "Failed to update user.");
       }
 
       setUsers((currentUsers) =>
         currentUsers.map((user) =>
           user.id === editingUser.id
-            ? {
-                ...user,
-                name,
-                email,
-              }
+            ? { ...user, name: name || null, email }
             : user
         )
       );
 
       setIsEditModalOpen(false);
       setEditingUser(null);
-
-      setEditForm({
-        name: "",
-        email: "",
-      });
+      setEditForm({ name: "", email: "" });
 
       setSuccess("User updated successfully.");
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to update user.";
+        error instanceof Error ? error.message : "Failed to update user.";
 
       setError(message);
     } finally {
@@ -470,46 +354,30 @@ export default function AdminUsersPage() {
     }
   }
 
-  // =========================================================
   // ACTIVE / INACTIVE
-  // =========================================================
-
   async function handleStatusChange(user: User) {
     try {
       setStatusUpdatingId(user.id);
       setError("");
       setSuccess("");
 
-      const response = await fetch(
-        `/api/admin/users/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            isActive: !user.isActive,
-          }),
-        }
-      );
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ isActive: !user.isActive }),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to update user status."
-        );
+        throw new Error(data.message || "Failed to update user status.");
       }
 
       setUsers((currentUsers) =>
         currentUsers.map((currentUser) =>
           currentUser.id === user.id
-            ? {
-                ...currentUser,
-                isActive: !currentUser.isActive,
-              }
+            ? { ...currentUser, isActive: !currentUser.isActive }
             : currentUser
         )
       );
@@ -531,13 +399,10 @@ export default function AdminUsersPage() {
     }
   }
 
-  // =========================================================
   // DELETE PUBLIC USER
-  // =========================================================
-
   async function handleDelete(user: User) {
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${user.name}"?`
+      `Are you sure you want to delete "${user.name || user.email}"?`
     );
 
     if (!confirmed) {
@@ -549,34 +414,25 @@ export default function AdminUsersPage() {
       setError("");
       setSuccess("");
 
-      const response = await fetch(
-        `/api/admin/users/${user.id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to delete user."
-        );
+        throw new Error(data.message || "Failed to delete user.");
       }
 
       setUsers((currentUsers) =>
-        currentUsers.filter(
-          (currentUser) => currentUser.id !== user.id
-        )
+        currentUsers.filter((currentUser) => currentUser.id !== user.id)
       );
 
       setSuccess("User deleted successfully.");
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to delete user.";
+        error instanceof Error ? error.message : "Failed to delete user.";
 
       setError(message);
     } finally {
@@ -584,10 +440,7 @@ export default function AdminUsersPage() {
     }
   }
 
-  // =========================================================
   // DATE FORMAT
-  // =========================================================
-
   function formatDate(date: string) {
     return new Intl.DateTimeFormat("en-IN", {
       day: "2-digit",
@@ -598,10 +451,7 @@ export default function AdminUsersPage() {
 
   return (
     <div className="min-h-full">
-      {/* =====================================================
-          PAGE HEADER
-      ====================================================== */}
-
+      {/* PAGE HEADER */}
       <div className="mb-8 flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2 text-sm font-medium text-[#2196F3]">
@@ -627,9 +477,7 @@ export default function AdminUsersPage() {
           >
             <RefreshCw
               size={17}
-              className={
-                refreshing ? "animate-spin" : ""
-              }
+              className={refreshing ? "animate-spin" : ""}
             />
             Refresh
           </button>
@@ -645,10 +493,7 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* =====================================================
-          MESSAGES
-      ====================================================== */}
-
+      {/* MESSAGES */}
       {error && (
         <div className="mb-6 flex items-start justify-between gap-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
           <div className="flex items-center gap-2">
@@ -656,10 +501,7 @@ export default function AdminUsersPage() {
             {error}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setError("")}
-          >
+          <button type="button" onClick={() => setError("")}>
             <X size={17} />
           </button>
         </div>
@@ -672,19 +514,13 @@ export default function AdminUsersPage() {
             {success}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setSuccess("")}
-          >
+          <button type="button" onClick={() => setSuccess("")}>
             <X size={17} />
           </button>
         </div>
       )}
 
-      {/* =====================================================
-          STATS
-      ====================================================== */}
-
+      {/* STATS */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
           title="Total Users"
@@ -708,13 +544,8 @@ export default function AdminUsersPage() {
         />
       </div>
 
-      {/* =====================================================
-          PUBLIC USERS TABLE
-      ====================================================== */}
-
+      {/* PUBLIC USERS TABLE */}
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B2031]">
-        {/* SEARCH */}
-
         <div className="flex flex-col gap-4 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
           <div>
             <h2 className="font-semibold text-slate-950 dark:text-white">
@@ -723,10 +554,7 @@ export default function AdminUsersPage() {
 
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               {filteredUsers.length} user
-              {filteredUsers.length === 1
-                ? ""
-                : "s"}{" "}
-              found
+              {filteredUsers.length === 1 ? "" : "s"} found
             </p>
           </div>
 
@@ -739,40 +567,29 @@ export default function AdminUsersPage() {
             <input
               type="text"
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search name or email..."
               className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
             />
           </div>
         </div>
 
-        {/* LOADING */}
-
         {loading ? (
           <div className="flex min-h-80 flex-col items-center justify-center gap-3">
-            <Loader2
-              size={30}
-              className="animate-spin text-[#2196F3]"
-            />
+            <Loader2 size={30} className="animate-spin text-[#2196F3]" />
 
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Loading users...
             </p>
           </div>
         ) : filteredUsers.length === 0 ? (
-          /* EMPTY STATE */
-
           <div className="flex min-h-80 flex-col items-center justify-center px-6 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[#2196F3] dark:bg-[#2196F3]/10">
               <UserRound size={26} />
             </div>
 
             <h3 className="font-semibold text-slate-950 dark:text-white">
-              {search
-                ? "No users found"
-                : "No registered users yet"}
+              {search ? "No users found" : "No registered users yet"}
             </h3>
 
             <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
@@ -782,8 +599,6 @@ export default function AdminUsersPage() {
             </p>
           </div>
         ) : (
-          /* TABLE */
-
           <div className="overflow-x-auto">
             <table className="w-full min-w-[850px]">
               <thead className="bg-slate-50/80 dark:bg-[#061522]/70">
@@ -806,18 +621,15 @@ export default function AdminUsersPage() {
                     className="transition hover:bg-slate-50/70 dark:hover:bg-white/[0.025]"
                   >
                     {/* USER */}
-
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#2196F3] to-[#06466B] text-sm font-bold text-white">
-                          {user.name
-                            .charAt(0)
-                            .toUpperCase()}
+                        <div className={avatarClass}>
+                          {(user.name || user.email).charAt(0).toUpperCase()}
                         </div>
 
                         <div>
                           <p className="font-semibold text-slate-900 dark:text-white">
-                            {user.name}
+                            {user.name || "No name"}
                           </p>
 
                           <p className="mt-0.5 text-xs text-slate-400">
@@ -828,29 +640,19 @@ export default function AdminUsersPage() {
                     </td>
 
                     {/* EMAIL */}
-
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                        <Mail
-                          size={15}
-                          className="text-slate-400"
-                        />
-
+                        <Mail size={15} className="text-slate-400" />
                         {user.email}
                       </div>
                     </td>
 
                     {/* STATUS */}
-
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        disabled={
-                          statusUpdatingId === user.id
-                        }
-                        onClick={() =>
-                          handleStatusChange(user)
-                        }
+                        disabled={statusUpdatingId === user.id}
+                        onClick={() => handleStatusChange(user)}
                         className={`inline-flex min-w-24 items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${
                           user.isActive
                             ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300"
@@ -858,41 +660,30 @@ export default function AdminUsersPage() {
                         }`}
                       >
                         {statusUpdatingId === user.id ? (
-                          <Loader2
-                            size={13}
-                            className="animate-spin"
-                          />
+                          <Loader2 size={13} className="animate-spin" />
                         ) : (
                           <span
                             className={`h-1.5 w-1.5 rounded-full ${
-                              user.isActive
-                                ? "bg-emerald-500"
-                                : "bg-slate-400"
+                              user.isActive ? "bg-emerald-500" : "bg-slate-400"
                             }`}
                           />
                         )}
 
-                        {user.isActive
-                          ? "Active"
-                          : "Inactive"}
+                        {user.isActive ? "Active" : "Inactive"}
                       </button>
                     </td>
 
                     {/* DATE */}
-
                     <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                       {formatDate(user.createdAt)}
                     </td>
 
                     {/* ACTIONS */}
-
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           type="button"
-                          onClick={() =>
-                            openEditModal(user)
-                          }
+                          onClick={() => openEditModal(user)}
                           title="Edit user"
                           className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:border-[#2196F3]/30 hover:bg-blue-50 hover:text-[#2196F3] dark:border-white/10 dark:hover:bg-[#2196F3]/10"
                         >
@@ -901,20 +692,13 @@ export default function AdminUsersPage() {
 
                         <button
                           type="button"
-                          onClick={() =>
-                            handleDelete(user)
-                          }
-                          disabled={
-                            deletingId === user.id
-                          }
+                          onClick={() => handleDelete(user)}
+                          disabled={deletingId === user.id}
                           title="Delete user"
                           className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:border-red-500/20 dark:hover:bg-red-500/10"
                         >
                           {deletingId === user.id ? (
-                            <Loader2
-                              size={16}
-                              className="animate-spin"
-                            />
+                            <Loader2 size={16} className="animate-spin" />
                           ) : (
                             <Trash2 size={16} />
                           )}
@@ -929,20 +713,12 @@ export default function AdminUsersPage() {
         )}
       </div>
 
-      {/* =====================================================
-          ADMIN USERS TABLE
-      ====================================================== */}
-
+      {/* ADMIN USERS TABLE */}
       <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B2031]">
-        {/* HEADER */}
-
         <div className="flex items-center justify-between border-b border-slate-200 p-5 dark:border-white/10">
           <div>
             <div className="flex items-center gap-2">
-              <ShieldCheck
-                size={18}
-                className="text-[#2196F3]"
-              />
+              <ShieldCheck size={18} className="text-[#2196F3]" />
 
               <h2 className="font-semibold text-slate-950 dark:text-white">
                 Admin Users
@@ -960,22 +736,15 @@ export default function AdminUsersPage() {
           </div>
         </div>
 
-        {/* ADMIN LOADING */}
-
         {adminLoading ? (
           <div className="flex min-h-48 flex-col items-center justify-center gap-3">
-            <Loader2
-              size={28}
-              className="animate-spin text-[#2196F3]"
-            />
+            <Loader2 size={28} className="animate-spin text-[#2196F3]" />
 
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Loading admin users...
             </p>
           </div>
         ) : adminUsers.length === 0 ? (
-          /* EMPTY ADMIN STATE */
-
           <div className="flex min-h-48 flex-col items-center justify-center px-6 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[#2196F3] dark:bg-[#2196F3]/10">
               <ShieldCheck size={26} />
@@ -986,12 +755,10 @@ export default function AdminUsersPage() {
             </h3>
 
             <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
-              Click "Add Admin User" to create an admin account.
+              Click &quot;Add Admin User&quot; to create an admin account.
             </p>
           </div>
         ) : (
-          /* ADMIN TABLE */
-
           <div className="overflow-x-auto">
             <table className="w-full min-w-[750px]">
               <thead className="bg-slate-50/80 dark:bg-[#061522]/70">
@@ -1013,12 +780,10 @@ export default function AdminUsersPage() {
                     key={admin.id}
                     className="transition hover:bg-slate-50/70 dark:hover:bg-white/[0.025]"
                   >
-                    {/* ADMIN */}
-
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#2196F3] to-[#06466B] text-sm font-bold text-white">
-                          {admin.name
+                        <div className={avatarClass}>
+                          {(admin.name || admin.email)
                             .charAt(0)
                             .toUpperCase()}
                         </div>
@@ -1035,20 +800,12 @@ export default function AdminUsersPage() {
                       </div>
                     </td>
 
-                    {/* EMAIL */}
-
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-                        <Mail
-                          size={15}
-                          className="text-slate-400"
-                        />
-
+                        <Mail size={15} className="text-slate-400" />
                         {admin.email}
                       </div>
                     </td>
-
-                    {/* STATUS */}
 
                     <td className="px-6 py-4">
                       <span
@@ -1060,25 +817,17 @@ export default function AdminUsersPage() {
                       >
                         <span
                           className={`h-1.5 w-1.5 rounded-full ${
-                            admin.isActive
-                              ? "bg-emerald-500"
-                              : "bg-slate-400"
+                            admin.isActive ? "bg-emerald-500" : "bg-slate-400"
                           }`}
                         />
 
-                        {admin.isActive
-                          ? "Active"
-                          : "Inactive"}
+                        {admin.isActive ? "Active" : "Inactive"}
                       </span>
                     </td>
-
-                    {/* CREATED */}
 
                     <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                       {formatDate(admin.createdAt)}
                     </td>
-
-                    {/* ACCESS */}
 
                     <td className="px-6 py-4 text-right">
                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-[#2196F3] dark:bg-[#2196F3]/10">
@@ -1094,10 +843,7 @@ export default function AdminUsersPage() {
         )}
       </div>
 
-      {/* =====================================================
-          ADD ADMIN USER MODAL
-      ====================================================== */}
-
+      {/* ADD ADMIN USER MODAL */}
       {isAdminModalOpen && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
@@ -1108,15 +854,10 @@ export default function AdminUsersPage() {
           }}
         >
           <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0B2031]">
-            {/* HEADER */}
-
             <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 dark:border-white/10">
               <div>
                 <div className="flex items-center gap-2">
-                  <ShieldCheck
-                    size={19}
-                    className="text-[#2196F3]"
-                  />
+                  <ShieldCheck size={19} className="text-[#2196F3]" />
 
                   <h2 className="text-lg font-bold text-slate-950 dark:text-white">
                     Add Admin User
@@ -1138,20 +879,10 @@ export default function AdminUsersPage() {
               </button>
             </div>
 
-            {/* FORM */}
-
-            <form
-              onSubmit={handleAdminSubmit}
-              className="p-6"
-            >
+            <form onSubmit={handleAdminSubmit} className="p-6">
               <div className="space-y-5">
-                {/* NAME */}
-
                 <div>
-                  <label
-                    htmlFor="admin-name"
-                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
-                  >
+                  <label htmlFor="admin-name" className={labelClass}>
                     Full Name
                   </label>
 
@@ -1166,17 +897,12 @@ export default function AdminUsersPage() {
                       }))
                     }
                     placeholder="Enter full name"
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                    className={inputClass}
                   />
                 </div>
 
-                {/* EMAIL */}
-
                 <div>
-                  <label
-                    htmlFor="admin-email"
-                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
-                  >
+                  <label htmlFor="admin-email" className={labelClass}>
                     Admin Email
                   </label>
 
@@ -1191,17 +917,12 @@ export default function AdminUsersPage() {
                       }))
                     }
                     placeholder="admin@example.com"
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                    className={inputClass}
                   />
                 </div>
 
-                {/* PASSWORD */}
-
                 <div>
-                  <label
-                    htmlFor="admin-password"
-                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
-                  >
+                  <label htmlFor="admin-password" className={labelClass}>
                     Password
                   </label>
 
@@ -1217,12 +938,10 @@ export default function AdminUsersPage() {
                     }
                     placeholder="Minimum 6 characters"
                     minLength={6}
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                    className={inputClass}
                   />
                 </div>
               </div>
-
-              {/* BUTTONS */}
 
               <div className="mt-7 flex items-center justify-end gap-3">
                 <button
@@ -1241,10 +960,7 @@ export default function AdminUsersPage() {
                 >
                   {savingAdmin ? (
                     <>
-                      <Loader2
-                        size={17}
-                        className="animate-spin"
-                      />
+                      <Loader2 size={17} className="animate-spin" />
                       Creating...
                     </>
                   ) : (
@@ -1260,10 +976,7 @@ export default function AdminUsersPage() {
         </div>
       )}
 
-      {/* =====================================================
-          EDIT PUBLIC USER MODAL
-      ====================================================== */}
-
+      {/* EDIT PUBLIC USER MODAL */}
       {isEditModalOpen && editingUser && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
@@ -1274,8 +987,6 @@ export default function AdminUsersPage() {
           }}
         >
           <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#0B2031]">
-            {/* HEADER */}
-
             <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 dark:border-white/10">
               <div>
                 <h2 className="text-lg font-bold text-slate-950 dark:text-white">
@@ -1283,7 +994,7 @@ export default function AdminUsersPage() {
                 </h2>
 
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                  Update the registered user's information.
+                  Update the registered user&apos;s information.
                 </p>
               </div>
 
@@ -1297,19 +1008,11 @@ export default function AdminUsersPage() {
               </button>
             </div>
 
-            {/* FORM */}
-
-            <form
-              onSubmit={handleUserUpdate}
-              className="p-6"
-            >
+            <form onSubmit={handleUserUpdate} className="p-6">
               <div className="space-y-5">
                 <div>
-                  <label
-                    htmlFor="edit-user-name"
-                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
-                  >
-                    Full Name
+                  <label htmlFor="edit-user-name" className={labelClass}>
+                    Full Name (optional)
                   </label>
 
                   <input
@@ -1323,15 +1026,12 @@ export default function AdminUsersPage() {
                       }))
                     }
                     placeholder="Enter full name"
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                    className={inputClass}
                   />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="edit-user-email"
-                    className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200"
-                  >
+                  <label htmlFor="edit-user-email" className={labelClass}>
                     Email Address
                   </label>
 
@@ -1346,12 +1046,10 @@ export default function AdminUsersPage() {
                       }))
                     }
                     placeholder="user@example.com"
-                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2196F3] focus:ring-2 focus:ring-[#2196F3]/10 dark:border-white/10 dark:bg-[#061522] dark:text-white"
+                    className={inputClass}
                   />
                 </div>
               </div>
-
-              {/* BUTTONS */}
 
               <div className="mt-7 flex items-center justify-end gap-3">
                 <button
@@ -1370,10 +1068,7 @@ export default function AdminUsersPage() {
                 >
                   {savingUser ? (
                     <>
-                      <Loader2
-                        size={17}
-                        className="animate-spin"
-                      />
+                      <Loader2 size={17} className="animate-spin" />
                       Saving...
                     </>
                   ) : (
@@ -1392,10 +1087,7 @@ export default function AdminUsersPage() {
   );
 }
 
-// =========================================================
 // STAT CARD
-// =========================================================
-
 function StatCard({
   title,
   value,
@@ -1419,9 +1111,7 @@ function StatCard({
             {value}
           </p>
 
-          <p className="mt-1 text-xs text-slate-400">
-            {description}
-          </p>
+          <p className="mt-1 text-xs text-slate-400">{description}</p>
         </div>
 
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#2196F3] dark:bg-[#2196F3]/10">
@@ -1432,15 +1122,8 @@ function StatCard({
   );
 }
 
-// =========================================================
 // TABLE HEADING
-// =========================================================
-
-function TableHeading({
-  children,
-}: {
-  children: ReactNode;
-}) {
+function TableHeading({ children }: { children: ReactNode }) {
   return (
     <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
       {children}

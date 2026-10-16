@@ -1,1 +1,143 @@
-                     
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  name           String?
+  email          String          @unique
+  password       String?
+  isActive       Boolean         @default(true)
+  newsletter     Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  passwordTokens PasswordToken[]
+
+  @@map("users")
+}
+
+model PasswordToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_tokens")
+}
+
+model ContactSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String
+  message   String?
+  source    String
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([source])
+  @@index([status])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+model Book {
+  id               Int      @id @default(autoincrement())
+  title            String
+  slug             String   @unique
+  author           String
+  price            Decimal  @db.Decimal(10, 2)
+  coverImage       String
+  category         String
+  shortDescription String?
+  description      String?
+  stock            Int      @default(0)
+  isActive         Boolean  @default(true)
+  isFeatured       Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  reviews          Review[]
+
+  @@index([category])
+  @@index([author])
+  @@index([isActive])
+  @@map("books")
+}
+
+model Enquiry {
+  id             Int      @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String
+  mobile         String
+  organisation   String?
+  question       String?
+  termsAccepted  Boolean  @default(false)
+  receiveUpdates Boolean  @default(false)
+  status         String   @default("NEW")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("enquiries")
+}
+
+model JournalClaim {
+  id               Int      @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String
+  phone            String?
+  challenge        String
+  goals            String
+  termsAccepted    Boolean  @default(false)
+  marketingConsent Boolean  @default(false)
+  status           String   @default("NEW")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("journal_claims")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  bookId    Int?
+  name      String
+  email     String
+  rating    Int
+  review    String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  book      Book?    @relation(fields: [bookId], references: [id])
+
+  @@index([bookId])
+  @@index([createdAt])
+  @@index([status])
+  @@map("reviews")
+}
