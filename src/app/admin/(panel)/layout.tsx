@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { AdminPanelLayout } from "../../../components/admin/admin-panel-layout";
+import { HomeShell } from "../../../features/home/home-shell";
 
 export default function AdminLayout({
   children,
@@ -8,8 +9,8 @@ export default function AdminLayout({
   children: ReactNode;
 }) {
   return (
-    <AdminPanelLayout>
-      {children}
-    </AdminPanelLayout>
+    <HomeShell>
+      <AdminPanelLayout>{children}</AdminPanelLayout>
+    </HomeShell>
   );
 }

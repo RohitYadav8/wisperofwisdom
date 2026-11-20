@@ -23,3 +23,54 @@ a {
   background: #0ea5e9;
   color: #ffffff;
 }
+
+/* =====================================================
+   HOME REDESIGN TOKENS
+   Scoped to .wow-home so other pages are untouched.
+===================================================== */
+.wow-home {
+  --wow-paper: #f7f2e8;
+  --wow-paper-2: #efe7d6;
+  --wow-card: #fffdf8;
+  --wow-ink: #0b2233;
+  --wow-ink-2: #3e5263;
+  --wow-muted: #6f7f8c;
+  --wow-brand: #2f9be0;
+  --wow-brand-deep: #003a5d;
+  --wow-gold: #c29a52;
+  --wow-line: rgba(11, 34, 51, 0.1);
+
+  background: var(--wow-paper);
+  color: var(--wow-ink);
+  font-family: var(--font-wow-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark .wow-home {
+  --wow-paper: #07131c;
+  --wow-paper-2: #0c1e2b;
+  --wow-card: #0f2433;
+  --wow-ink: #f2eee5;
+  --wow-ink-2: #b8c4ce;
+  --wow-muted: #8395a3;
+  --wow-brand: #4db3f2;
+  --wow-brand-deep: #9fd6fa;
+  --wow-gold: #d9b572;
+  --wow-line: rgba(255, 255, 255, 0.09);
+}
+
+.wow-serif {
+  font-family: var(--font-wow-serif), Georgia, serif;
+}
+
+@keyframes wow-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.wow-marquee-track {
+  animation: wow-marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wow-marquee-track { animation: none; }
+}
