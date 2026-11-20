@@ -64,6 +64,29 @@ const labelClass =
 const avatarClass =
   "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#2196F3] to-[#06466B] text-sm font-bold text-white";
 
+/* Plain requests used for the first load (they return data instead of setting state). */
+async function requestUsers(): Promise<{ users: User[] | null; error: string }> {
+  try {
+    const response = await fetch("/api/admin/users", { method: "GET", credentials: "include", cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Failed to fetch users.");
+    return { users: data.users ?? [], error: "" };
+  } catch (error) {
+    return { users: null, error: error instanceof Error ? error.message : "Failed to fetch users." };
+  }
+}
+
+async function requestAdminUsers(): Promise<{ adminUsers: AdminUser[] | null; error: string }> {
+  try {
+    const response = await fetch("/api/admin/admin-users", { method: "GET", credentials: "include", cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Failed to fetch admin users.");
+    return { adminUsers: data.adminUsers ?? [], error: "" };
+  } catch (error) {
+    return { adminUsers: null, error: error instanceof Error ? error.message : "Failed to fetch admin users." };
+  }
+}
+
 export default function AdminUsersPage() {
   // PUBLIC WEBSITE USERS
   const [users, setUsers] = useState<User[]>([]);
@@ -159,11 +182,28 @@ export default function AdminUsersPage() {
     }
   }, []);
 
-  // INITIAL LOAD
+  // INITIAL LOAD — state is only set once each request finishes.
   useEffect(() => {
-    fetchUsers();
-    fetchAdminUsers();
-  }, [fetchUsers, fetchAdminUsers]);
+    let cancelled = false;
+
+    requestUsers().then((result) => {
+      if (cancelled) return;
+      if (result.users) setUsers(result.users);
+      if (result.error) setError(result.error);
+      setLoading(false);
+    });
+
+    requestAdminUsers().then((result) => {
+      if (cancelled) return;
+      if (result.adminUsers) setAdminUsers(result.adminUsers);
+      if (result.error) setError(result.error);
+      setAdminLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // FILTER PUBLIC USERS
   const filteredUsers = useMemo(() => {

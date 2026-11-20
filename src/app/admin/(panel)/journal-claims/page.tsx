@@ -30,6 +30,17 @@ type JournalClaim = {
   updatedAt: string;
 };
 
+async function requestClaims(): Promise<{ claims: JournalClaim[] | null; error: string }> {
+  try {
+    const response = await fetch("/api/admin/journal-claims", { method: "GET", cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Unable to fetch journal claims.");
+    return { claims: data.journalClaims ?? [], error: "" };
+  } catch (error) {
+    return { claims: null, error: error instanceof Error ? error.message : "Unable to fetch journal claims." };
+  }
+}
+
 export default function AdminJournalClaimsPage() {
   const [claims, setClaims] = useState<JournalClaim[]>([]);
   const [selectedClaim, setSelectedClaim] =
@@ -45,45 +56,31 @@ export default function AdminJournalClaimsPage() {
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [error, setError] = useState("");
 
-  const fetchClaims = useCallback(async (showRefresh = false) => {
-    try {
-      if (showRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
-
-      setError("");
-
-      const response = await fetch("/api/admin/journal-claims", {
-        method: "GET",
-        cache: "no-store",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Unable to fetch journal claims."
-        );
-      }
-
-      setClaims(data.journalClaims ?? []);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Unable to fetch journal claims."
-      );
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+  const applyClaims = useCallback((result: Awaited<ReturnType<typeof requestClaims>>) => {
+    if (result.claims) setClaims(result.claims);
+    setError(result.error);
+    setLoading(false);
+    setRefreshing(false);
   }, []);
 
+  /* Reload / Refresh button. */
+  const fetchClaims = useCallback(async (showRefresh = false) => {
+    if (showRefresh) setRefreshing(true);
+    else setLoading(true);
+    setError("");
+    applyClaims(await requestClaims());
+  }, [applyClaims]);
+
+  /* First load: state is only set once the request finishes. */
   useEffect(() => {
-    void fetchClaims();
-  }, [fetchClaims]);
+    let cancelled = false;
+    requestClaims().then((result) => {
+      if (!cancelled) applyClaims(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [applyClaims]);
 
   async function updateStatus(
     claimId: number,

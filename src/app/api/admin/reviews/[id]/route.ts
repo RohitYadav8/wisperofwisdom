@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../../lib/prisma";
+import { requireAdmin } from "../../../../../lib/admin-auth";
 
 const ALLOWED_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
 
@@ -13,6 +14,9 @@ export async function PATCH(
   request: Request,
   context: RouteContext
 ) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   try {
     const { id } = await context.params;
 
@@ -120,6 +124,9 @@ export async function DELETE(
   _request: Request,
   context: RouteContext
 ) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   try {
     const { id } = await context.params;
 

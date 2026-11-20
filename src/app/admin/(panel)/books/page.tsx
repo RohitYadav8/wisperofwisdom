@@ -59,6 +59,17 @@ const EMPTY_FORM: BookForm = {
   isFeatured: false,
 };
 
+async function requestBooks(): Promise<{ books: Book[] | null; error: string }> {
+  try {
+    const response = await fetch("/api/admin/books", { cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Unable to load books.");
+    return { books: data.books ?? [], error: "" };
+  } catch (error) {
+    return { books: null, error: error instanceof Error ? error.message : "Unable to load books." };
+  }
+}
+
 export default function AdminBooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,38 +87,29 @@ export default function AdminBooksPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const fetchBooks = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch("/api/admin/books", {
-        cache: "no-store",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Unable to load books."
-        );
-      }
-
-      setBooks(data.books ?? []);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Unable to load books."
-      );
-    } finally {
-      setLoading(false);
-    }
+  const applyBooks = useCallback((result: Awaited<ReturnType<typeof requestBooks>>) => {
+    if (result.books) setBooks(result.books);
+    setError(result.error);
+    setLoading(false);
   }, []);
 
+  /* Reload (used after saving/deleting). */
+  const fetchBooks = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    applyBooks(await requestBooks());
+  }, [applyBooks]);
+
+  /* First load: state is only set once the request finishes. */
   useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
+    let cancelled = false;
+    requestBooks().then((result) => {
+      if (!cancelled) applyBooks(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [applyBooks]);
 
   const filteredBooks = useMemo(() => {
     const query = search.trim().toLowerCase();

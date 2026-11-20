@@ -3,17 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import {
-  LayoutDashboard,
   BookOpen,
-  Users,
-  MessageSquareText,
-  MessageCircleQuestion,
+  LayoutDashboard,
   LogOut,
-  X,
+  MessageCircleQuestion,
+  MessageSquareText,
   NotebookTabs,
   Star,
+  Users,
+  X,
 } from "lucide-react";
 
 type AdminSidebarProps = {
@@ -22,62 +21,26 @@ type AdminSidebarProps = {
 };
 
 const sidebarItems = [
-  {
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Books",
-    href: "/admin/books",
-    icon: BookOpen,
-  },
-  {
-    label: "Users",
-    href: "/admin/users",
-    icon: Users,
-  },
-  {
-    label: "Reviews",
-    href: "/admin/reviews",
-    icon: Star,
-  },
-  {
-    label: "Journal Claims",
-    href: "/admin/journal-claims",
-    icon: NotebookTabs,
-  },
-  {
-    label: "Enquiries",
-    href: "/admin/enquiries",
-    icon: MessageCircleQuestion,
-  },
-  {
-    label: "Contact Messages",
-    href: "/admin/contact-messages",
-    icon: MessageSquareText,
-  },
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Books", href: "/admin/books", icon: BookOpen },
+  { label: "Users", href: "/admin/users", icon: Users },
+  { label: "Reviews", href: "/admin/reviews", icon: Star },
+  { label: "Journal Claims", href: "/admin/journal-claims", icon: NotebookTabs },
+  { label: "Enquiries", href: "/admin/enquiries", icon: MessageCircleQuestion },
+  { label: "Contact Messages", href: "/admin/contact-messages", icon: MessageSquareText },
 ];
 
-export function AdminSidebar({
-  open = false,
-  onClose,
-}: AdminSidebarProps) {
+export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
 
   function isActive(href: string) {
-    if (href === "/admin/dashboard") {
-      return pathname === href;
-    }
-
+    if (href === "/admin/dashboard") return pathname === href;
     return pathname.startsWith(href);
   }
 
   async function handleLogout() {
     try {
-      await fetch("/api/admin/logout", {
-        method: "POST",
-      });
+      await fetch("/api/admin/logout", { method: "POST" });
     } catch (error) {
       console.error("LOGOUT ERROR:", error);
     } finally {
@@ -87,323 +50,69 @@ export function AdminSidebar({
 
   return (
     <>
-    
-
+      {/* mobile overlay */}
       <div
         onClick={onClose}
-        aria-hidden="true"
-        className={`
-          fixed
-          inset-0
-          z-[90]
-          bg-black/40
-          backdrop-blur-[2px]
-          transition-opacity
-          duration-300
-          lg:hidden
-          ${
-            open
-              ? "pointer-events-auto opacity-100"
-              : "pointer-events-none opacity-0"
-          }
-        `}
+        className={`fixed inset-0 z-[90] bg-[#07131c]/50 backdrop-blur-[2px] transition-opacity lg:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
       />
 
-      {/* SIDEBAR */}
-
       <aside
-        className={`
-          fixed
-          left-0
-          top-0
-          z-[100]
-          flex
-          h-[100dvh]
-          w-[280px]
-          max-w-[85vw]
-          flex-col
-          border-r
-          border-slate-200/80
-          bg-white/95
-          shadow-[12px_0_35px_rgba(15,23,42,0.08)]
-          backdrop-blur-2xl
-          transition-transform
-          duration-300
-          ease-out
-
-          dark:border-white/[0.08]
-          dark:bg-[#071A28]/95
-          dark:shadow-[14px_0_40px_rgba(0,0,0,0.22)]
-
-          lg:translate-x-0
-          lg:w-[280px]
-
-          ${
-            open
-              ? "translate-x-0"
-              : "-translate-x-full"
-          }
-        `}
+        className={`fixed left-0 top-0 z-[100] flex h-[100dvh] w-[272px] max-w-[85vw] flex-col bg-[#0b2233] text-[#f7f2e8] transition-transform duration-300 lg:translate-x-0 dark:border-r dark:border-(--wow-line) dark:bg-(--wow-card) ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        
-
-        <div
-          className="
-            flex
-            min-h-[76px]
-            shrink-0
-            items-center
-            justify-between
-            border-b
-            border-slate-200/70
-            px-4
-            sm:min-h-[84px]
-            sm:px-5
-            md:px-6
-            lg:min-h-[92px]
-            dark:border-white/[0.08]
-          "
-        >
-          <Link
-            href="/admin/dashboard"
-            className="inline-flex min-w-0 items-center"
-            onClick={onClose}
-          >
-            <Image
-              src="/light-logo.png"
-              alt="Whispers of Wisdom"
-              width={190}
-              height={90}
-              priority
-              className="
-                h-auto
-                w-[135px]
-                object-contain
-                sm:w-[145px]
-                lg:w-[155px]
-                dark:hidden
-              "
-            />
-
-            <Image
-              src="/logo-dark.png"
-              alt="Whispers of Wisdom"
-              width={190}
-              height={90}
-              priority
-              className="
-                hidden
-                h-auto
-                w-[135px]
-                object-contain
-                sm:w-[145px]
-                lg:w-[155px]
-                dark:block
-              "
-            />
+        <div className="flex min-h-[80px] shrink-0 items-center justify-between px-6 lg:min-h-[88px]">
+          <Link href="/admin/dashboard" onClick={onClose}>
+            <Image src="/logo-dark.png" alt="Whispers of Wisdom" width={190} height={102} priority className="h-auto w-[140px] object-contain" />
           </Link>
-
           <button
             type="button"
             onClick={onClose}
             aria-label="Close sidebar"
-            className="
-              flex
-              h-9
-              w-9
-              shrink-0
-              items-center
-              justify-center
-              rounded-xl
-              text-slate-500
-              transition-all
-              duration-300
-              hover:bg-slate-100
-              hover:text-[#2196F3]
-              sm:h-10
-              sm:w-10
-              dark:text-slate-400
-              dark:hover:bg-white/[0.06]
-              dark:hover:text-[#64B5F6]
-              lg:hidden
-            "
+            className="grid h-10 w-10 place-items-center rounded-xl text-white/60 hover:bg-white/10 hover:text-white lg:hidden"
           >
-            <X size={19} />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-      
-
-        <nav
-          className="
-            flex-1
-            overflow-y-auto
-            overscroll-contain
-            px-3
-            py-5
-            sm:px-4
-            sm:py-6
-            [scrollbar-width:thin]
-          "
-        >
-          <p
-            className="
-              mb-3
-              px-3
-              text-[9px]
-              font-bold
-              uppercase
-              tracking-[0.20em]
-              text-slate-400
-              sm:text-[10px]
-              sm:tracking-[0.22em]
-              dark:text-slate-500
-            "
-          >
-            Admin Menu
-          </p>
-
-          <div className="space-y-1.5">
+        <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 [scrollbar-width:thin]">
+          <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/35">Admin Menu</p>
+          <div className="space-y-1">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
-
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className={`
-                    group
-                    relative
-                    flex
-                    min-h-[46px]
-                    w-full
-                    items-center
-                    gap-3
-                    overflow-hidden
-                    rounded-[13px]
-                    px-3.5
-                    text-[13px]
-                    font-medium
-                    transition-all
-                    duration-300
-                    sm:min-h-[50px]
-                    sm:gap-3.5
-                    sm:px-4
-                    sm:text-[14px]
-
-                    ${
-                      active
-                        ? `
-                          bg-[#2196F3]/10
-                          text-[#1976D2]
-                          dark:bg-[#2196F3]/15
-                          dark:text-[#64B5F6]
-                        `
-                        : `
-                          text-slate-600
-                          hover:bg-slate-100/80
-                          hover:text-[#2196F3]
-                          dark:text-slate-400
-                          dark:hover:bg-white/[0.05]
-                          dark:hover:text-[#64B5F6]
-                        `
-                    }
-                  `}
+                  aria-current={active ? "page" : undefined}
+                  className={`group relative flex min-h-[48px] items-center gap-3.5 rounded-2xl px-4 text-[14px] font-medium transition ${
+                    active ? "bg-white/10 text-white" : "text-white/60 hover:bg-white/[0.06] hover:text-white"
+                  }`}
                 >
-                  {active && (
-                    <span
-                      className="
-                        absolute
-                        left-0
-                        top-1/2
-                        h-6
-                        w-[3px]
-                        -translate-y-1/2
-                        rounded-r-full
-                        bg-[#2196F3]
-                        sm:h-7
-                      "
-                    />
-                  )}
-
-                  <Icon
-                    size={18}
-                    strokeWidth={active ? 2.3 : 2}
-                    className="
-                      shrink-0
-                      transition-transform
-                      duration-300
-                      group-hover:scale-105
-                      sm:size-[19px]
-                    "
-                  />
-
-                  <span className="truncate">
-                    {item.label}
-                  </span>
+                  {active && <span className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-(--wow-gold)" />}
+                  <Icon className={`h-[18px] w-[18px] shrink-0 ${active ? "text-(--wow-gold)" : ""}`} strokeWidth={active ? 2.2 : 1.9} />
+                  <span className="truncate">{item.label}</span>
                 </Link>
               );
             })}
           </div>
         </nav>
 
-        {/* LOGOUT */}
-
-        <div
-          className="
-            shrink-0
-            border-t
-            border-slate-200/70
-            p-3
-            sm:p-4
-            dark:border-white/[0.08]
-          "
-        >
+        <div className="shrink-0 border-t border-white/10 p-4">
           <button
             type="button"
             onClick={handleLogout}
-            className="
-              group
-              flex
-              min-h-[46px]
-              w-full
-              items-center
-              gap-3
-              rounded-[13px]
-              px-3.5
-              text-[13px]
-              font-medium
-              text-slate-600
-              transition-all
-              duration-300
-              hover:bg-red-50
-              hover:text-red-500
-              sm:min-h-[50px]
-              sm:gap-3.5
-              sm:px-4
-              sm:text-[14px]
-              dark:text-slate-400
-              dark:hover:bg-red-500/10
-              dark:hover:text-red-400
-            "
+            className="group flex min-h-[48px] w-full items-center gap-3.5 rounded-2xl px-4 text-[14px] font-medium text-white/60 transition hover:bg-red-500/15 hover:text-red-300"
           >
-            <LogOut
-              size={18}
-              className="
-                shrink-0
-                transition-transform
-                duration-300
-                group-hover:translate-x-0.5
-                sm:size-[19px]
-              "
-            />
-
+            <LogOut className="h-[18px] w-[18px] shrink-0 transition-transform group-hover:translate-x-0.5" />
             <span>Logout</span>
           </button>
         </div>
       </aside>
     </>
   );
-}               
+}

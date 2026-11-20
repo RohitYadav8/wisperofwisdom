@@ -34,6 +34,17 @@ type Review = {
 
 type FilterType = "ALL" | ReviewStatus;
 
+async function requestReviews(): Promise<{ reviews: Review[] | null; error: string }> {
+  try {
+    const response = await fetch("/api/admin/reviews", { cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok || !data.success) throw new Error(data.message || "Unable to load reviews.");
+    return { reviews: data.reviews || [], error: "" };
+  } catch (error) {
+    return { reviews: null, error: error instanceof Error ? error.message : "Unable to load reviews." };
+  }
+}
+
 export default function AdminReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,37 +61,31 @@ export default function AdminReviewsPage() {
      LOAD REVIEWS
   ======================================================= */
 
-  async function loadReviews() {
-    try {
-      setIsLoading(true);
-      setError("");
-
-      const response = await fetch("/api/admin/reviews", {
-        cache: "no-store",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(
-          data.message || "Unable to load reviews."
-        );
-      }
-
-      setReviews(data.reviews || []);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Unable to load reviews."
-      );
-    } finally {
-      setIsLoading(false);
-    }
+  function applyReviews(result: Awaited<ReturnType<typeof requestReviews>>) {
+    if (result.reviews) setReviews(result.reviews);
+    setError(result.error);
+    setIsLoading(false);
   }
 
+  /* Reload (used after an action). */
+  async function loadReviews() {
+    setIsLoading(true);
+    setError("");
+    applyReviews(await requestReviews());
+  }
+
+  /* First load: state is only set once the request finishes. */
   useEffect(() => {
-    loadReviews();
+    let cancelled = false;
+    requestReviews().then((result) => {
+      if (cancelled) return;
+      if (result.reviews) setReviews(result.reviews);
+      setError(result.error);
+      setIsLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   /* =======================================================

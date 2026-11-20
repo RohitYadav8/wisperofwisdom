@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 
@@ -43,7 +44,7 @@ export function AdminLoginForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Invalid email or password.");
+        setError(data.message || data.error || "Invalid email or password.");
         return;
       }
 
@@ -243,8 +244,9 @@ export function AdminLoginForm() {
         </div>
       </div>
 
-      {/* REMEMBER */}
+      {/* REMEMBER + FORGOT PASSWORD */}
 
+      <div className="flex items-center justify-between gap-4">
       <label
         className="
           flex
@@ -279,6 +281,14 @@ export function AdminLoginForm() {
           Remember me
         </span>
       </label>
+
+        <Link
+          href="/admin/forgot-password"
+          className="text-[13px] font-semibold text-[#2196F3] hover:underline dark:text-[#64B5F6]"
+        >
+          Forgot password?
+        </Link>
+      </div>
 
       {/* ERROR */}
 
