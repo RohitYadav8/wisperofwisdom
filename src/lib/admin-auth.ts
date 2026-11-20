@@ -97,3 +97,21 @@ export async function getAdminSession():
 
   return verifyAdminToken(token);
 }
+
+/* =========================================================
+   REQUIRE ADMIN (for API routes)
+   Usage: const denied = await requireAdmin(); if (denied) return denied;
+========================================================= */
+
+export async function requireAdmin(): Promise<Response | null> {
+  const session = await getAdminSession();
+
+  if (session) {
+    return null;
+  }
+
+  return Response.json(
+    { success: false, error: "Unauthorized", message: "Unauthorized" },
+    { status: 401 }
+  );
+}
