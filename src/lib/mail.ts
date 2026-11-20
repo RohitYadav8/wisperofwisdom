@@ -24,3 +24,18 @@ export async function sendPasswordSetupEmail(to: string, link: string) {
     `,
   });
 }
+
+export async function sendAdminPasswordResetEmail(to: string, link: string) {
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM,
+    to,
+    subject: "Reset your admin password - Whispers of Wisdom",
+    text: `A password reset was requested for your Whispers of Wisdom admin account. Reset it using this link (valid for 1 hour): ${link}\n\nIf you did not request this, you can ignore this email.`,
+    html: `
+      <p>A password reset was requested for your Whispers of Wisdom admin account.</p>
+      <p>Click the button below to choose a new password. This link is valid for 1 hour and can be used once.</p>
+      <p><a href="${link}" style="background:#2196F3;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none">Reset my password</a></p>
+      <p>If you did not request this, you can ignore this email — your password will not change.</p>
+    `,
+  });
+}
