@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 
+/* The Book table has no Amazon link column yet, so every book uses the
+   book's Amazon page (same link as the Purchase buttons on the home page). */
+const AMAZON_URL = "https://www.amazon.co.uk/dp/B0F5GXGHF8";
+
 export async function GET() {
   try {
     const books = await prisma.book.findMany({
@@ -20,7 +24,7 @@ export async function GET() {
       price: Number(book.price),
       image: book.coverImage,
       category: book.category,
-      amazonUrl: "#",
+      amazonUrl: AMAZON_URL,
     }));
 
     return NextResponse.json(formatted);
