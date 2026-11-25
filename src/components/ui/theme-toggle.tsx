@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@teispace/next-themes";
 
+/* true in the browser, false during server render (avoids a hydration mismatch). */
+const noop = () => () => {};
+function useMounted() {
+  return useSyncExternalStore(noop, () => true, () => false);
+}
+
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   if (!mounted) {
     return <div className="h-10 w-10" aria-hidden="true" />;
@@ -22,40 +24,10 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      }
-      className="
-        flex
-        h-10
-        w-10
-        items-center
-        justify-center
-        rounded-full
-
-        border
-        border-slate-200
-
-        bg-white
-        text-slate-700
-
-        transition-all
-        duration-300
-
-        hover:border-sky-400
-        hover:bg-sky-50
-        hover:text-sky-600
-
-        dark:border-white/10
-        dark:bg-white/5
-        dark:text-slate-200
-
-        dark:hover:border-sky-400/50
-        dark:hover:bg-sky-400/10
-        dark:hover:text-sky-300
-      "
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[var(--wow-line,rgba(11,34,51,0.1))] text-[var(--wow-ink-2,#334155)] transition hover:border-[var(--wow-ink,#0b2233)] hover:text-[var(--wow-ink,#0b2233)]"
     >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      {isDark ? <Sun size={17} /> : <Moon size={17} />}
     </button>
   );
 }

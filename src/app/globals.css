@@ -28,7 +28,8 @@ a {
    HOME REDESIGN TOKENS
    Scoped to .wow-home so other pages are untouched.
 ===================================================== */
-.wow-home {
+.wow-home,
+.wow-tokens {
   --wow-paper: #f7f2e8;
   --wow-paper-2: #efe7d6;
   --wow-card: #fffdf8;
@@ -39,13 +40,16 @@ a {
   --wow-brand-deep: #003a5d;
   --wow-gold: #c29a52;
   --wow-line: rgba(11, 34, 51, 0.1);
+}
 
+.wow-home {
   background: var(--wow-paper);
   color: var(--wow-ink);
   font-family: var(--font-wow-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-.dark .wow-home {
+.dark .wow-home,
+.dark .wow-tokens {
   --wow-paper: #07131c;
   --wow-paper-2: #0c1e2b;
   --wow-card: #0f2433;
